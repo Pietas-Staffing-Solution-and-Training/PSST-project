@@ -125,6 +125,7 @@ ClientBin/
 *.publishsettings
 modulesbin/
 tempbin/
+bin/
 
 # EPiServer Site file (VPP)
 AppData/
