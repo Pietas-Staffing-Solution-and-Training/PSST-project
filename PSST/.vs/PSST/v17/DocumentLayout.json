@@ -1,10 +1,10 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\MAXIE\\Documents\\GitHub\\PSST-project\\PSST\\",
+  "WorkspaceRootPath": "E:\\LearningCode\\c#\\223Project\\PSST\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{7ED9D3EB-3085-48B3-9AFE-24748DB5B69B}|PSST\\PSST.csproj|c:\\users\\maxie\\documents\\github\\psst-project\\psst\\psst\\dashboard.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
-      "RelativeMoniker": "D:0:0:{7ED9D3EB-3085-48B3-9AFE-24748DB5B69B}|PSST\\PSST.csproj|solutionrelative:psst\\dashboard.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
+      "AbsoluteMoniker": "D:0:0:{7ED9D3EB-3085-48B3-9AFE-24748DB5B69B}|PSST\\PSST.csproj|e:\\learningcode\\c#\\223project\\psst\\psst\\login.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
+      "RelativeMoniker": "D:0:0:{7ED9D3EB-3085-48B3-9AFE-24748DB5B69B}|PSST\\PSST.csproj|solutionrelative:psst\\login.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
     }
   ],
   "DocumentGroupContainers": [
@@ -19,14 +19,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Dashboard.aspx",
-              "DocumentMoniker": "C:\\Users\\MAXIE\\Documents\\GitHub\\PSST-project\\PSST\\PSST\\Dashboard.aspx",
-              "RelativeDocumentMoniker": "PSST\\Dashboard.aspx",
-              "ToolTip": "C:\\Users\\MAXIE\\Documents\\GitHub\\PSST-project\\PSST\\PSST\\Dashboard.aspx",
-              "RelativeToolTip": "PSST\\Dashboard.aspx",
+              "Title": "Login.aspx",
+              "DocumentMoniker": "E:\\LearningCode\\c#\\223Project\\PSST\\PSST\\Login.aspx",
+              "RelativeDocumentMoniker": "PSST\\Login.aspx",
+              "ToolTip": "E:\\LearningCode\\c#\\223Project\\PSST\\PSST\\Login.aspx",
+              "RelativeToolTip": "PSST\\Login.aspx",
               "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
-              "WhenOpened": "2024-08-12T14:51:12.341Z",
+              "WhenOpened": "2024-08-14T13:56:58.711Z",
               "EditorCaption": ""
             }
           ]
