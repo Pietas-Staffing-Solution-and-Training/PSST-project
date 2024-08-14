@@ -54,6 +54,6 @@ C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\Microsoft.CodeDom.Pro
 C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\obj\Debug\PSST.csproj.AssemblyReference.cache
 C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\obj\Debug\PSST.csproj.CoreCompileInputs.cache
-C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\obj\Debug\PSST.csproj.Up2Date
 C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\obj\Debug\PSST.dll
 C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\obj\Debug\PSST.pdb
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\obj\Debug\PSST.csproj.CopyComplete
