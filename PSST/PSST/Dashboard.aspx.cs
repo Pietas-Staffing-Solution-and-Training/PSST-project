@@ -21,7 +21,6 @@ namespace PSST
         protected void ClientData_SelectedIndexChanged(object sender, EventArgs e)
         {
             int selectedRow = ClientData.SelectedIndex;
-            //int selectedID = (int)ClientData.DataKeys[ClientData.SelectedIndex].Value;
             lblWelcome.Text = $"You selected row: {selectedRow}";
         }
 
