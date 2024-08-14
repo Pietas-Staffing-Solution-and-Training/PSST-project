@@ -26,6 +26,20 @@
   color: #40c0ca !important;
 }
 
+.gridview {
+  border: 2px solid #3a8389;
+}
+
+.gridview td:first-child {
+  border: 2px solid #3a8389; /* Border around Select column */
+}
+
+.gridview th {
+  border-radius: 0; /* Removes the border radius */
+  border: 2px solid #3a8389;
+  text-align: center;
+}
+
 
 /* Original Materialize CSS */
 .materialize-red {
@@ -4426,7 +4440,7 @@ nav ul a {
   -webkit-transition: background-color .3s;
   transition: background-color .3s;
   font-size: 1rem;
-  color: #40c0ca;
+  color: #009688;
   display: block;
   padding: 0 15px;
   cursor: pointer;

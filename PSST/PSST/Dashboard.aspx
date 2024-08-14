@@ -31,16 +31,16 @@
         <!-- Body -->
         <div class="main-div">
             <asp:Label ID="lblWelcome" runat="server" Text="Welcome to PSST, user!" Font-Size="Large"></asp:Label>
-            <asp:GridView ID="ClientData" runat="server" DataKeyNames="Client_ID" CellPadding="4" ForeColor="#333333" GridLines="None" OnSelectedIndexChanged="ClientData_SelectedIndexChanged">
+            <asp:GridView ID="ClientData" runat="server" DataKeyNames="Client_ID" CellPadding="4" ForeColor="#333333" GridLines="None" OnSelectedIndexChanged="ClientData_SelectedIndexChanged" CssClass="gridview">
                 <Columns>
-                    <asp:CommandField ShowSelectButton="True" ButtonType="Image" SelectImageUrl="~/Resources/logo.png" >
+                    <asp:CommandField ShowSelectButton="True" ButtonType="Image" SelectImageUrl="~/Resources/select.png" >
                     <ControlStyle Height="25px" />
                     </asp:CommandField>
                 </Columns>
                 <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
                 <EditRowStyle BackColor="#999999" />
-                <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
-                <HeaderStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
+                <FooterStyle BackColor="#009688" Font-Bold="True" ForeColor="White" />
+                <HeaderStyle BackColor="#009688" Font-Bold="True" ForeColor="White" />
                 <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" />
                 <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
                 <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />

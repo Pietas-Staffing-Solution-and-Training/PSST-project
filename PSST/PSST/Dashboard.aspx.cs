@@ -5,16 +5,27 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
+using System.Data.SqlClient;
+using System.IO;
+using MySql.Data.MySqlClient;
 
 namespace PSST
 {
     public partial class Dashboard : System.Web.UI.Page
     {
+        SqlConnection conn;
+        SqlDataAdapter adapter;
+        SqlCommand comm;
+        DataTable dataTable;
+        string sql;
+        int selectedID;
+        string connectionString = "Server=sql15.cpt2.host-h.net;Database=Ruans_Testing;User Id=onlingxwzp_35;Persist Security Info=True;";
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                BindGridView();
+                LoadClientData();
             }
         }
 
@@ -24,22 +35,23 @@ namespace PSST
             lblWelcome.Text = $"You selected row: {selectedRow}";
         }
 
-        private void BindGridView()
+        private void LoadClientData()
         {
-            // Create a DataTable with three columns
-            DataTable dt = new DataTable();
-            dt.Columns.Add("Client_ID");
-            dt.Columns.Add("FName");
-            dt.Columns.Add("LName");
+            string connectionString = "Server=sql15.cpt2.host-h.net;Database=Ruans_Testing;User Id=onlingxwzp_35;Password=SvJv71kTn519WDCTreS8; Persist Security Info=True;";
+            string query = "SELECT * FROM CLIENT";
 
-            // Add some sample data rows
-            dt.Rows.Add("1", "John", "Smith");
-            dt.Rows.Add("2", "Jane", "Carlisle");
-            dt.Rows.Add("3", "Joe", "Mama");
-
-            // Bind the DataTable to the GridView
-            ClientData.DataSource = dt;
-            ClientData.DataBind();
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                {
+                    conn.Open();
+                    MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+                    ClientData.DataSource = dt;
+                    ClientData.DataBind();
+                }
+            }
         }
 
         protected void ClientData_EditRow(object sender, GridViewEditEventArgs e)
