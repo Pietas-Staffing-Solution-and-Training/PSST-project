@@ -15,6 +15,15 @@ namespace PSST
     {
 
         /// <summary>
+        /// Head control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::PSST.Resources.lib.head Head;
+
+        /// <summary>
         /// form1 control.
         /// </summary>
         /// <remarks>
@@ -24,22 +33,13 @@ namespace PSST
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// topPanel control.
+        /// navigation control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel topPanel;
-
-        /// <summary>
-        /// logo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Image logo;
+        protected global::PSST.Resources.lib.navigation navigation;
 
         /// <summary>
         /// lblWelcome control.
@@ -60,12 +60,12 @@ namespace PSST
         protected global::System.Web.UI.WebControls.GridView ClientData;
 
         /// <summary>
-        /// Image1 control.
+        /// footer control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Image Image1;
+        protected global::PSST.Resources.lib.footer footer;
     }
 }

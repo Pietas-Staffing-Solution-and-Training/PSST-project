@@ -1,10 +1,22 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\MAXIE\\Documents\\GitHub\\PSST-project\\PSST\\",
+  "WorkspaceRootPath": "E:\\LearningCode\\c#\\223Project\\PSST\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{7ED9D3EB-3085-48B3-9AFE-24748DB5B69B}|PSST\\PSST.csproj|c:\\users\\maxie\\documents\\github\\psst-project\\psst\\psst\\dashboard.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
+      "AbsoluteMoniker": "D:0:0:{7ED9D3EB-3085-48B3-9AFE-24748DB5B69B}|PSST\\PSST.csproj|e:\\learningcode\\c#\\223project\\psst\\psst\\dashboard.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
       "RelativeMoniker": "D:0:0:{7ED9D3EB-3085-48B3-9AFE-24748DB5B69B}|PSST\\PSST.csproj|solutionrelative:psst\\dashboard.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7ED9D3EB-3085-48B3-9AFE-24748DB5B69B}|PSST\\PSST.csproj|e:\\learningcode\\c#\\223project\\psst\\psst\\resources\\lib\\head.ascx||{F390D63C-F7D8-4E74-AA04-57C1ECF53D4D}",
+      "RelativeMoniker": "D:0:0:{7ED9D3EB-3085-48B3-9AFE-24748DB5B69B}|PSST\\PSST.csproj|solutionrelative:psst\\resources\\lib\\head.ascx||{F390D63C-F7D8-4E74-AA04-57C1ECF53D4D}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7ED9D3EB-3085-48B3-9AFE-24748DB5B69B}|PSST\\PSST.csproj|e:\\learningcode\\c#\\223project\\psst\\psst\\resources\\lib\\footer.ascx||{F390D63C-F7D8-4E74-AA04-57C1ECF53D4D}",
+      "RelativeMoniker": "D:0:0:{7ED9D3EB-3085-48B3-9AFE-24748DB5B69B}|PSST\\PSST.csproj|solutionrelative:psst\\resources\\lib\\footer.ascx||{F390D63C-F7D8-4E74-AA04-57C1ECF53D4D}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7ED9D3EB-3085-48B3-9AFE-24748DB5B69B}|PSST\\PSST.csproj|e:\\learningcode\\c#\\223project\\psst\\psst\\resources\\lib\\navigation.ascx||{F390D63C-F7D8-4E74-AA04-57C1ECF53D4D}",
+      "RelativeMoniker": "D:0:0:{7ED9D3EB-3085-48B3-9AFE-24748DB5B69B}|PSST\\PSST.csproj|solutionrelative:psst\\resources\\lib\\navigation.ascx||{F390D63C-F7D8-4E74-AA04-57C1ECF53D4D}"
     }
   ],
   "DocumentGroupContainers": [
@@ -20,13 +32,52 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Dashboard.aspx",
-              "DocumentMoniker": "C:\\Users\\MAXIE\\Documents\\GitHub\\PSST-project\\PSST\\PSST\\Dashboard.aspx",
+              "DocumentMoniker": "E:\\LearningCode\\c#\\223Project\\PSST\\PSST\\Dashboard.aspx",
               "RelativeDocumentMoniker": "PSST\\Dashboard.aspx",
-              "ToolTip": "C:\\Users\\MAXIE\\Documents\\GitHub\\PSST-project\\PSST\\PSST\\Dashboard.aspx",
+              "ToolTip": "E:\\LearningCode\\c#\\223Project\\PSST\\PSST\\Dashboard.aspx",
               "RelativeToolTip": "PSST\\Dashboard.aspx",
               "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
-              "WhenOpened": "2024-08-12T14:51:12.341Z",
+              "WhenOpened": "2024-08-14T15:07:30.34Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "navigation.ascx",
+              "DocumentMoniker": "E:\\LearningCode\\c#\\223Project\\PSST\\PSST\\Resources\\lib\\navigation.ascx",
+              "RelativeDocumentMoniker": "PSST\\Resources\\lib\\navigation.ascx",
+              "ToolTip": "E:\\LearningCode\\c#\\223Project\\PSST\\PSST\\Resources\\lib\\navigation.ascx",
+              "RelativeToolTip": "PSST\\Resources\\lib\\navigation.ascx",
+              "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003302|",
+              "WhenOpened": "2024-08-14T15:07:26.814Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "footer.ascx",
+              "DocumentMoniker": "E:\\LearningCode\\c#\\223Project\\PSST\\PSST\\Resources\\lib\\footer.ascx",
+              "RelativeDocumentMoniker": "PSST\\Resources\\lib\\footer.ascx",
+              "ToolTip": "E:\\LearningCode\\c#\\223Project\\PSST\\PSST\\Resources\\lib\\footer.ascx",
+              "RelativeToolTip": "PSST\\Resources\\lib\\footer.ascx",
+              "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003302|",
+              "WhenOpened": "2024-08-14T15:07:17.087Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "head.ascx",
+              "DocumentMoniker": "E:\\LearningCode\\c#\\223Project\\PSST\\PSST\\Resources\\lib\\head.ascx",
+              "RelativeDocumentMoniker": "PSST\\Resources\\lib\\head.ascx",
+              "ToolTip": "E:\\LearningCode\\c#\\223Project\\PSST\\PSST\\Resources\\lib\\head.ascx",
+              "RelativeToolTip": "PSST\\Resources\\lib\\head.ascx",
+              "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003302|",
+              "WhenOpened": "2024-08-14T15:07:01.491Z",
               "EditorCaption": ""
             }
           ]
