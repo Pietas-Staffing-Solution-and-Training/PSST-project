@@ -15,13 +15,13 @@ namespace PSST
     {
 
         /// <summary>
-        /// Head control.
+        /// head control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::PSST.Resources.lib.head Head;
+        protected global::PSST.Resources.lib.head head;
 
         /// <summary>
         /// navigation control.
