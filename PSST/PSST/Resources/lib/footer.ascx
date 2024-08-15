@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="footer.ascx.cs" Inherits="PSST.Resources.lib.footer" %>
 
  <!-- Footer -->
- <footer class="page-footer teal">
+ <footer class="page-footer">
      <div class="container">
        <div class="row">
          <div class="col l3 s12" style="height: 150px;">
@@ -16,10 +16,10 @@
          <div class="col l3 s12">
            <h5 class="white-text">Navigation</h5>
            <ul>
-             <li><a class="white-text" href="/Clients.aspx">Clients</a></li>
-             <li><a class="white-text" href="/Jobs.aspx">Jobs</a></li>
-             <li><a class="white-text" href="/Resources.aspx">Resources</a></li>
-             <li><a class="white-text" href="#">Help/Documentation</a></li>
+             <li><a class="footer-link" href="/Clients.aspx">Clients</a></li>
+             <li><a class="footer-link" href="/Jobs.aspx">Jobs</a></li>
+             <li><a class="footer-link" href="/Resources.aspx">Resources</a></li>
+             <li><a class="footer-link" href="#">Help/Documentation</a></li>
            </ul>
          </div>
        </div>
