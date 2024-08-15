@@ -46,6 +46,10 @@
                         </div>
 
                         <div>
+                            <asp:Label ID="lblLoginFailed" runat="server" Text="Login failed, please try again or contact &lt;a href=&quot;mailto:admin@psst.co.za&quot;&gt;admin&lt;/a&gt; for assistance." Visible="False"></asp:Label>
+                        </div>
+
+                        <div>
                             <asp:Button ID="btnLogin" runat="server" Text="Login" OnClick="btnLogin_Click" />
                         </div>
                     </div>

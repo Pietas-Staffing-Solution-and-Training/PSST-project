@@ -114,6 +114,7 @@
     <Compile Include="Resources\lib\navigation.ascx.designer.cs">
       <DependentUpon>navigation.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Resources\lib\security.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

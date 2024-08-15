@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PSST.Resources.lib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -17,19 +18,15 @@ namespace PSST
 
         protected void valUsername_ServerValidate(object source, ServerValidateEventArgs args)
         {
-
-            //Get input from user
+            //Get user input
             string userInput = args.Value;
-            string regexForEmail = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
 
-            //check that input contains a string
-            if ( stringIsEmpty(userInput)) {
-                args.IsValid = false;
-                return;
-            }
+            //Create instance of security class
+            security usernameVal = new security();
 
-            //Check if the input is an email
-            if ( Regex.IsMatch( userInput, regexForEmail ) ) {
+            //Check if email is valid
+            if ( usernameVal.isValidEmailAddress( userInput ) )
+            {
                 args.IsValid = true;
             } else
             {
@@ -41,22 +38,18 @@ namespace PSST
 
         protected void CustomValidator1_ServerValidate(object source, ServerValidateEventArgs args)
         {
-            //Get input from user
+            //Get user input
             string userInput = args.Value;
-            string regexForPasswordVal = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$";
 
-            //Check that password has input
-            if (stringIsEmpty(userInput))
-            {
-                args.IsValid = false;
-                return;
-            }
+            //Create instance of security class
+            security passwordVal = new security();
 
-            //check that password matches requirements
-            if ( Regex.IsMatch( userInput, regexForPasswordVal ) )
+            //Check if email is valid
+            if (passwordVal.isValidEmailAddress(userInput))
             {
                 args.IsValid = true;
-            } else
+            }
+            else
             {
                 args.IsValid = false;
                 return;
@@ -66,6 +59,24 @@ namespace PSST
 
         protected void btnLogin_Click(object sender, EventArgs e)
         {
+
+            //Get data from user
+            string username = tbUsername.Text;
+            string password = tbPassword.Text;
+
+            //check if emtpy - redundant - CODE SHOULD NOT REACH HERE IF ITS EMPTY
+            if ( stringIsEmpty(username) || stringIsEmpty(password) )
+            {
+                return;
+            }
+
+            //Create instance of security class
+            security encryptPass = new security();
+
+            //Encrypt password
+            string encryptedPassword = encryptPass.encrypt(password);
+
+            
 
         }
 
