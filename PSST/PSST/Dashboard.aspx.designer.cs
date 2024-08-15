@@ -42,6 +42,15 @@ namespace PSST
         protected global::PSST.Resources.lib.navigation navigation;
 
         /// <summary>
+        /// imgLogo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image imgLogo;
+
+        /// <summary>
         /// lblWelcome control.
         /// </summary>
         /// <remarks>
@@ -51,13 +60,49 @@ namespace PSST
         protected global::System.Web.UI.WebControls.Label lblWelcome;
 
         /// <summary>
-        /// ClientData control.
+        /// lblIntro control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView ClientData;
+        protected global::System.Web.UI.WebControls.Label lblIntro;
+
+        /// <summary>
+        /// btnClients control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnClients;
+
+        /// <summary>
+        /// btnJobs control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnJobs;
+
+        /// <summary>
+        /// btnResources control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnResources;
+
+        /// <summary>
+        /// lblExplain control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblExplain;
 
         /// <summary>
         /// footer control.
