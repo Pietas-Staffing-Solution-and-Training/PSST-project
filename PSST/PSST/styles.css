@@ -14,21 +14,34 @@
   flex: 1;
 }
 
+.footer-copyright {
+  text-align: center;
+}
+
+.footer-link {
+  cursor: pointer;
+  color: white;
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+}
+
 #form1 {
-    display: flex;
-    flex-direction: column;
-    flex: 1; /* Make form1 flexible */
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* Make form1 flexible */
 }
 
 html, body {
-    height: 100%; /* Ensure html and body take up full viewport height */
-    margin: 0;    /* Remove default margin */
+  height: 100%; /* Ensure html and body take up full viewport height */
+  margin: 0;    /* Remove default margin */
 }
 
 body {
-    display: flex !important;
-    flex-direction: column;
-    margin: 0; /* Remove default margin */
+  display: flex !important;
+  flex-direction: column;
+  margin: 0; /* Remove default margin */
 }
 
 .logo {
@@ -3004,7 +3017,7 @@ ul.staggered-list li {
   padding-top: 20px;
   margin-top: 50px;
   color: #fff;
-  background-color: #ee6e73;
+  background-color: #009688;
 }
 
 .page-footer .footer-copyright {
