@@ -9,9 +9,7 @@
 <uc:head runat="server" id="Head" />
 <body>
     <form id="form1" runat="server">
-
         <uc:navigation runat="server" id="navigation" />
-
         <!-- Body -->
         <div class="main-div">
             <asp:Label ID="lblWelcome" runat="server" Text="Welcome to PSST, user!" Font-Size="Large"></asp:Label>
@@ -34,9 +32,7 @@
                 <SortedDescendingHeaderStyle BackColor="#6F8DAE" />
             </asp:GridView>
         </div>
-       
         <uc:footer runat="server" id="footer" />
-
     </form>
 </body>
 </html>
