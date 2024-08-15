@@ -8,10 +8,10 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <uc:Head runat="server" ID="head" />
-<uc:navigation runat="server" ID="navigation" />
 <body>
 
     <form id="login" runat="server">
+        <uc:navigation runat="server" ID="navigation" />
         <div class="container">
 
             <div class="row">
@@ -25,7 +25,8 @@
 
                         <div>
                             <div>
-                                <h6>Please enter your username
+                                <h6>
+                                    Please enter your username
                                 </h6>
                             </div>
                             <div>
@@ -36,7 +37,8 @@
 
                         <div>
                             <div>
-                                <h6>Please enter your password
+                                <h6>
+                                    Please enter your password
                                 </h6>
                             </div>
                             <div>

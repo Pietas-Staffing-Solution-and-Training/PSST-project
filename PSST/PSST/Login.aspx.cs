@@ -76,7 +76,8 @@ namespace PSST
             //Encrypt password
             string encryptedPassword = encryptPass.encrypt(password);
 
-            
+            lblLoginFailed.Visible = true;
+            lblLoginFailed.Text = encryptedPassword;
 
         }
 
