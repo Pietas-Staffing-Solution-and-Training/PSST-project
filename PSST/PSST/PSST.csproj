@@ -68,11 +68,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Dashboard.aspx" />
+    <Content Include="Login.aspx" />
     <Content Include="Resources\lib\footer.ascx" />
     <Content Include="Resources\lib\head.ascx" />
     <Content Include="Resources\lib\navigation.ascx" />
     <Content Include="Resources\logo.png" />
     <Content Include="Resources\logo_landscape.png" />
+    <Content Include="styles.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -83,21 +85,31 @@
     <Compile Include="Dashboard.aspx.designer.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\lib\footer.ascx.cs">
       <DependentUpon>footer.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Resources\lib\footer.ascx.designer.cs">
       <DependentUpon>footer.ascx</DependentUpon>
     </Compile>
     <Compile Include="Resources\lib\head.ascx.cs">
       <DependentUpon>head.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Resources\lib\head.ascx.designer.cs">
       <DependentUpon>head.ascx</DependentUpon>
     </Compile>
     <Compile Include="Resources\lib\navigation.ascx.cs">
       <DependentUpon>navigation.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Resources\lib\navigation.ascx.designer.cs">
       <DependentUpon>navigation.ascx</DependentUpon>
