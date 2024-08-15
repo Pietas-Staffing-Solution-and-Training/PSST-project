@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<uc:Head runat="server" id="Head" />
+<uc:head runat="server" id="Head" />
 <body>
     <form id="form1" runat="server">
         <uc:navigation runat="server" id="navigation" />
