@@ -132,10 +132,13 @@ namespace PSST
                 int id = Convert.ToInt32(ResourceData.DataKeys[e.RowIndex].Value);
                 string name = ((TextBox)row.Cells[4].Controls[0]).Text;
                 string surname = ((TextBox)row.Cells[5].Controls[0]).Text;
+                string number = ((TextBox)row.Cells[6].Controls[0]).Text;
+                string wage = ((TextBox)row.Cells[7].Controls[0]).Text;
+                string competencies = ((TextBox)row.Cells[8].Controls[0]).Text;
 
                 lblWelcome.Text = id + " " + name + " " + surname;
 
-                //UpdateRecord(id, surname, age);
+                updateRecord(id, name, surname, number, wage, competencies );
 
                 ResourceData.EditIndex = -1;
                 BindGridView();
@@ -186,6 +189,44 @@ namespace PSST
                 lblWelcome.Text = ex.Message;
             }
 
+        }
+
+        protected void updateRecord(int id, string name, string surname, string number, string wage, string competencies)
+        {
+            string query = @"UPDATE RESOURCE SET FName = @FName, LName = @LName, Phone_Num = @PhoneNum, Wage = @Wage, Competencies = @Competencies WHERE Resource_ID = @ResourceID";
+
+            try
+            {
+                using (con = new MySqlConnection(connectionString))
+                {
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(query, con);
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, con))
+                    {
+                        cmd.Parameters.AddWithValue("@FName", name);
+                        cmd.Parameters.AddWithValue("@LName", surname);
+                        cmd.Parameters.AddWithValue("@PhoneNum", number);
+                        cmd.Parameters.AddWithValue("@Wage", wage);
+                        cmd.Parameters.AddWithValue("@Competencies", competencies);
+                        cmd.Parameters.AddWithValue("@ResourceID", id);
+
+                        con.Open();
+                        int rowsAffected = cmd.ExecuteNonQuery();
+
+
+                        adapter.UpdateCommand = cmd;
+                        adapter.UpdateCommand.ExecuteNonQuery();
+
+                        con.Close();
+
+                        BindGridView();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lblWelcome.Text = ex.Message;
+            }
         }
     }
 }
