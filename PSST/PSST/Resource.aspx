@@ -12,12 +12,23 @@
     <form id="resource" runat="server">
         <uc:navigation runat="server" id="navigation" />
         <!-- Body -->
+        
+         
        <div class="main-div">
-            <asp:Label ID="lblWelcome" runat="server" Text="Welcome to PSST, user!" Font-Size="Large"></asp:Label>
-            <asp:GridView ID="ResourceData" runat="server" DataKeyNames="Resource ID" CellPadding="4" ForeColor="#333333" GridLines="None" OnSelectedIndexChanged="ResourceData_SelectedIndexChanged"   OnRowDeleting="ResourceData_RowDeleting" OnRowEditing="ResourceData_RowEditing" OnRowCancelingEdit="ResourceData_RowCancelingEdit" OnRowUpdating="ResourceData_RowUpdating">
+           <asp:Label ID="lblWelcome" runat="server" Text="Welcome to PSST, user!" Font-Size="Large"></asp:Label>
+           <div class="content-container">
+           <asp:TextBox ID="txtSearch" runat="server" CssClass="search-box" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Search" Placeholder="Search" AutoPostBack="True" OnTextChanged="txtSearch_TextChanged"></asp:TextBox>
+             </div>
+           <div class="scrollable-gridview">
+            <asp:GridView ID="ResourceData" runat="server" DataKeyNames="Resource_ID" 
+                          CellPadding="4" ForeColor="#333333" GridLines="None" 
+                          OnSelectedIndexChanged="ResourceData_SelectedIndexChanged"   
+                          OnRowDeleting="ResourceData_RowDeleting" OnRowEditing="ResourceData_RowEditing" 
+                          OnRowCancelingEdit="ResourceData_RowCancelingEdit" OnRowUpdating="ResourceData_RowUpdating" 
+                          Width="100%" AllowPaging="False">
                 <Columns>
                    
-                    <asp:CommandField ShowSelectButton="True" ButtonType="Image" SelectImageUrl="~/Resources/Icons/check - reussy.png" >
+                    <asp:CommandField ShowSelectButton="True" ButtonType="Image" SelectImageUrl="~/Resources/Icons/invoice - thoseicons.png" >
                     <ControlStyle Height="20px" />
                     </asp:CommandField>
                     <asp:CommandField ButtonType="Image" EditImageUrl="~/Resources/Icons/edit - pixelperfect.png" ShowEditButton="True" CancelImageUrl="~/Resources/Icons/cancel - gregorcresnar.png" UpdateImageUrl="~/Resources/Icons/confirm - roundicons.png" >
@@ -39,8 +50,9 @@
                 <SortedDescendingCellStyle BackColor="#FFFDF8" />
                 <SortedDescendingHeaderStyle BackColor="#6F8DAE" />
             </asp:GridView>
-        </div>
-         <!--OnRowCommand="ResourceData_RowCommand" OnRowDataBound="ResourceData_RowDataBound"-->
+               </div>
+            </div>
+       
         <!-- Footer -->
         <uc:footer runat="server" id="footer" />
     </form>

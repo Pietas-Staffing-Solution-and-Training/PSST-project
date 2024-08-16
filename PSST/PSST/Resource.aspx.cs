@@ -3,11 +3,17 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 using System;
+using System.Data.SqlClient;
+using System.Configuration;
+using MySql.Data.MySqlClient;
+using System.Drawing;
 
 namespace PSST
 {
     public partial class Resource : System.Web.UI.Page
     {
+        MySqlConnection con;
+        string connectionString = ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -19,25 +25,54 @@ namespace PSST
         protected void ResourceData_SelectedIndexChanged(object sender, EventArgs e)
         {
             int selectedRow = ResourceData.SelectedIndex;
-            lblWelcome.Text = $"You selected row: {selectedRow}";
+            GridViewRow row = ResourceData.Rows[selectedRow];
+
+            int id = Convert.ToInt32(row.Cells[3].Text);
+            lblWelcome.Text = $"You selected row: {selectedRow} + {id}";
+
+            //In Jobs.aspx when making the invoice: 
+
+            //Response.Redirect("Invoice.aspx?value=" + id);
+            // then in invoice Page_Load you do the following:
+            // string JobId = Request.QueryString[value];
+
+            //OR using a session
+
+            //Session["JobId"] = id;
+            //Response.Redirect("Invoice.aspx)
+            // then in invoice Page_Load you do the following:
+            // string JobId = Session["JobID"] as string;
         }
 
         private void BindGridView()
         {
             // Create a DataTable with three columns
-            DataTable dt = new DataTable();
-            dt.Columns.Add("Resource ID");
-            dt.Columns.Add("First Name");
-            dt.Columns.Add("Last Name");
 
-            // Add some sample data rows
-            dt.Rows.Add("1", "John", "Smith");
-            dt.Rows.Add("2", "Jane", "Carlisle");
-            dt.Rows.Add("3", "Joe", "Mama");
+            
+            string query = "SELECT Resource_ID, FName, LName, Phone_Num, Wage, Competencies FROM RESOURCE";
+
+            try
+            {
+                using (con = new MySqlConnection(connectionString))
+                {
+                   con.Open();
+
+                    MySqlDataAdapter da = new MySqlDataAdapter(query, con);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+
+                    ResourceData.DataSource = dt;
+                    ResourceData.DataBind();
+
+                    con.Close();
+                }
+            } catch (Exception ex)
+            {
+                lblWelcome.Text = ex.Message;
+            }
 
             // Bind the DataTable to the GridView
-            ResourceData.DataSource = dt;
-            ResourceData.DataBind();
+            
         }
 
                     //Adding tooltips but messed a bit with the button clicks
@@ -114,6 +149,43 @@ namespace PSST
         {
             ResourceData.EditIndex = -1;  
             BindGridView();  
+        }
+
+        protected void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+
+            string search = txtSearch.Text;
+            lblWelcome.Text = search;
+
+           
+
+            string query = $"SELECT Resource_ID, FName, LName, Phone_Num, Wage, Competencies FROM RESOURCE WHERE Resource_ID LIKE @SearchTerm OR FName LIKE @SearchTerm OR LName LIKE @SearchTerm OR Phone_Num LIKE @SearchTerm OR Wage LIKE @SearchTerm OR Competencies LIKE @SearchTerm";
+
+            try
+            {
+                using (con = new MySqlConnection(connectionString))
+                {
+                   
+
+                    MySqlCommand cmd = new MySqlCommand(query, con);
+                    cmd.Parameters.AddWithValue("@SearchTerm", "%" + search + "%");
+
+                    MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+
+                    ResourceData.DataSource = dt;
+                    ResourceData.DataBind();
+
+                   
+
+                }
+            }
+            catch (Exception ex)
+            {
+                lblWelcome.Text = ex.Message;
+            }
+
         }
     }
 }
