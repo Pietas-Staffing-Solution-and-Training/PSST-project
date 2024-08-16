@@ -1,0 +1,277 @@
+﻿using System;
+using System.Data.SqlClient;
+using System.IO;
+using System.Web.UI;
+using QuestPDF.Drawing;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
+using MySql.Data.MySqlClient;
+using System.Configuration;
+
+namespace invoices_last_run
+{
+    public partial class invoiceForm : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            QuestPDF.Settings.License = LicenseType.Community;
+
+            if (!IsPostBack)
+            {
+                //intiliasie components 
+            }
+        }
+        protected void ClearTempFolder()
+        {
+            string tempFolderPath = Server.MapPath("~/TempInvoicePDFs");
+
+            if (Directory.Exists(tempFolderPath))
+            {
+                try
+                {
+                    var files = Directory.GetFiles(tempFolderPath);
+
+                    foreach (var file in files)
+                    {
+                        File.Delete(file);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error clearing temp folder: {ex.Message}");
+                }
+            }
+        }
+
+        private void GeneratePDF(string action)
+        {
+//Initialise variables
+            int jobId = 1; // Example Job_ID
+            string connectionString = ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString; //Connection string
+
+            //job variables
+            string invoiceNumber = string.Empty;
+            string jobDescription = string.Empty;
+            decimal jobBudget = 0;
+            string invoiceComments = string.Empty;
+
+            //resource variables
+            string resourceName = string.Empty;
+            decimal wage = 0;
+            int hoursWorked = 0;
+
+            //sender information variables (PSST-hard code example data)
+            string senderName = "PSST";//string.Empty;
+            string senderAddress = "Civic Centre, 12 Hertzog Boulevard, Cape Town";//string.Empty;
+            string senderPhone = "0860 103 089";//string.Empty;
+            string senderEmail = "PSST@outlook.co.za";//string.Empty;
+
+            //client infromation variables
+            string clientName = string.Empty;
+            string clientAddress = string.Empty;
+            string clientPhone = string.Empty;
+            string clientEmail = string.Empty;
+
+            //Set issue and due date
+            DateTime issueDate = DateTime.Now;
+            DateTime dueDate = issueDate.AddDays(31);
+
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+//Fetch and set all information for invoice
+                    connection.Open();
+
+                    // SQL Query to get invoice-related details
+                    string query = @"
+                        SELECT 
+                            J.Description,
+                            J.Budget,
+                            CONCAT(R.FName, ' ', R.LName) AS ResourceName,
+                            R.Wage,
+                            I.Hours_Worked,
+                            I.Invoice_Num,
+                            CONCAT(C.FName, ' ', C.LName) AS ClientName,
+                            C.Address,
+                            C.Phone_Num,
+                            C.Email
+                        FROM JOB J
+                        JOIN RESOURCE R ON J.Resource_ID = R.Resource_ID
+                        JOIN CLIENT C ON J.Client_ID = C.Client_ID
+                        JOIN INVOICE I ON J.Job_ID = I.Job_ID
+                        WHERE J.Job_ID = @JobID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@JobID", jobId);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                // Retrieve the data
+                                invoiceNumber = reader["Invoice_Num"].ToString();
+                                jobDescription = reader["Description"].ToString();
+                                jobBudget = Convert.ToDecimal(reader["Buget"]);
+
+                                resourceName = reader["ResourceName"].ToString();
+                                wage = Convert.ToDecimal(reader["Wage"]);
+                                hoursWorked = Convert.ToInt32(reader["Hours_Worked"]);
+
+                                clientName = reader["ClientName"].ToString();
+                                clientAddress = reader["Address"].ToString();
+                                clientPhone = reader["Phone_Num"].ToString();
+                                clientEmail = reader["Email"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex) { Console.WriteLine(ex);}
+
+            //Calculate pay based on wage
+            decimal expectedPay = wage * hoursWorked;
+
+            //Check whether job is over budget
+            if (expectedPay > jobBudget)
+                invoiceComments += "NB: Expected pay exceeds job budget.";
+
+
+
+
+            string fileName = $"invoice_{Guid.NewGuid()}.pdf";
+            string filePath = Server.MapPath($"~/Resources/TempInvoicePDFs/{fileName}");
+
+            using (FileStream fs = new FileStream(filePath, FileMode.Create))
+            {
+                Document.Create(container =>
+                {
+                    container.Page(page =>
+                    {
+                        // Page setup
+                        page.Size(PageSizes.A4);
+                        page.Margin(2, QuestPDF.Infrastructure.Unit.Centimetre);
+                        page.PageColor(Colors.White);
+                        page.DefaultTextStyle(x => x.FontSize(11));
+
+                        // Invoice Header
+                        page.Header().Column(column =>
+                        {
+                            column.Item().Text($"Invoice #{invoiceNumber}")
+                                .SemiBold().FontSize(24).FontColor(Colors.Black);
+                            column.Item().Text($"Issue Date: {issueDate:MMMM dd, yyyy}");
+                            column.Item().Text($"Due Date: {dueDate:MMMM dd, yyyy}");
+                        });
+
+                        //Combine all content into a single Content() call
+                        page.Content().PaddingVertical(20).Column(column =>
+                        {
+                            //Sender and Client Information
+                            column.Item().Row(row =>
+                            {
+                                row.RelativeItem().Column(innerColumn =>
+                                {
+                                    innerColumn.Item().Text("From:").Bold();
+                                    innerColumn.Item().Text(senderName);
+                                    innerColumn.Item().Text(senderAddress);
+                                    innerColumn.Item().Text(senderPhone);
+                                    innerColumn.Item().Text(senderEmail);
+                                });
+
+                                row.RelativeItem().Column(innerColumn =>
+                                {
+                                    innerColumn.Item().Text("To:").Bold();
+                                    innerColumn.Item().Text(clientName);
+                                    innerColumn.Item().Text(clientAddress);
+                                    innerColumn.Item().Text(clientPhone);
+                                    innerColumn.Item().Text(clientEmail);
+                                });
+                            });
+
+                            //Add spacing between sections
+                            column.Item().PaddingVertical(20);
+
+                            //Resource Details (Wage, Hours, Calculation)
+                            column.Item().Table(table =>
+                            {
+                                table.ColumnsDefinition(columns =>
+                                {
+                                    columns.RelativeColumn();
+                                    columns.RelativeColumn();
+                                    columns.RelativeColumn();
+                                    columns.RelativeColumn();
+                                });
+
+                                //Header row
+                                table.Header(header =>
+                                {
+                                    header.Cell().Element(x => x.Padding(5).BorderBottom(1).BorderColor(Colors.Grey.Lighten2))
+                                        .Text("Resource");
+                                    header.Cell().Element(x => x.Padding(5).BorderBottom(1).BorderColor(Colors.Grey.Lighten2))
+                                        .Text("Hourly Rate");
+                                    header.Cell().Element(x => x.Padding(5).BorderBottom(1).BorderColor(Colors.Grey.Lighten2))
+                                        .Text("Hours Worked");
+                                    header.Cell().Element(x => x.Padding(5).BorderBottom(1).BorderColor(Colors.Grey.Lighten2))
+                                        .Text("Total Pay");
+                                });
+
+                                //Resource data row
+                                table.Cell().Element(x => x.Padding(5).BorderBottom(1).BorderColor(Colors.Grey.Lighten2))
+                                    .Text(resourceName);
+                                table.Cell().Element(x => x.Padding(5).BorderBottom(1).BorderColor(Colors.Grey.Lighten2))
+                                    .Text($"{wage:C}");
+                                table.Cell().Element(x => x.Padding(5).BorderBottom(1).BorderColor(Colors.Grey.Lighten2))
+                                    .Text(hoursWorked.ToString());
+                                table.Cell().Element(x => x.Padding(5).BorderBottom(1).BorderColor(Colors.Grey.Lighten2))
+                                    .Text($"{expectedPay:C}");
+
+                                //Comments section
+                                column.Item().PaddingVertical(150);
+                                column.Item().Background(Colors.Grey.Lighten3).Padding(10).Column(commentColumn =>
+                                {
+                                    commentColumn.Item().Text("Comments").Bold();
+                                    commentColumn.Item().PaddingTop(5).Text(invoiceComments);
+                                });
+                            });
+                        });
+
+                        //Invoice Footer
+                        page.Footer().AlignCenter().Text(x =>
+                        {
+                            x.Span("Page ");
+                            x.CurrentPageNumber();
+                        });
+                    });
+                })
+                .GeneratePdf(fs);
+            }
+
+            if (action == "preview")
+            {
+                //Preview the PDF in the iframe
+                pdfPreview.Src = $"/Resources/TempInvoicePDFs/{fileName}";
+                pdfPreview.Attributes["style"] = "display:block;";
+            }
+            else if (action == "download")
+            {
+                //Download PDF
+                Response.ContentType = "application/pdf";
+                Response.AddHeader("Content-Disposition", $"attachment; filename=invoice.pdf");
+                Response.TransmitFile(filePath);
+                Response.End();
+            }
+        }
+
+        protected void btnPreview_Click(object sender, EventArgs e)
+        {
+            GeneratePDF("preview");
+        }
+
+        protected void btnDownload_Click(object sender, EventArgs e)
+        {
+            GeneratePDF("download");
+        }
+    }
+}
