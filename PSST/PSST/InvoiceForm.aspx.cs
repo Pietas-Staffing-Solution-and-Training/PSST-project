@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Data.SqlClient;
 using System.IO;
-using System.Web.UI;
-using QuestPDF.Drawing;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
@@ -19,12 +16,13 @@ namespace invoices_last_run
 
             if (!IsPostBack)
             {
+                ClearTempFolder();
                 GeneratePDF("preview");
             }
         }
         protected void ClearTempFolder()
         {
-            string tempFolderPath = Server.MapPath("~/TempInvoicePDFs");
+            string tempFolderPath = Server.MapPath("~/Resources/TempInvoicePDFs");
 
             if (Directory.Exists(tempFolderPath))
             {
@@ -59,8 +57,8 @@ namespace invoices_last_run
             decimal wage = 0;
             int hoursWorked = 0;
 
-            string senderName = "PSST";//string.Empty;
-            string senderAddress = "Civic Centre, 12 Hertzog Boulevard, Cape Town";//string.Empty;
+            string senderName = "Pietas Staffing Solutions and Training";//string.Empty;
+            string senderAddress = "Civic Centre, 12 Horz Street, Cape Town";//string.Empty;
             string senderPhone = "0860 103 089";//string.Empty;
             string senderEmail = "PSST@outlook.co.za";//string.Empty;
 
@@ -107,7 +105,7 @@ namespace invoices_last_run
                             {
                                 invoiceNumber = reader["Invoice_Num"].ToString();
                                 jobDescription = reader["Description"].ToString();
-                                jobBudget = Convert.ToDecimal(reader["Buget"]);
+                                jobBudget = Convert.ToDecimal(reader["Budget"]);
 
                                 resourceName = reader["ResourceName"].ToString();
                                 wage = Convert.ToDecimal(reader["Wage"]);
