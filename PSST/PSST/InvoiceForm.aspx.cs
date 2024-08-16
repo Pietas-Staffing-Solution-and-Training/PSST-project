@@ -19,7 +19,7 @@ namespace invoices_last_run
 
             if (!IsPostBack)
             {
-                //intiliasie components 
+                GeneratePDF("preview");
             }
         }
         protected void ClearTempFolder()
@@ -46,34 +46,29 @@ namespace invoices_last_run
 
         private void GeneratePDF(string action)
         {
-//Initialise variables
+            //Initialise variables
             int jobId = 1; // Example Job_ID
-            string connectionString = ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString; //Connection string
+            string connectionString = ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString; 
 
-            //job variables
             string invoiceNumber = string.Empty;
             string jobDescription = string.Empty;
             decimal jobBudget = 0;
             string invoiceComments = string.Empty;
 
-            //resource variables
             string resourceName = string.Empty;
             decimal wage = 0;
             int hoursWorked = 0;
 
-            //sender information variables (PSST-hard code example data)
             string senderName = "PSST";//string.Empty;
             string senderAddress = "Civic Centre, 12 Hertzog Boulevard, Cape Town";//string.Empty;
             string senderPhone = "0860 103 089";//string.Empty;
             string senderEmail = "PSST@outlook.co.za";//string.Empty;
 
-            //client infromation variables
             string clientName = string.Empty;
             string clientAddress = string.Empty;
             string clientPhone = string.Empty;
             string clientEmail = string.Empty;
 
-            //Set issue and due date
             DateTime issueDate = DateTime.Now;
             DateTime dueDate = issueDate.AddDays(31);
 
@@ -81,10 +76,9 @@ namespace invoices_last_run
             {
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
-//Fetch and set all information for invoice
+                    //Fetch and set all information for invoice
                     connection.Open();
 
-                    // SQL Query to get invoice-related details
                     string query = @"
                         SELECT 
                             J.Description,
@@ -111,7 +105,6 @@ namespace invoices_last_run
                         {
                             if (reader.Read())
                             {
-                                // Retrieve the data
                                 invoiceNumber = reader["Invoice_Num"].ToString();
                                 jobDescription = reader["Description"].ToString();
                                 jobBudget = Convert.ToDecimal(reader["Buget"]);
@@ -131,15 +124,10 @@ namespace invoices_last_run
             }
             catch (Exception ex) { Console.WriteLine(ex);}
 
-            //Calculate pay based on wage
             decimal expectedPay = wage * hoursWorked;
 
-            //Check whether job is over budget
             if (expectedPay > jobBudget)
                 invoiceComments += "NB: Expected pay exceeds job budget.";
-
-
-
 
             string fileName = $"invoice_{Guid.NewGuid()}.pdf";
             string filePath = Server.MapPath($"~/Resources/TempInvoicePDFs/{fileName}");
@@ -150,13 +138,11 @@ namespace invoices_last_run
                 {
                     container.Page(page =>
                     {
-                        // Page setup
                         page.Size(PageSizes.A4);
                         page.Margin(2, QuestPDF.Infrastructure.Unit.Centimetre);
                         page.PageColor(Colors.White);
                         page.DefaultTextStyle(x => x.FontSize(11));
 
-                        // Invoice Header
                         page.Header().Column(column =>
                         {
                             column.Item().Text($"Invoice #{invoiceNumber}")
@@ -165,10 +151,8 @@ namespace invoices_last_run
                             column.Item().Text($"Due Date: {dueDate:MMMM dd, yyyy}");
                         });
 
-                        //Combine all content into a single Content() call
                         page.Content().PaddingVertical(20).Column(column =>
                         {
-                            //Sender and Client Information
                             column.Item().Row(row =>
                             {
                                 row.RelativeItem().Column(innerColumn =>
@@ -190,10 +174,8 @@ namespace invoices_last_run
                                 });
                             });
 
-                            //Add spacing between sections
                             column.Item().PaddingVertical(20);
 
-                            //Resource Details (Wage, Hours, Calculation)
                             column.Item().Table(table =>
                             {
                                 table.ColumnsDefinition(columns =>
@@ -204,7 +186,6 @@ namespace invoices_last_run
                                     columns.RelativeColumn();
                                 });
 
-                                //Header row
                                 table.Header(header =>
                                 {
                                     header.Cell().Element(x => x.Padding(5).BorderBottom(1).BorderColor(Colors.Grey.Lighten2))
@@ -217,7 +198,6 @@ namespace invoices_last_run
                                         .Text("Total Pay");
                                 });
 
-                                //Resource data row
                                 table.Cell().Element(x => x.Padding(5).BorderBottom(1).BorderColor(Colors.Grey.Lighten2))
                                     .Text(resourceName);
                                 table.Cell().Element(x => x.Padding(5).BorderBottom(1).BorderColor(Colors.Grey.Lighten2))
@@ -227,7 +207,6 @@ namespace invoices_last_run
                                 table.Cell().Element(x => x.Padding(5).BorderBottom(1).BorderColor(Colors.Grey.Lighten2))
                                     .Text($"{expectedPay:C}");
 
-                                //Comments section
                                 column.Item().PaddingVertical(150);
                                 column.Item().Background(Colors.Grey.Lighten3).Padding(10).Column(commentColumn =>
                                 {
@@ -237,7 +216,6 @@ namespace invoices_last_run
                             });
                         });
 
-                        //Invoice Footer
                         page.Footer().AlignCenter().Text(x =>
                         {
                             x.Span("Page ");
@@ -250,23 +228,16 @@ namespace invoices_last_run
 
             if (action == "preview")
             {
-                //Preview the PDF in the iframe
                 pdfPreview.Src = $"/Resources/TempInvoicePDFs/{fileName}";
                 pdfPreview.Attributes["style"] = "display:block;";
             }
             else if (action == "download")
             {
-                //Download PDF
                 Response.ContentType = "application/pdf";
                 Response.AddHeader("Content-Disposition", $"attachment; filename=invoice.pdf");
                 Response.TransmitFile(filePath);
                 Response.End();
             }
-        }
-
-        protected void btnPreview_Click(object sender, EventArgs e)
-        {
-            GeneratePDF("preview");
         }
 
         protected void btnDownload_Click(object sender, EventArgs e)
