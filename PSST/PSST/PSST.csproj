@@ -90,7 +90,6 @@
     </Compile>
 	  <Compile Include="Login.aspx.cs">
 		  <DependentUpon>Login.aspx</DependentUpon>
-			  <DependentUpon>Resource.aspx</DependentUpon>
 			  <SubType>ASPXCodeBehind</SubType>
 		  </Compile>
     <Compile Include="Dashboard.aspx.designer.cs">
