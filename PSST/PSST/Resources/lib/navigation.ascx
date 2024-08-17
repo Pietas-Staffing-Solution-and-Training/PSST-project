@@ -12,7 +12,7 @@
                 <li><a href="/Dashboard.aspx">Dashboard</a></li>
                 <li><a href="/Clients.aspx">Clients</a></li>
                 <li><a href="/Jobs.aspx">Jobs</a></li>
-                <li><a href="/Resources.aspx">Resources</a></li>
+                <li><a href="/Resource.aspx">Resources</a></li>
                 <li><a href="#">Logout</a></li>
               </ul>
             </div>
