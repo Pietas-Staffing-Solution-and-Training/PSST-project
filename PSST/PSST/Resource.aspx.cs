@@ -3,7 +3,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 using System;
-using System.Data.SqlClient;
 using System.Configuration;
 using MySql.Data.MySqlClient;
 using System.Drawing;
@@ -110,8 +109,7 @@ namespace PSST
         {
             int id = Convert.ToInt32(ResourceData.DataKeys[e.RowIndex].Value);
 
-            
-            //DeleteRecord(id);
+            deleteRecord(id);
 
             BindGridView();  
         }
@@ -227,6 +225,70 @@ namespace PSST
             {
                 lblWelcome.Text = ex.Message;
             }
+        }
+
+        protected void deleteRecord(int id)
+        {
+
+            string query = @"DELETE FROM RESOURCE WHERE Resource_ID = @ResourceID";
+
+            try
+            {
+                using (con = new MySqlConnection(connectionString))
+                {
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(query, con);
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, con))
+                    {
+                        cmd.Parameters.AddWithValue("@ResourceID", id);
+
+                        con.Open();
+                        int rowsAffected = cmd.ExecuteNonQuery();
+
+
+                        adapter.DeleteCommand = cmd;
+                        adapter.DeleteCommand.ExecuteNonQuery();
+
+                        con.Close();
+
+                        BindGridView();
+                    }
+                }
+            }
+            catch (MySqlException)
+            {
+               string jobId = ifRhasJob(id);
+               lblWelcome.Text = $"Cannot delete resource because they are currently assigned a Job (ID: {jobId})";
+                
+            }
+        }
+
+        protected string ifRhasJob(int id)
+        {
+            // Get the id of the job a resource is connected (If Resource Has Job = ifRhasJob)
+            string jobId = "";
+            string jobQuery = @"SELECT Job_ID FROM JOB WHERE Resource_ID = @Resource_ID";
+
+            using (con = new MySqlConnection(connectionString))
+            {
+
+                MySqlCommand command = new MySqlCommand(jobQuery, con);
+                command.Parameters.AddWithValue("@Resource_ID", id);
+
+                con.Open();
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+
+                    while (reader.Read())
+                    {
+                        jobId = reader["Job_ID"].ToString();
+                    }
+                }
+
+                con.Close();
+            }
+            return jobId;
         }
     }
 }

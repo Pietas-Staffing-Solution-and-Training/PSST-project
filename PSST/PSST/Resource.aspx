@@ -25,7 +25,7 @@
                           OnSelectedIndexChanged="ResourceData_SelectedIndexChanged"   
                           OnRowDeleting="ResourceData_RowDeleting" OnRowEditing="ResourceData_RowEditing" 
                           OnRowCancelingEdit="ResourceData_RowCancelingEdit" OnRowUpdating="ResourceData_RowUpdating" 
-                          Width="100%" AllowPaging="False">
+                          Width="100%">
                 <Columns>
                    
                     <asp:CommandField ShowSelectButton="True" ButtonType="Image" SelectImageUrl="~/Resources/Icons/invoice - thoseicons.png" >
@@ -34,9 +34,15 @@
                     <asp:CommandField ButtonType="Image" EditImageUrl="~/Resources/Icons/edit - pixelperfect.png" ShowEditButton="True" CancelImageUrl="~/Resources/Icons/cancel - gregorcresnar.png" UpdateImageUrl="~/Resources/Icons/confirm - roundicons.png" >
                     <ControlStyle Height="20px" />
                     </asp:CommandField>
-                    <asp:CommandField ButtonType="Image" DeleteImageUrl="~/Resources/Icons/bin - freepik.png" ShowDeleteButton="True">
-                    <ControlStyle Height="20px" />
-                    </asp:CommandField>
+                    <asp:TemplateField>
+                        <ItemTemplate>
+                            <!--throw confirmation before an item is deleted-->
+                            <asp:ImageButton ID="DeleteButton" runat="server" ImageUrl="~/Resources/Icons/bin - freepik.png" 
+                                             CommandName="Delete" 
+                                             OnClientClick="return confirm('Are you sure you want to delete this item?');" />
+                        </ItemTemplate>
+                      <ControlStyle Height="20px" />
+                    </asp:TemplateField>
                 </Columns>
                 <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
                 <EditRowStyle BackColor="#999999" />
