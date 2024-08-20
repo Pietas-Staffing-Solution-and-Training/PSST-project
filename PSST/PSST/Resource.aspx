@@ -59,8 +59,11 @@
                 <SortedDescendingCellStyle BackColor="#FFFDF8" />
                 <SortedDescendingHeaderStyle BackColor="#6F8DAE" />
             </asp:GridView>
+           </div>
+                <div ID="divError" class="error-label" runat="server">
+                    <asp:Label ID="lblError" runat="server" Text="Error" ></asp:Label>
+                    <asp:ImageButton ID="btnExitErr" runat="server" ImageUrl="~/Resources/Icons/close - pixelperfect.png" AlternateText="Exit Error" CssClass="error-button" OnClick="btnExitErr_Click"/> 
                </div>
-           <asp:Label ID="lblError" runat="server" Text="Error" ForeColor="Red"></asp:Label>
             </div>
        
         <br />

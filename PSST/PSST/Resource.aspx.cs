@@ -18,7 +18,7 @@ namespace PSST
             if (!IsPostBack)
             {
                 BindGridView();
-                lblError.Text = "";
+                divError.Visible = false;
             }
         }
 
@@ -28,7 +28,6 @@ namespace PSST
             GridViewRow row = ResourceData.Rows[selectedRow];
 
             int id = Convert.ToInt32(row.Cells[3].Text);
-            lblError.Text = $"You selected row: {selectedRow} + {id}";
 
             //In Jobs.aspx when making the invoice: 
 
@@ -67,7 +66,7 @@ namespace PSST
                 }
             } catch (Exception ex)
             {
-                lblError.Text = ex.Message;
+                showError(ex.Message);
             }
 
             // Bind the DataTable to the GridView
@@ -142,7 +141,7 @@ namespace PSST
                 BindGridView();
             } catch(Exception ex)
             {
-                lblError.Text = ex.Message;
+                showError(ex.Message);
             }
         }
 
@@ -158,8 +157,6 @@ namespace PSST
             string search = txtSearch.Text;
             lblError.Text = search;
 
-           
-
             string query = $"SELECT Resource_ID, FName, LName, Phone_Num, Wage, Competencies FROM RESOURCE WHERE Resource_ID LIKE @SearchTerm OR FName LIKE @SearchTerm OR LName LIKE @SearchTerm OR Phone_Num LIKE @SearchTerm OR Wage LIKE @SearchTerm OR Competencies LIKE @SearchTerm";
 
             try
@@ -167,7 +164,6 @@ namespace PSST
                 using (con = new MySqlConnection(connectionString))
                 {
                    
-
                     MySqlCommand cmd = new MySqlCommand(query, con);
                     cmd.Parameters.AddWithValue("@SearchTerm", "%" + search + "%");
 
@@ -175,18 +171,25 @@ namespace PSST
                     DataTable dt = new DataTable();
                     da.Fill(dt);
 
-                    ResourceData.DataSource = dt;
-                    ResourceData.DataBind();
-
-                   
+                    if (dt.Rows.Count > 0)
+                    {
+                        ResourceData.DataSource = dt;
+                        ResourceData.DataBind();
+                    }
+                    else
+                    {
+                        // Show error message if no items are found
+                        showError($"No item found for {search}");
+                        ResourceData.DataSource = null;
+                        ResourceData.DataBind();
+                    };
 
                 }
             }
             catch (Exception ex)
             {
-                lblError.Text = ex.Message;
+                showError(ex.Message);
             }
-
         }
 
         protected void updateRecord(int id, string name, string surname, string number, string wage, string competencies)
@@ -223,7 +226,7 @@ namespace PSST
             }
             catch (Exception ex)
             {
-                lblError.Text = ex.Message;
+                showError(ex.Message);
             }
         }
 
@@ -258,7 +261,7 @@ namespace PSST
             catch (MySqlException)
             {
                string jobId = ifRhasJob(id);
-               lblError.Text = $"Cannot delete resource because they are currently assigned a Job (ID: {jobId})";
+                showError($"Cannot delete resource because they are currently assigned a Job (ID: {jobId})");
                 
             }
         }
@@ -289,6 +292,17 @@ namespace PSST
                 con.Close();
             }
             return jobId;
+        }
+
+        protected void showError(string error)
+        {
+            divError.Visible = true;
+            lblError.Text = error;
+        }
+
+        protected void btnExitErr_Click(object sender, EventArgs e)
+        {
+            divError.Visible = false;
         }
     }
 }

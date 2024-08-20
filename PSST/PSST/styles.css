@@ -42,6 +42,23 @@
     width:80%;
 }
 
+.error-label {
+    background-color: red;
+    color: white;
+    padding: 10px;
+    margin: 20px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.error-button {
+    height: 20px;
+    margin-left: 10px;
+}
+
 .footer-copyright {
   text-align: center;
 }
