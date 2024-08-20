@@ -15,10 +15,13 @@
         
          
        <div class="main-div">
-           <asp:Label ID="lblWelcome" runat="server" Text="Welcome to PSST, user!" Font-Size="Large"></asp:Label>
+           <asp:Label ID="lblWelcome" runat="server" Text="Manage Resources" Font-Size="Large"></asp:Label>
            <div class="content-container">
-           <asp:TextBox ID="txtSearch" runat="server" CssClass="search-box" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Search" Placeholder="Search" AutoPostBack="True" OnTextChanged="txtSearch_TextChanged"></asp:TextBox>
-             </div>
+               <div class="search-div">
+                   <p>Search:</p>
+                   <asp:TextBox ID="txtSearch" runat="server" CssClass="search-box" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Search" AutoPostBack="True" OnTextChanged="txtSearch_TextChanged"></asp:TextBox>
+               </div>
+           </div>
            <div class="scrollable-gridview">
             <asp:GridView ID="ResourceData" runat="server" DataKeyNames="Resource_ID" 
                           CellPadding="4" ForeColor="#333333" GridLines="None" 
@@ -57,9 +60,13 @@
                 <SortedDescendingHeaderStyle BackColor="#6F8DAE" />
             </asp:GridView>
                </div>
+           <asp:Label ID="lblError" runat="server" Text="Error" ForeColor="Red"></asp:Label>
             </div>
        
+        <br />
+       
         <!-- Footer -->
+           
         <uc:footer runat="server" id="footer" />
     </form>
 </body>

@@ -18,6 +18,7 @@ namespace PSST
             if (!IsPostBack)
             {
                 BindGridView();
+                lblError.Text = "";
             }
         }
 
@@ -27,7 +28,7 @@ namespace PSST
             GridViewRow row = ResourceData.Rows[selectedRow];
 
             int id = Convert.ToInt32(row.Cells[3].Text);
-            lblWelcome.Text = $"You selected row: {selectedRow} + {id}";
+            lblError.Text = $"You selected row: {selectedRow} + {id}";
 
             //In Jobs.aspx when making the invoice: 
 
@@ -47,8 +48,7 @@ namespace PSST
         {
             // Create a DataTable with three columns
 
-            
-            string query = "SELECT Resource_ID, FName, LName, Phone_Num, Wage, Competencies FROM RESOURCE";
+            string query = "SELECT Resource_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', ROUND(Wage, 2) AS Wage, Competencies FROM RESOURCE";
 
             try
             {
@@ -67,7 +67,7 @@ namespace PSST
                 }
             } catch (Exception ex)
             {
-                lblWelcome.Text = ex.Message;
+                lblError.Text = ex.Message;
             }
 
             // Bind the DataTable to the GridView
@@ -134,7 +134,7 @@ namespace PSST
                 string wage = ((TextBox)row.Cells[7].Controls[0]).Text;
                 string competencies = ((TextBox)row.Cells[8].Controls[0]).Text;
 
-                lblWelcome.Text = id + " " + name + " " + surname;
+                lblError.Text = id + " " + name + " " + surname;
 
                 updateRecord(id, name, surname, number, wage, competencies );
 
@@ -142,7 +142,7 @@ namespace PSST
                 BindGridView();
             } catch(Exception ex)
             {
-                lblWelcome.Text = ex.Message;
+                lblError.Text = ex.Message;
             }
         }
 
@@ -156,7 +156,7 @@ namespace PSST
         {
 
             string search = txtSearch.Text;
-            lblWelcome.Text = search;
+            lblError.Text = search;
 
            
 
@@ -184,7 +184,7 @@ namespace PSST
             }
             catch (Exception ex)
             {
-                lblWelcome.Text = ex.Message;
+                lblError.Text = ex.Message;
             }
 
         }
@@ -223,7 +223,7 @@ namespace PSST
             }
             catch (Exception ex)
             {
-                lblWelcome.Text = ex.Message;
+                lblError.Text = ex.Message;
             }
         }
 
@@ -258,7 +258,7 @@ namespace PSST
             catch (MySqlException)
             {
                string jobId = ifRhasJob(id);
-               lblWelcome.Text = $"Cannot delete resource because they are currently assigned a Job (ID: {jobId})";
+               lblError.Text = $"Cannot delete resource because they are currently assigned a Job (ID: {jobId})";
                 
             }
         }

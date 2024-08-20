@@ -207,3 +207,35 @@ D:\Uni things\2024\Semester 2\CMPG 223\PSST-project\PSST-project\PSST\PSST\bin\S
 D:\Uni things\2024\Semester 2\CMPG 223\PSST-project\PSST-project\PSST\PSST\bin\System.Numerics.Vectors.xml
 D:\Uni things\2024\Semester 2\CMPG 223\PSST-project\PSST-project\PSST\PSST\bin\System.Runtime.CompilerServices.Unsafe.xml
 D:\Uni things\2024\Semester 2\CMPG 223\PSST-project\PSST-project\PSST\PSST\bin\System.Threading.Tasks.Extensions.xml
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\BouncyCastle.Cryptography.dll
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\Google.Protobuf.dll
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\K4os.Compression.LZ4.dll
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\K4os.Compression.LZ4.Streams.dll
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\K4os.Hash.xxHash.dll
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\MySql.Data.dll
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\System.Buffers.dll
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\System.Configuration.ConfigurationManager.dll
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\System.Diagnostics.DiagnosticSource.dll
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\System.IO.Pipelines.dll
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\System.Memory.dll
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\System.Numerics.Vectors.dll
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\System.Threading.Tasks.Extensions.dll
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\ZstdSharp.dll
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\BouncyCastle.Cryptography.xml
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\Google.Protobuf.pdb
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\Google.Protobuf.xml
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\K4os.Compression.LZ4.xml
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\K4os.Compression.LZ4.Streams.xml
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\K4os.Hash.xxHash.xml
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\MySql.Data.xml
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\System.Buffers.xml
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\System.Configuration.ConfigurationManager.xml
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\System.Diagnostics.DiagnosticSource.xml
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\System.IO.Pipelines.xml
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\System.Memory.xml
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\System.Numerics.Vectors.xml
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\MAXIE\Documents\GitHub\PSST-project\PSST\PSST\bin\System.Threading.Tasks.Extensions.xml
