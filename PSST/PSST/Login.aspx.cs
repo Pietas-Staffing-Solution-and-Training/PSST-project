@@ -23,7 +23,8 @@ namespace PSST
         {
             //Comment this in for always successfull connection
             tbUsername.Text = "Ruan@email.com";
-            /*tbPassword.Text = "TestThisP@s5W0rD!";*/
+            tbPassword.TextMode = TextBoxMode.SingleLine;
+            tbPassword.Text = "TestThisP@s5W0rD!";
         }
 
         protected void valUsername_ServerValidate(object source, ServerValidateEventArgs args)
