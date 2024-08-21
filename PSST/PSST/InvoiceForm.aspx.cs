@@ -12,6 +12,18 @@ namespace invoices_last_run
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            //Ensure user is logged in
+            //Get session value - returns null if doesn't exist
+            /*
+            string username = Session["username"]?.ToString();
+
+            //If string is null
+            if (username == null)
+            {
+                Response.Redirect("Login.aspx");
+                return;
+            }
+            /*/
             QuestPDF.Settings.License = LicenseType.Community;
 
             if (!IsPostBack)
@@ -187,22 +199,30 @@ namespace invoices_last_run
                                 table.Header(header =>
                                 {
                                     header.Cell().Element(x => x.Padding(5).BorderBottom(1).BorderColor(Colors.Grey.Lighten2))
+                                        .AlignCenter()
                                         .Text("Resource");
                                     header.Cell().Element(x => x.Padding(5).BorderBottom(1).BorderColor(Colors.Grey.Lighten2))
+                                        .AlignCenter()
                                         .Text("Hourly Rate");
                                     header.Cell().Element(x => x.Padding(5).BorderBottom(1).BorderColor(Colors.Grey.Lighten2))
+                                        .AlignCenter()
                                         .Text("Hours Worked");
                                     header.Cell().Element(x => x.Padding(5).BorderBottom(1).BorderColor(Colors.Grey.Lighten2))
+                                        .AlignCenter()
                                         .Text("Total Pay");
                                 });
 
                                 table.Cell().Element(x => x.Padding(5).BorderBottom(1).BorderColor(Colors.Grey.Lighten2))
+                                    .AlignLeft()
                                     .Text(resourceName);
                                 table.Cell().Element(x => x.Padding(5).BorderBottom(1).BorderColor(Colors.Grey.Lighten2))
+                                    .AlignRight()
                                     .Text($"{wage:C}");
                                 table.Cell().Element(x => x.Padding(5).BorderBottom(1).BorderColor(Colors.Grey.Lighten2))
+                                    .AlignCenter()
                                     .Text(hoursWorked.ToString());
                                 table.Cell().Element(x => x.Padding(5).BorderBottom(1).BorderColor(Colors.Grey.Lighten2))
+                                    .AlignRight()
                                     .Text($"{expectedPay:C}");
 
                                 column.Item().PaddingVertical(150);
@@ -216,8 +236,7 @@ namespace invoices_last_run
 
                         page.Footer().AlignCenter().Text(x =>
                         {
-                            x.Span("Page ");
-                            x.CurrentPageNumber();
+                            x.Span("---END OF REPORT---");
                         });
                     });
                 })
