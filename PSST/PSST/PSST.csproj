@@ -130,6 +130,7 @@
     <Content Include="Resources\lib\footer.ascx" />
     <Content Include="Resources\lib\head.ascx" />
     <Content Include="Resources\lib\navigation.ascx" />
+    <Content Include="Resources\login-bg.jpg" />
     <Content Include="Resources\logo.png" />
     <Content Include="Resources\logo_landscape.png" />
     <Content Include="styles.css" />

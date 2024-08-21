@@ -96,14 +96,36 @@ body {
 
 /* Login page */
 #login {
-    padding-top: 25px;
-    padding-bottom; 25px;
+    flex: 1;
 }
+
+    #login .row {
+        margin-bottom: 0;
+    }
+
+    #login .customColumn {
+        max-width: 350px;
+        margin-left: auto;
+        /*padding-top: 50px;*/
+        min-height: calc(100vh - 340px);
+        /* Alignment of item */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
 
 .loginInner {
     padding: 25px 15px;
     text-align: center;
+    background: #009688bf;
+    color: #ffffff;
 }
+
+    .loginInner input {
+        background-color: #ffffffc4 !important;
+        border-bottom: none !important;
+        text-align: center !important;
+    }
 
     .loginInner h4 {
         border-bottom: 3px solid #000;
@@ -112,7 +134,39 @@ body {
     }
 
     .loginInner h6 {
-        margin: 0;
+        font-weight: 600;
+    }
+
+    .loginInner span {
+        font-weight: bold;
+    }
+
+        .loginInner span a {
+            color: #000;
+        }
+
+#login .loginBackground {
+    background-image: url('resources/login-bg.jpg');
+    background-size: cover;
+}
+
+.loginFooter .page-footer {
+    margin-top: 0;
+}
+
+#btnLogin {
+    width: 70%;
+    padding: 15px;
+    margin-top: 15px;
+    background-color: #fff !important;
+    cursor: pointer;
+    font-size: 20px;
+    border: none !important;
+    transition: 200ms ease-in-out;
+}
+
+    #btnLogin:hover {
+        transform: scale(1.1);
     }
 
 
