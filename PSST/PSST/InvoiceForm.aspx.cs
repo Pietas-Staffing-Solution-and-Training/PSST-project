@@ -14,7 +14,7 @@ namespace invoices_last_run
         {
             //Ensure user is logged in
             //Get session value - returns null if doesn't exist
-            /*
+            
             string username = Session["username"]?.ToString();
 
             //If string is null
@@ -23,7 +23,7 @@ namespace invoices_last_run
                 Response.Redirect("Login.aspx");
                 return;
             }
-            /*/
+            
             QuestPDF.Settings.License = LicenseType.Community;
 
             if (!IsPostBack)
@@ -54,10 +54,10 @@ namespace invoices_last_run
             }
         }
 
-        private void GeneratePDF(string action)
+        private void GeneratePDF(string request)
         {
             //Initialise variables
-            int jobId = 1; // Example Job_ID
+            string jobId = Session["Job_ID"]?.ToString();
             string connectionString = ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString; 
 
             string invoiceNumber = string.Empty;
@@ -69,10 +69,10 @@ namespace invoices_last_run
             decimal wage = 0;
             int hoursWorked = 0;
 
-            string senderName = "Pietas Staffing Solutions and Training";//string.Empty;
-            string senderAddress = "Civic Centre, 12 Horz Street, Cape Town";//string.Empty;
-            string senderPhone = "0860 103 089";//string.Empty;
-            string senderEmail = "PSST@outlook.co.za";//string.Empty;
+            string senderName = "Pietas Staffing Solutions and Training";
+            string senderAddress = "Civic Centre, 12 Horz Street, Cape Town";
+            string senderPhone = "0860 103 089";
+            string senderEmail = "PSST@outlook.co.za";
 
             string clientName = string.Empty;
             string clientAddress = string.Empty;
@@ -89,7 +89,7 @@ namespace invoices_last_run
                     //Fetch and set all information for invoice
                     connection.Open();
 
-                    string query = @"
+                    string invoiceQuery = @"
                         SELECT 
                             J.Description,
                             J.Budget,
@@ -107,7 +107,7 @@ namespace invoices_last_run
                         JOIN INVOICE I ON J.Job_ID = I.Job_ID
                         WHERE J.Job_ID = @JobID";
 
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    using (MySqlCommand command = new MySqlCommand(invoiceQuery, connection))
                     {
                         command.Parameters.AddWithValue("@JobID", jobId);
 
@@ -168,18 +168,18 @@ namespace invoices_last_run
                                 row.RelativeItem().Column(innerColumn =>
                                 {
                                     innerColumn.Item().Text("From:").Bold();
-                                    innerColumn.Item().Text(senderName);
-                                    innerColumn.Item().Text(senderAddress);
-                                    innerColumn.Item().Text(senderPhone);
+                                    innerColumn.Item().Text(senderName + ",");
+                                    innerColumn.Item().Text(senderAddress + ",");
+                                    innerColumn.Item().Text(senderPhone + ",");
                                     innerColumn.Item().Text(senderEmail);
                                 });
 
                                 row.RelativeItem().Column(innerColumn =>
                                 {
                                     innerColumn.Item().Text("To:").Bold();
-                                    innerColumn.Item().Text(clientName);
-                                    innerColumn.Item().Text(clientAddress);
-                                    innerColumn.Item().Text(clientPhone);
+                                    innerColumn.Item().Text(clientName +",");
+                                    innerColumn.Item().Text(clientAddress + ",");
+                                    innerColumn.Item().Text(clientPhone + ",");
                                     innerColumn.Item().Text(clientEmail);
                                 });
                             });
@@ -243,12 +243,12 @@ namespace invoices_last_run
                 .GeneratePdf(fs);
             }
 
-            if (action == "preview")
+            if (request == "preview")
             {
                 pdfPreview.Src = $"/Resources/TempInvoicePDFs/{fileName}";
                 pdfPreview.Attributes["style"] = "display:block;";
             }
-            else if (action == "download")
+            else if (request == "download")
             {
                 Response.ContentType = "application/pdf";
                 Response.AddHeader("Content-Disposition", $"attachment; filename=invoice.pdf");
