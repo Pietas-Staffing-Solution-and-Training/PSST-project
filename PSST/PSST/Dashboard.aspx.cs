@@ -16,6 +16,16 @@ namespace PSST
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            //Get session value - returns null if doesn't exist
+            string username = Session["username"]?.ToString();
+
+            //If string is null
+            if (username == null)
+            {
+                Response.Redirect("Login.aspx");
+                return;
+            }
+
             if (!IsPostBack)
             {
                 lblWelcome.Text = $"Welcome to PSST, {username}";
