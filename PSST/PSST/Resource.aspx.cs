@@ -15,6 +15,20 @@ namespace PSST
         string connectionString = ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
+
+            //tbUsername.Text = "Ruan@email.com";
+            //tbPassword.Text = "TestThisP@s5W0rD!";
+
+            //Get session value - returns null if doesn't exist
+            string username = Session["username"]?.ToString();
+
+            //If string is null
+            if (username == null)
+            {
+                Response.Redirect("Login.aspx");
+                return;
+            }
+
             if (!IsPostBack)
             {
                 BindGridView();
@@ -46,7 +60,7 @@ namespace PSST
         private void BindGridView()
         {
 
-            string query = "SELECT Resource_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', ROUND(Wage, 2) AS Wage, Competencies FROM RESOURCE";
+            string query = "SELECT Resource_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', ROUND(Wage, 2) AS 'Wage p/h', Competencies FROM RESOURCE";
 
             try
             {
