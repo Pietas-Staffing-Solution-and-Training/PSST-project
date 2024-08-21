@@ -15,10 +15,10 @@
         
          
        <div class="main-div">
-           <asp:Label ID="lblWelcome" runat="server" Text="Manage Resources" Font-Size="Large"></asp:Label>
+           <asp:Label ID="lblWelcome" runat="server" Text="Manage Resources" Font-Size="X-Large" Font-Bold="True" ForeColor="#003479"></asp:Label>
            <div class="content-container">
                <div class="search-div">
-                   <p>Search:</p>
+                   <p style="color: #003479; font-weight: bold">Search:</p>
                    <asp:TextBox ID="txtSearch" runat="server" CssClass="search-box" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Search" AutoPostBack="True" OnTextChanged="txtSearch_TextChanged"></asp:TextBox>
                </div>
            </div>

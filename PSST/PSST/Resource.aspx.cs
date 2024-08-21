@@ -45,7 +45,6 @@ namespace PSST
 
         private void BindGridView()
         {
-            // Create a DataTable with three columns
 
             string query = "SELECT Resource_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', ROUND(Wage, 2) AS Wage, Competencies FROM RESOURCE";
 
@@ -73,37 +72,6 @@ namespace PSST
             
         }
 
-                    //Adding tooltips but messed a bit with the button clicks
-        //protected void ResourceData_RowDataBound(object sender, GridViewRowEventArgs e)
-        //{
-        //    // Add tootip to table icons
-        //    if (e.Row.RowType == DataControlRowType.DataRow)
-        //    {
-              
-        //        ImageButton selectButton = e.Row.Cells[0].Controls[0] as ImageButton;
-        //        if (selectButton != null)
-        //        {
-        //            selectButton.ToolTip = "Select";
-                  
-        //        }
-
-              
-        //        ImageButton editButton = e.Row.Cells[1].Controls[0] as ImageButton;
-        //        if (editButton != null)
-        //        {
-        //            editButton.ToolTip = "Edit";
-                  
-        //        }
-
-              
-        //        ImageButton deleteButton = e.Row.Cells[2].Controls[0] as ImageButton;
-        //        if (deleteButton != null)
-        //        {
-        //            deleteButton.ToolTip = "Delete";
-        //        }
-        //    }
-        //}
-
         protected void ResourceData_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
             int id = Convert.ToInt32(ResourceData.DataKeys[e.RowIndex].Value);
@@ -117,13 +85,16 @@ namespace PSST
         {
             ResourceData.EditIndex = e.NewEditIndex;
             BindGridView();
+
+            GridViewRow row = ResourceData.Rows[e.NewEditIndex];
+            TextBox tbName = (TextBox)row.Cells[4].Controls[0];
+            tbName.Focus();
         }
 
         protected void ResourceData_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
             try
             {
-                //int id = Convert.ToInt32(ResourceData.DataKeys[e.RowIndex].Value);
                 GridViewRow row = ResourceData.Rows[e.RowIndex];
 
                 int id = Convert.ToInt32(ResourceData.DataKeys[e.RowIndex].Value);
@@ -132,8 +103,6 @@ namespace PSST
                 string number = ((TextBox)row.Cells[6].Controls[0]).Text;
                 string wage = ((TextBox)row.Cells[7].Controls[0]).Text;
                 string competencies = ((TextBox)row.Cells[8].Controls[0]).Text;
-
-                lblError.Text = id + " " + name + " " + surname;
 
                 updateRecord(id, name, surname, number, wage, competencies );
 
@@ -155,7 +124,6 @@ namespace PSST
         {
 
             string search = txtSearch.Text;
-            lblError.Text = search;
 
             string query = $"SELECT Resource_ID, FName, LName, Phone_Num, Wage, Competencies FROM RESOURCE WHERE Resource_ID LIKE @SearchTerm OR FName LIKE @SearchTerm OR LName LIKE @SearchTerm OR Phone_Num LIKE @SearchTerm OR Wage LIKE @SearchTerm OR Competencies LIKE @SearchTerm";
 
