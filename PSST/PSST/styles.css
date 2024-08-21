@@ -43,12 +43,57 @@
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+.search-div {
+  display: flex;
+}
+
+#txtSearch {
+  margin-left: 15px;
+  border: 1px solid #9e9e9e;
+  border-radius: 5px;
+  padding: 0 5px 0 5px;
+}
+
 .main-div { 
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 50px;
   flex: 1;
+  width:100%;
+}
+
+.content-container {
+    padding-left:10%;
+    padding-right:10%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Align items to the right */
+    width: 100%; /* Adjust width as needed */
+}
+
+.scrollable-gridview {
+    height: 60vh; /* Adjust height as needed */
+    overflow-y: auto; /* Enables vertical scrolling */
+    overflow-x: hidden; /* Hides horizontal scrolling if not needed */
+    width:80%;
+}
+
+.error-label {
+    background-color: red;
+    color: white;
+    padding: 10px;
+    margin: 20px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.error-button {
+    height: 20px;
+    margin-left: 10px;
 }
 
 .footer-copyright {
@@ -110,14 +155,36 @@ body {
 
 /* Login page */
 #login {
-    padding-top: 25px;
-    padding-bottom; 25px;
+    flex: 1;
 }
+
+    #login .row {
+        margin-bottom: 0;
+    }
+
+    #login .customColumn {
+        max-width: 350px;
+        margin-left: auto;
+        /*padding-top: 50px;*/
+        min-height: calc(100vh - 340px);
+        /* Alignment of item */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
 
 .loginInner {
     padding: 25px 15px;
     text-align: center;
+    background: #009688bf;
+    color: #ffffff;
 }
+
+    .loginInner input {
+        background-color: #ffffffc4 !important;
+        border-bottom: none !important;
+        text-align: center !important;
+    }
 
     .loginInner h4 {
         border-bottom: 3px solid #000;
@@ -126,7 +193,39 @@ body {
     }
 
     .loginInner h6 {
-        margin: 0;
+        font-weight: 600;
+    }
+
+    .loginInner span {
+        font-weight: bold;
+    }
+
+        .loginInner span a {
+            color: #000;
+        }
+
+#login .loginBackground {
+    background-image: url('resources/login-bg.jpg');
+    background-size: cover;
+}
+
+.loginFooter .page-footer {
+    margin-top: 0;
+}
+
+#btnLogin {
+    width: 70%;
+    padding: 15px;
+    margin-top: 15px;
+    background-color: #fff !important;
+    cursor: pointer;
+    font-size: 20px;
+    border: none !important;
+    transition: 200ms ease-in-out;
+}
+
+    #btnLogin:hover {
+        transform: scale(1.1);
     }
 
 

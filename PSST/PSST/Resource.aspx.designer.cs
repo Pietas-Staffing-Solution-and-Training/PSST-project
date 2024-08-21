@@ -11,26 +11,26 @@ namespace PSST
 {
 
 
-    public partial class Login
+    public partial class Resource
     {
 
         /// <summary>
-        /// head control.
+        /// Head control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::PSST.Resources.lib.head head;
+        protected global::PSST.Resources.lib.head Head;
 
         /// <summary>
-        /// login control.
+        /// resource control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm login;
+        protected global::System.Web.UI.HtmlControls.HtmlForm resource;
 
         /// <summary>
         /// navigation control.
@@ -42,58 +42,58 @@ namespace PSST
         protected global::PSST.Resources.lib.navigation navigation;
 
         /// <summary>
-        /// tbUsername control.
+        /// lblWelcome control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbUsername;
+        protected global::System.Web.UI.WebControls.Label lblWelcome;
 
         /// <summary>
-        /// valUsername control.
+        /// txtSearch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CustomValidator valUsername;
+        protected global::System.Web.UI.WebControls.TextBox txtSearch;
 
         /// <summary>
-        /// tbPassword control.
+        /// ResourceData control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbPassword;
+        protected global::System.Web.UI.WebControls.GridView ResourceData;
 
         /// <summary>
-        /// CustomValidator1 control.
+        /// divError control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CustomValidator CustomValidator1;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divError;
 
         /// <summary>
-        /// lblLoginFailed control.
+        /// lblError control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblLoginFailed;
+        protected global::System.Web.UI.WebControls.Label lblError;
 
         /// <summary>
-        /// btnLogin control.
+        /// btnExitErr control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnLogin;
+        protected global::System.Web.UI.WebControls.ImageButton btnExitErr;
 
         /// <summary>
         /// footer control.

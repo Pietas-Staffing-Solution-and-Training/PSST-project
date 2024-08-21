@@ -124,9 +124,18 @@
     <Content Include="Dashboard.aspx" />
     <Content Include="InvoiceForm.aspx" />
     <Content Include="Login.aspx" />
+    <Content Include="Resource.aspx" />
+    <Content Include="Resources\Icons\bin - freepik.png" />
+    <Content Include="Resources\Icons\cancel - gregorcresnar.png" />
+    <Content Include="Resources\Icons\check - reussy.png" />
+    <Content Include="Resources\Icons\close - pixelperfect.png" />
+    <Content Include="Resources\Icons\confirm - roundicons.png" />
+    <Content Include="Resources\Icons\edit - pixelperfect.png" />
+    <Content Include="Resources\Icons\invoice - thoseicons.png" />
     <Content Include="Resources\lib\footer.ascx" />
     <Content Include="Resources\lib\head.ascx" />
     <Content Include="Resources\lib\navigation.ascx" />
+    <Content Include="Resources\login-bg.jpg" />
     <Content Include="Resources\logo.png" />
     <Content Include="Resources\logo_landscape.png" />
     <Content Include="styles.css" />
@@ -135,6 +144,10 @@
   <ItemGroup>
     <Compile Include="Dashboard.aspx.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Dashboard.aspx.designer.cs">
@@ -150,6 +163,9 @@
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Resource.aspx.designer.cs">
+      <DependentUpon>Resource.aspx</DependentUpon>
     </Compile>
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
