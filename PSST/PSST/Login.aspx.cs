@@ -22,8 +22,8 @@ namespace PSST
         protected void Page_Load(object sender, EventArgs e)
         {
             //Comment this in for always successfull connection
-/*            tbUsername.Text = "Ruan@email.com";
-            tbPassword.Text = "TestThisP@s5W0rD!";*/
+            tbUsername.Text = "Ruan@email.com";
+            /*tbPassword.Text = "TestThisP@s5W0rD!";*/
         }
 
         protected void valUsername_ServerValidate(object source, ServerValidateEventArgs args)
@@ -86,7 +86,7 @@ namespace PSST
             string encryptedPassword = encryptPass.encrypt(password);
 
             //Drop login if anything other than 1 combination exists in DB
-            if (CountFromDB(username, encryptedPassword) != 1 )
+            if ( CountFromDB(username, encryptedPassword) != 1 )
             {
                 loginFailed();
                 return;
@@ -118,7 +118,7 @@ namespace PSST
         }
 
         //Returns number of instances of userInput in DB column
-        private int CountFromDB( string username, string password )
+        private int CountFromDB( string USERNAME, string PASSWORD )
         {
             
             try
@@ -128,18 +128,21 @@ namespace PSST
                     conn.Open();
 
                     //Create SQL query
-                    string query = $"SELECT COUNT(*) FROM ADMIN WHERE Username = @cleanUsername AND Password = @cleanPassword";
+                    string query = "SELECT COUNT(*) FROM ADMIN WHERE Username = @cleanUsername AND Password = @cleanPassword";
 
-                    using (MySqlCommand cmd = new MySqlCommand(query, conn) )
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
 
                         //Add parameters to query
-                        cmd.Parameters.AddWithValue("@cleanUsername", username);
-                        cmd.Parameters.AddWithValue("@cleanPassword", password);
+                        cmd.Parameters.AddWithValue("@cleanUsername", USERNAME);
+                        cmd.Parameters.AddWithValue("@cleanPassword", PASSWORD);
 
-                        return (int)cmd.ExecuteScalar();
+                        int itemToReturn = Convert.ToInt32(cmd.ExecuteScalar());
+
+                        return itemToReturn;
 
                     }
+
                 }
 
 
