@@ -223,10 +223,11 @@ body {
     color: #ffffff;
 }
 
-    .loginInner input {
-        background-color: #ffffffc4 !important;
+    #tbUsername, #tbPassword {
+        background-color: #ffffffc4;
         border-bottom: none !important;
         text-align: center !important;
+		border-radius: 2px;
     }
 
     .loginInner h4 {
@@ -250,14 +251,14 @@ body {
 #login .loginBackground {
     background-image: url('resources/login-bg.jpg');
     background-size: cover;
-    height: 100%;
+	height: 100%;
 }
 
 .loginFooter .page-footer {
     margin-top: 0;
 }
 
-#btnLogin {
+/*#btnLogin {
     width: 70%;
     padding: 15px;
     margin-top: 15px;
@@ -268,15 +269,15 @@ body {
     transition: 200ms ease-in-out;
 }
 
-    #btnLogin:hover {
-        transform: scale(1.1);
-    }
+#btnLogin:hover {
+	transform: scale(1.1);
+}*/
 
 
-    /* Original Materialize CSS */
-    .materialize-red {
-        background-color: #e51c23 !important;
-    }
+/* Original Materialize CSS */
+.materialize-red {
+	background-color: #e51c23 !important;
+}
 
 .materialize-red-text {
   color: #e51c23 !important;

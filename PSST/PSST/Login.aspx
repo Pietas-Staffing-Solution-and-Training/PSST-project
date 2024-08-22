@@ -52,7 +52,7 @@
                             </div>
 
                             <div>
-                                <asp:Button ID="btnLogin" runat="server" Text="Login" OnClick="btnLogin_Click" />
+                                <asp:Button ID="btnLogin" runat="server" Text="Login" CssClass="btn" OnClick="btnLogin_Click" />
                             </div>
                         </div>
 
