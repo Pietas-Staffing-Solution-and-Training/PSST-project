@@ -103,6 +103,7 @@
   width:100%;
   background-image: url(resources/login-bg.jpg);
   background-size: cover;
+  min-height: 80vh;
 }
 
 .content-container {
