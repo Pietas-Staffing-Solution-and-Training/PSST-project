@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-//using QuestPDF.Infrastructure;
+using QuestPDF.Infrastructure;
 
 namespace PSST.Resources.lib
 {
@@ -12,7 +12,7 @@ namespace PSST.Resources.lib
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //QuestPDF.Settings.License = LicenseType.Community;
+            QuestPDF.Settings.License = LicenseType.Community;
         }
     }
 }

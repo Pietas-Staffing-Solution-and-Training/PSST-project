@@ -11,7 +11,6 @@
             <div class="invoice-form">
                 <h4>Preview Invoice</h4>
                 <div class="form-group">
-
                 </div>
                 <div class="form-group">
                     <asp:Button ID="btnDownload" runat="server" Text="Download PDF" OnClick="btnDownload_Click" CssClass="btn" />
