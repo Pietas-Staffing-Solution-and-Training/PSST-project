@@ -16,18 +16,20 @@
          
        <div class="main-div">
            <div class="resource-contain">
-               <asp:Label ID="lblWelcome" runat="server" Text="Manage Resources" Font-Size="X-Large" Font-Bold="True" ForeColor="#003479"></asp:Label>
+               <asp:Label ID="lblWelcome" runat="server" Text="Manage Resources" Font-Size="X-Large" ForeColor="#003479"></asp:Label>
                <div ID="divError" class="error-label" runat="server">
                     <asp:Label ID="lblError" runat="server" Text="Error" ></asp:Label>
                     <asp:ImageButton ID="btnExitErr" runat="server" ImageUrl="~/Resources/Icons/close - pixelperfect.png" AlternateText="Exit Error" CssClass="error-button" OnClick="btnExitErr_Click"/> 
                 </div>
+               
                <div class="content-container">
                    <div class="add-btn-div">
-                       <asp:Button ID="btnAddResource" runat="server" Text="Add Resource" CssClass="waves-effect waves-light btn" style="left: 0px; top: 0px; height: 36px" PostBackUrl="~/Resource.aspx" />
+                       <asp:Button ID="btnAddResource" runat="server" Text="Add Resource" CssClass="waves-effect waves-light btn" style="left: 0px; top: 0px; height: 36px" PostBackUrl="~/Resource.aspx#scrollTarget" />
                    </div>
                    <div class="search-div">
-                       <p style="color: #003479; font-weight: bold">Search:</p>
-                       <asp:TextBox ID="txtSearch" runat="server" CssClass="search-box" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Search" AutoPostBack="True" OnTextChanged="txtSearch_TextChanged"></asp:TextBox>
+                       <asp:TextBox ID="txtSearch" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Search" AutoPostBack="True" OnTextChanged="txtSearch_TextChanged"></asp:TextBox>
+                       <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn" OnClick="btnSearch_Click" />
+                       <asp:Button ID="btnSearchClear" runat="server" Text="Clear" CssClass="btn" OnClick="btnSearchClear_Click" />
                    </div>
                </div>
                <div class="scrollable-gridview">
@@ -38,7 +40,7 @@
                               OnRowCancelingEdit="ResourceData_RowCancelingEdit" OnRowUpdating="ResourceData_RowUpdating" 
                               Width="100%">
                     <Columns>
-                   
+
                         <asp:CommandField ShowSelectButton="True" ButtonType="Image" SelectImageUrl="~/Resources/Icons/invoice - thoseicons.png" >
                         <ControlStyle Height="20px" />
                         </asp:CommandField>
@@ -68,6 +70,31 @@
                     <SortedDescendingHeaderStyle BackColor="#6F8DAE" />
                 </asp:GridView>
                </div>
+              <asp:Panel ID="adminPanel" runat="server" CssClass="admin-only">
+                   <hr class="add-divider" />
+                     <asp:Label ID="lblAdd" runat="server" Text="Add New Resource" Font-Size="X-Large" ForeColor="#003479"></asp:Label>
+                     <div class="add-container" id="scrollTarget">
+                        <div class="add-row">
+                            <asp:Label ID="lblID" runat="server" CssClass="add-label" Text="Resource ID:" ></asp:Label>
+                            <asp:TextBox ID="txtID" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Resource ID" ReadOnly="True" ></asp:TextBox>
+                            <asp:Label ID="lblPhoneNum" runat="server" CssClass="add-label" Text="Phone Number:" ></asp:Label>
+                            <asp:TextBox ID="txtPhoneNum" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Phone Number" ></asp:TextBox>
+                        </div>
+                        <div class="add-row">
+                            <asp:Label ID="lblFName" runat="server" CssClass="add-label" Text="First Name:" ></asp:Label>
+                            <asp:TextBox ID="txtFName" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="First Name" ></asp:TextBox>
+                            <asp:Label ID="lblWage" runat="server" CssClass="add-label" Text="Wage p/h:" ></asp:Label>
+                            <asp:TextBox ID="txtWage" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Wage" ></asp:TextBox>
+                        </div>
+                        <div class="add-row">
+                            <asp:Label ID="lblLName" runat="server" CssClass="add-label" Text="Last Name:" ></asp:Label>
+                            <asp:TextBox ID="txtLName" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Last Name" ></asp:TextBox>
+                            <asp:Label ID="lblCompetencies" runat="server" CssClass="add-label" Text="Competencies:" ></asp:Label>
+                            <asp:TextBox ID="txtCompetencies" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Competencies" ></asp:TextBox>
+                        </div>
+                    </div>
+                    <asp:Button ID="btnAddDB" runat="server" Text="Add Resource to DB" CssClass="btn" OnClick="btnAddDB_Click" />
+              </asp:Panel>
                     
            </div>
         </div>
