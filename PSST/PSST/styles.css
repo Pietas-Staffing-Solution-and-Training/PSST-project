@@ -6,6 +6,46 @@
  */
 
 /* CSS added by CMPG223 Distance Group 1 2024 */
+.add-btn-div {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+#resource {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.resource-contain {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 90vw;
+  background: #ffffffde;
+  padding: 20px;
+  border-radius: 5px;
+  margin: 0 50px 50px 50px;
+}
+
+.login-contain {
+  height: 100%;
+}
+
+.dash-contain {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #ffffffde;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+#lblExplain {
+    max-width: 500px;
+    text-align: center;
+}
+
 .search-div {
   display: flex;
 }
@@ -24,22 +64,23 @@
   padding-top: 50px;
   flex: 1;
   width:100%;
+  background-image: url(resources/login-bg.jpg);
+  background-size: cover;
 }
 
 .content-container {
-    padding-left:10%;
-    padding-right:10%;
     display: flex;
-    flex-direction: column;
     align-items: flex-end; /* Align items to the right */
     width: 100%; /* Adjust width as needed */
+    margin-top: 10px;
+    justify-content:space-between;
 }
 
 .scrollable-gridview {
     height: 60vh; /* Adjust height as needed */
     overflow-y: auto; /* Enables vertical scrolling */
     overflow-x: hidden; /* Hides horizontal scrolling if not needed */
-    width:80%;
+    width: 100%;
 }
 
 .error-label {
@@ -121,20 +162,22 @@ body {
     flex: 1;
 }
 
-    #login .row {
-        margin-bottom: 0;
-    }
+#login .row {
+  margin-bottom: 0;
+  height: 100%;
+}
 
-    #login .customColumn {
-        max-width: 350px;
-        margin-left: auto;
-        /*padding-top: 50px;*/
-        min-height: calc(100vh - 340px);
-        /* Alignment of item */
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
+#login .customColumn {
+  max-width: 350px;
+  margin-left: auto;
+  /*padding-top: 50px;*/
+  /*min-height: calc(100vh - 340px);*/
+  /* Alignment of item */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
 
 .loginInner {
     padding: 25px 15px;
@@ -170,6 +213,7 @@ body {
 #login .loginBackground {
     background-image: url('resources/login-bg.jpg');
     background-size: cover;
+    height: 100%;
 }
 
 .loginFooter .page-footer {
@@ -3135,7 +3179,7 @@ ul.staggered-list li {
 
 .page-footer {
   padding-top: 20px;
-  margin-top: 50px;
+  /*margin-top: 50px;*/
   color: #fff;
   background-color: #009688;
 }

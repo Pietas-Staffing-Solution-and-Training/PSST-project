@@ -10,10 +10,10 @@
               </a>
               <ul class="right hide-on-med-and-down">
                 <li><a href="/Dashboard.aspx">Dashboard</a></li>
-                <li><a href="/Clients.aspx">Clients</a></li>
-                <li><a href="/Jobs.aspx">Jobs</a></li>
-                <li><a href="/Resources.aspx">Resources</a></li>
-                <li><a href="#">Logout</a></li>
+                <li><a href="/Client.aspx">Clients</a></li>
+                <li><a href="/Job.aspx">Jobs</a></li>
+                <li><a href="/Resource.aspx">Resources</a></li>
+                <li><asp:LinkButton ID="logoutButton" runat="server" OnClick="Logout_Click">Logout</asp:LinkButton></li>
               </ul>
             </div>
         </nav>

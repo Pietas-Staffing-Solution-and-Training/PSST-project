@@ -14,7 +14,7 @@
         <uc:navigation runat="server" ID="navigation" />
 
         <div class="loginBackground">
-            <div class="container">
+            <div class="container login-contain">
 
                 <div class="row">
                     <div class="customColumn">
