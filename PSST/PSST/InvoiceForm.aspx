@@ -9,7 +9,7 @@
     <form id="form1" runat="server">
         <uc:navigation runat="server" id="navigation" />
             <div class="invoice-form">
-                <h1>Preview Invoice</h1>
+                <h4>Preview Invoice</h4>
                 <div class="form-group">
 
                 </div>
