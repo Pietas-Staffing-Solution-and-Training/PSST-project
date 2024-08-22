@@ -17,6 +17,10 @@
        <div class="main-div">
            <div class="resource-contain">
                <asp:Label ID="lblWelcome" runat="server" Text="Manage Resources" Font-Size="X-Large" Font-Bold="True" ForeColor="#003479"></asp:Label>
+               <div ID="divError" class="error-label" runat="server">
+                    <asp:Label ID="lblError" runat="server" Text="Error" ></asp:Label>
+                    <asp:ImageButton ID="btnExitErr" runat="server" ImageUrl="~/Resources/Icons/close - pixelperfect.png" AlternateText="Exit Error" CssClass="error-button" OnClick="btnExitErr_Click"/> 
+                </div>
                <div class="content-container">
                    <div class="add-btn-div">
                        <asp:Button ID="btnAddResource" runat="server" Text="Add Resource" CssClass="waves-effect waves-light btn" style="left: 0px; top: 0px; height: 36px" PostBackUrl="~/Resource.aspx" />
@@ -64,10 +68,7 @@
                     <SortedDescendingHeaderStyle BackColor="#6F8DAE" />
                 </asp:GridView>
                </div>
-                    <div ID="divError" class="error-label" runat="server">
-                        <asp:Label ID="lblError" runat="server" Text="Error" ></asp:Label>
-                        <asp:ImageButton ID="btnExitErr" runat="server" ImageUrl="~/Resources/Icons/close - pixelperfect.png" AlternateText="Exit Error" CssClass="error-button" OnClick="btnExitErr_Click"/> 
-                    </div>
+                    
            </div>
         </div>
        
