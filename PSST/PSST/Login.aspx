@@ -14,7 +14,7 @@
         <uc:navigation runat="server" ID="navigation" />
 
         <div class="loginBackground">
-            <div class="container">
+            <div class="container login-contain">
 
                 <div class="row">
                     <div class="customColumn">
@@ -52,7 +52,7 @@
                             </div>
 
                             <div>
-                                <asp:Button ID="btnLogin" runat="server" Text="Login" OnClick="btnLogin_Click" />
+                                <asp:Button ID="btnLogin" runat="server" Text="Login" CssClass="btn" OnClick="btnLogin_Click" />
                             </div>
                         </div>
 
