@@ -6,6 +6,43 @@
  */
 
 /* CSS added by CMPG223 Distance Group 1 2024 */
+.invoice-form {
+	max-width: 500px;
+	margin-top: 50px;
+	margin: 0 auto;
+	padding: 20px;
+	font-family: Arial, sans-serif;
+	flex: 1;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+
+.form-group {
+	margin-bottom: 20px;
+}
+
+.form-control {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	font-size: 16px;
+}
+
+.preview-container {
+	display: flex;
+	justify-content: center;
+	margin-top: 20px;
+}
+
+#pdfPreview {
+	width: 50%; 
+	height: 85em;
+	border: 1px solid #ccc;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
 .search-div {
   display: flex;
 }
