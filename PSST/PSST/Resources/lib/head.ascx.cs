@@ -12,7 +12,10 @@ namespace PSST.Resources.lib
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            QuestPDF.Settings.License = LicenseType.Community;
+            if(!IsPostBack)
+            {
+                QuestPDF.Settings.License = LicenseType.Community;
+            }
         }
     }
 }
