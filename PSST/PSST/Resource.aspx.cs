@@ -228,6 +228,16 @@ namespace PSST
 
             try
             {
+                if (!(Regex.IsMatch(number, @"^(\+27|0)[6-8][0-9]{8}$")))
+                {
+                    throw new Exception("Invalid Phone Number.");
+                }
+
+                if (!(decimal.TryParse(wage, out decimal outWage)))
+                {
+                    throw new Exception("Invalid Wage.");
+                }
+
                 using (con = new MySqlConnection(connectionString))
                 {
                     MySqlDataAdapter adapter = new MySqlDataAdapter(query, con);
@@ -237,7 +247,7 @@ namespace PSST
                         cmd.Parameters.AddWithValue("@FName", name);
                         cmd.Parameters.AddWithValue("@LName", surname);
                         cmd.Parameters.AddWithValue("@PhoneNum", number);
-                        cmd.Parameters.AddWithValue("@Wage", wage);
+                        cmd.Parameters.AddWithValue("@Wage", outWage);
                         cmd.Parameters.AddWithValue("@Competencies", competencies);
                         cmd.Parameters.AddWithValue("@ResourceID", id);
 
@@ -370,16 +380,19 @@ namespace PSST
                         string phoneNum = txtPhoneNum.Text;
                         decimal wage;
                         string competencies = txtCompetencies.Text;
-                        
-                        if(!(int.TryParse(txtID.Text, out resourceID))) {
+
+                        if (!(int.TryParse(txtID.Text, out resourceID)))
+                        {
                             throw new Exception("Invalid Resource ID.");
                         }
 
-                        if (!(Regex.IsMatch(phoneNum, @"^(\+27|0)[6-8][0-9]{8}$"))) {
+                        if (!(Regex.IsMatch(phoneNum, @"^(\+27|0)[6-8][0-9]{8}$")))
+                        {
                             throw new Exception("Invalid Phone Number.");
                         }
 
-                        if (!(decimal.TryParse(txtWage.Text, out wage))) {
+                        if (!(decimal.TryParse(txtWage.Text, out wage)))
+                        {
                             throw new Exception("Invalid Wage.");
                         }
 

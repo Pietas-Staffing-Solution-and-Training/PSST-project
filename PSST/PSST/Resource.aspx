@@ -91,7 +91,7 @@
                             <asp:TextBox ID="txtCompetencies" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Competencies" ></asp:TextBox>
                         </div>
                     </div>
-                    <asp:Button ID="btnAddDB" runat="server" Text="Add Resource to DB" CssClass="btn" OnClick="btnAddDB_Click" />
+                    <asp:Button ID="btnAddDB" runat="server" Text="Add" CssClass="btn" OnClick="btnAddDB_Click" />
               </asp:Panel>
                     
            </div>

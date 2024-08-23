@@ -39,9 +39,6 @@
                               Width="100%">
                     <Columns>
 
-                        <asp:CommandField ShowSelectButton="True" ButtonType="Image" SelectImageUrl="~/Resources/Icons/invoice - thoseicons.png" >
-                        <ControlStyle Height="20px" />
-                        </asp:CommandField>
                         <asp:CommandField ButtonType="Image" EditImageUrl="~/Resources/Icons/edit - pixelperfect.png" ShowEditButton="True" CancelImageUrl="~/Resources/Icons/cancel - gregorcresnar.png" UpdateImageUrl="~/Resources/Icons/confirm - roundicons.png" >
                         <ControlStyle Height="20px" />
                         </asp:CommandField>
@@ -91,7 +88,7 @@
                             <asp:TextBox ID="txtEmail" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Competencies" ></asp:TextBox>
                         </div>
                     </div>
-                    <asp:Button ID="btnAddDB" runat="server" Text="Add Client to DB" CssClass="btn" OnClick="btnAddDB_Click" />
+                    <asp:Button ID="btnAddDB" runat="server" Text="Add" CssClass="btn" OnClick="btnAddDB_Click" />
               </asp:Panel>
                     
            </div>

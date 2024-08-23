@@ -57,19 +57,6 @@ namespace PSST
             GridViewRow row = ClientsData.Rows[selectedRow];
 
             int id = Convert.ToInt32(row.Cells[3].Text);
-
-            //In Jobs.aspx when making the invoice: 
-
-            //Response.Redirect("Invoice.aspx?value=" + id);
-            // then in invoice Page_Load you do the following:
-            // string JobId = Request.QueryString[value];
-
-            //OR using a session
-
-            //Session["JobId"] = id;
-            //Response.Redirect("Invoice.aspx)
-            // then in invoice Page_Load you do the following:
-            // string JobId = Session["JobID"] as string;
         }
 
         private void BindGridView()
@@ -153,7 +140,7 @@ namespace PSST
             BindGridView();
 
             GridViewRow row = ClientsData.Rows[e.NewEditIndex];
-            TextBox tbName = (TextBox)row.Cells[4].Controls[0];
+            TextBox tbName = (TextBox)row.Cells[3].Controls[0];
             tbName.Focus();
         }
 
@@ -164,13 +151,13 @@ namespace PSST
                 GridViewRow row = ClientsData.Rows[e.RowIndex];
 
                 int id = Convert.ToInt32(ClientsData.DataKeys[e.RowIndex].Value);
-                string name = ((TextBox)row.Cells[4].Controls[0]).Text;
-                string surname = ((TextBox)row.Cells[5].Controls[0]).Text;
-                string number = ((TextBox)row.Cells[6].Controls[0]).Text;
-                string wage = ((TextBox)row.Cells[7].Controls[0]).Text;
-                string competencies = ((TextBox)row.Cells[8].Controls[0]).Text;
+                string name = ((TextBox)row.Cells[3].Controls[0]).Text;
+                string surname = ((TextBox)row.Cells[4].Controls[0]).Text;
+                string number = ((TextBox)row.Cells[5].Controls[0]).Text;
+                string address = ((TextBox)row.Cells[6].Controls[0]).Text;
+                string email = ((TextBox)row.Cells[7].Controls[0]).Text;
 
-                updateRecord(id, name, surname, number, wage, competencies);
+                updateRecord(id, name, surname, number, address, email);
 
                 ClientsData.EditIndex = -1;
                 BindGridView();
@@ -229,12 +216,22 @@ namespace PSST
             }
         }
 
-        protected void updateRecord(int id, string name, string surname, string number, string wage, string competencies)
+        protected void updateRecord(int id, string name, string surname, string number, string address, string email)
         {
             string query = @"UPDATE CLIENT SET FName = @FName, LName = @LName, Phone_Num = @PhoneNum, Address = @Address, Email = @Email WHERE Client_ID = @ClientID";
 
             try
             {
+                if (!(Regex.IsMatch(number, @"^(\+27|0)[6-8][0-9]{8}$")))
+                {
+                    throw new Exception("Invalid Phone Number.");
+                }
+
+                if (!(Regex.IsMatch(email, @"^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$")))
+                {
+                    throw new Exception("Invalid Email Address.");
+                }
+
                 using (con = new MySqlConnection(connectionString))
                 {
                     MySqlDataAdapter adapter = new MySqlDataAdapter(query, con);
@@ -244,8 +241,8 @@ namespace PSST
                         cmd.Parameters.AddWithValue("@FName", name);
                         cmd.Parameters.AddWithValue("@LName", surname);
                         cmd.Parameters.AddWithValue("@PhoneNum", number);
-                        cmd.Parameters.AddWithValue("@Wage", wage);
-                        cmd.Parameters.AddWithValue("@Competencies", competencies);
+                        cmd.Parameters.AddWithValue("@Address", address);
+                        cmd.Parameters.AddWithValue("@Email", email);
                         cmd.Parameters.AddWithValue("@ClientID", id);
 
                         con.Open();
