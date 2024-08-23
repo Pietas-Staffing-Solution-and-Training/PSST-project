@@ -9,6 +9,7 @@ using System.Drawing;
 using System.Data.SqlClient;
 using static QuestPDF.Helpers.Colors;
 using System.Xml.Linq;
+using System.Text.RegularExpressions;
 
 namespace PSST
 {
@@ -290,6 +291,7 @@ namespace PSST
                         BindGridView();
                     }
                 }
+                clearError();
                 FillIDBox();
             }
             catch (MySqlException)
@@ -334,6 +336,11 @@ namespace PSST
             lblError.Text = error;
         }
 
+        protected void clearError()
+        {
+            divError.Visible = false;
+        }
+
         protected void btnExitErr_Click(object sender, EventArgs e)
         {
             divError.Visible = false;
@@ -368,25 +375,16 @@ namespace PSST
                         decimal wage;
                         string competencies = txtCompetencies.Text;
                         
-                        if(int.TryParse(txtID.Text, out resourceID)) {
-                            // Success
-                        }
-                        else {
-                            showError("Invalid Resource ID.");
+                        if(!(int.TryParse(txtID.Text, out resourceID))) {
+                            throw new Exception("Invalid Resource ID.");
                         }
 
-                        //if (int.TryParse(txtPhoneNum.Text, out phoneNum)) {
-                        //    // Success
-                        //}
-                        //else {
-                        //    showError("Invalid Phone Number.");
-                        //}
-
-                        if (decimal.TryParse(txtWage.Text, out wage)) {
-                            // Success
+                        if (!(Regex.IsMatch(phoneNum, @"^(\+27|0)[6-8][0-9]{8}$"))) {
+                            throw new Exception("Invalid Phone Number.");
                         }
-                        else {
-                            showError("Invalid Wage.");
+
+                        if (!(decimal.TryParse(txtWage.Text, out wage))) {
+                            throw new Exception("Invalid Wage.");
                         }
 
                         cmd.Parameters.AddWithValue("@ResourceID", txtID.Text);
@@ -412,9 +410,7 @@ namespace PSST
                 }
 
                 FillIDBox();
-
-                
-
+                clearError();
             }
             catch (Exception ex)
             {
