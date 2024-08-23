@@ -6,6 +6,10 @@ using System;
 using System.Configuration;
 using MySql.Data.MySqlClient;
 using System.Drawing;
+using System.Data.SqlClient;
+using static QuestPDF.Helpers.Colors;
+using System.Xml.Linq;
+using System.Text.RegularExpressions;
 
 namespace PSST
 {
@@ -21,6 +25,8 @@ namespace PSST
 
             //Get session value - returns null if doesn't exist
             string username = Session["username"]?.ToString();
+            string type = Session["type"]?.ToString();
+            type = "admin"; // REMOVE IN PRODUCTION
 
             //If string is null
             if (username == null)
@@ -29,9 +35,17 @@ namespace PSST
                 return;
             }
 
+            if(type == "admin")
+            {
+                
+            } else {
+                adminPanel.Visible = false;
+            }
+
             if (!IsPostBack)
             {
                 BindGridView();
+                FillIDBox();
                 divError.Visible = false;
             }
         }
@@ -86,6 +100,42 @@ namespace PSST
             
         }
 
+        private void FillIDBox() // Gets the next ID
+        {
+            string query = "SELECT MAX(Resource_ID) FROM RESOURCE";
+            try
+            {
+                txtFName.Text = string.Empty;
+                txtLName.Text = string.Empty;
+                txtPhoneNum.Text = string.Empty;
+                txtWage.Text = string.Empty;
+                txtCompetencies.Text = string.Empty;
+
+                using (MySqlConnection con = new MySqlConnection(connectionString))
+                {
+                    MySqlCommand cmd = new MySqlCommand(query, con);
+                    con.Open();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            int highestID = reader.GetInt32(0);
+                            int nextID = highestID + 1;
+
+                            // Set the new ID in the TextBox
+                            txtID.Text = nextID.ToString();
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                showError(ex.Message);
+            }
+        }
+
         protected void ResourceData_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
             int id = Convert.ToInt32(ResourceData.DataKeys[e.RowIndex].Value);
@@ -134,12 +184,14 @@ namespace PSST
             BindGridView();  
         }
 
+
+
         protected void txtSearch_TextChanged(object sender, EventArgs e)
         {
-
+            divError.Visible = false; // Hides errors when searching again
             string search = txtSearch.Text;
 
-            string query = $"SELECT Resource_ID, FName, LName, Phone_Num, Wage, Competencies FROM RESOURCE WHERE Resource_ID LIKE @SearchTerm OR FName LIKE @SearchTerm OR LName LIKE @SearchTerm OR Phone_Num LIKE @SearchTerm OR Wage LIKE @SearchTerm OR Competencies LIKE @SearchTerm";
+            string query = $"SELECT Resource_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', ROUND(Wage, 2) AS 'Wage p/h', Competencies FROM RESOURCE WHERE Resource_ID LIKE @SearchTerm OR FName LIKE @SearchTerm OR LName LIKE @SearchTerm OR Phone_Num LIKE @SearchTerm OR Wage LIKE @SearchTerm OR Competencies LIKE @SearchTerm";
 
             try
             {
@@ -239,6 +291,8 @@ namespace PSST
                         BindGridView();
                     }
                 }
+                clearError();
+                FillIDBox();
             }
             catch (MySqlException)
             {
@@ -282,9 +336,86 @@ namespace PSST
             lblError.Text = error;
         }
 
+        protected void clearError()
+        {
+            divError.Visible = false;
+        }
+
         protected void btnExitErr_Click(object sender, EventArgs e)
         {
             divError.Visible = false;
+        }
+
+        protected void btnSearch_Click(object sender, EventArgs e) // Acts as if text changed in textbox for search
+        {
+            txtSearch_TextChanged(sender, e);
+        }
+
+        protected void btnSearchClear_Click(object sender, EventArgs e)
+        {
+            txtSearch.Text = "";
+            txtSearch_TextChanged(sender, e);
+        }
+
+        protected void btnAddDB_Click(object sender, EventArgs e)
+        {
+            string query = @"INSERT INTO RESOURCE (Resource_ID, FName, LName, Phone_Num, Wage, Competencies) 
+                 VALUES (@ResourceID, @FName, @LName, @PhoneNum, @Wage, @Competencies)";
+
+            try
+            {
+                using (MySqlConnection con = new MySqlConnection(connectionString))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand(query, con))
+                    {
+                        int resourceID;
+                        string fName = txtFName.Text;
+                        string lName = txtLName.Text;
+                        string phoneNum = txtPhoneNum.Text;
+                        decimal wage;
+                        string competencies = txtCompetencies.Text;
+                        
+                        if(!(int.TryParse(txtID.Text, out resourceID))) {
+                            throw new Exception("Invalid Resource ID.");
+                        }
+
+                        if (!(Regex.IsMatch(phoneNum, @"^(\+27|0)[6-8][0-9]{8}$"))) {
+                            throw new Exception("Invalid Phone Number.");
+                        }
+
+                        if (!(decimal.TryParse(txtWage.Text, out wage))) {
+                            throw new Exception("Invalid Wage.");
+                        }
+
+                        cmd.Parameters.AddWithValue("@ResourceID", txtID.Text);
+                        cmd.Parameters.AddWithValue("@FName", fName);
+                        cmd.Parameters.AddWithValue("@LName", lName);
+                        cmd.Parameters.AddWithValue("@PhoneNum", phoneNum);
+                        cmd.Parameters.AddWithValue("@Wage", wage);
+                        cmd.Parameters.AddWithValue("@Competencies", competencies);
+
+                        con.Open();
+                        int rowsAffected = cmd.ExecuteNonQuery();
+
+                        // Check if the insert was successful
+                        if (rowsAffected > 0) {
+                            BindGridView();
+                        }
+                        else {
+                            showError("Insert operation failed."); // Insert failed or no rows affected
+                        }
+
+                        con.Close();
+                    }
+                }
+
+                FillIDBox();
+                clearError();
+            }
+            catch (Exception ex)
+            {
+                showError(ex.Message);
+            }
         }
     }
 }
