@@ -104,6 +104,12 @@ namespace PSST
             string query = "SELECT MAX(Resource_ID) FROM RESOURCE";
             try
             {
+                txtFName.Text = string.Empty;
+                txtLName.Text = string.Empty;
+                txtPhoneNum.Text = string.Empty;
+                txtWage.Text = string.Empty;
+                txtCompetencies.Text = string.Empty;
+
                 using (MySqlConnection con = new MySqlConnection(connectionString))
                 {
                     MySqlCommand cmd = new MySqlCommand(query, con);
@@ -121,6 +127,7 @@ namespace PSST
                         }
                     }
                 }
+
             }
             catch (Exception ex)
             {
@@ -283,6 +290,7 @@ namespace PSST
                         BindGridView();
                     }
                 }
+                FillIDBox();
             }
             catch (MySqlException)
             {
@@ -356,7 +364,7 @@ namespace PSST
                         int resourceID;
                         string fName = txtFName.Text;
                         string lName = txtLName.Text;
-                        int phoneNum;
+                        string phoneNum = txtPhoneNum.Text;
                         decimal wage;
                         string competencies = txtCompetencies.Text;
                         
@@ -367,14 +375,14 @@ namespace PSST
                             showError("Invalid Resource ID.");
                         }
 
-                        if (int.TryParse(txtPhoneNum.Text, out phoneNum)) {
-                            // Success
-                        }
-                        else {
-                            showError("Invalid Phone Number.");
-                        }
+                        //if (int.TryParse(txtPhoneNum.Text, out phoneNum)) {
+                        //    // Success
+                        //}
+                        //else {
+                        //    showError("Invalid Phone Number.");
+                        //}
 
-                        if (decimal.TryParse(txtID.Text, out wage)) {
+                        if (decimal.TryParse(txtWage.Text, out wage)) {
                             // Success
                         }
                         else {
@@ -402,6 +410,11 @@ namespace PSST
                         con.Close();
                     }
                 }
+
+                FillIDBox();
+
+                
+
             }
             catch (Exception ex)
             {
