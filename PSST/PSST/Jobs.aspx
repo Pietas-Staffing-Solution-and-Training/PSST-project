@@ -75,25 +75,25 @@
                      <asp:Label ID="lblAdd" runat="server" Text="Add New Job" Font-Size="X-Large" ForeColor="#003479"></asp:Label>
                      <div class="add-container" id="scrollTarget">
                         <div class="add-row">
-                            <asp:Label ID="lblID" runat="server" CssClass="add-label" Text="Resource ID:" ></asp:Label>
-                            <asp:TextBox ID="txtID" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Resource ID" ReadOnly="True" ></asp:TextBox>
-                            <asp:Label ID="lblPhoneNum" runat="server" CssClass="add-label" Text="Phone Number:" ></asp:Label>
-                            <asp:TextBox ID="txtPhoneNum" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Phone Number" ></asp:TextBox>
+                            <asp:Label ID="lblID" runat="server" CssClass="add-label" Text="Job ID:" ></asp:Label>
+                            <asp:TextBox ID="txtJobID" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Resource ID" ReadOnly="True" ></asp:TextBox>
+                            <asp:Label ID="lblDescription" runat="server" CssClass="add-label" Text="Description:" ></asp:Label>
+                            <asp:TextBox ID="txtDescription" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Phone Number" ></asp:TextBox>
                         </div>
                         <div class="add-row">
-                            <asp:Label ID="lblFName" runat="server" CssClass="add-label" Text="First Name:" ></asp:Label>
-                            <asp:TextBox ID="txtFName" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="First Name" ></asp:TextBox>
-                            <asp:Label ID="lblWage" runat="server" CssClass="add-label" Text="Wage p/h:" ></asp:Label>
-                            <asp:TextBox ID="txtWage" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Wage" ></asp:TextBox>
+                            <asp:Label ID="lblResourceID" runat="server" CssClass="add-label" Text="Resource ID:" ></asp:Label>
+                            <asp:TextBox ID="txtResourceID" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="First Name" OnTextChanged="txtResourceID_TextChanged" ></asp:TextBox>
+                            <asp:Label ID="lblBudget" runat="server" CssClass="add-label" Text="Budget:" ></asp:Label>
+                            <asp:TextBox ID="txtBudget" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Wage" ></asp:TextBox>
                         </div>
                         <div class="add-row">
-                            <asp:Label ID="lblLName" runat="server" CssClass="add-label" Text="Last Name:" ></asp:Label>
-                            <asp:TextBox ID="txtLName" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Last Name" ></asp:TextBox>
-                            <asp:Label ID="lblCompetencies" runat="server" CssClass="add-label" Text="Competencies:" ></asp:Label>
-                            <asp:TextBox ID="txtCompetencies" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Competencies" ></asp:TextBox>
+                            <asp:Label ID="lblClientID" runat="server" CssClass="add-label" Text="Client ID:" ></asp:Label>
+                            <asp:TextBox ID="txtClientID" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Last Name" ></asp:TextBox>
+                            <asp:Label ID="lblRequiredResources" runat="server" CssClass="add-label" Text="Required Resources:" ></asp:Label>
+                            <asp:TextBox ID="txtRequiredResources" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Competencies" ></asp:TextBox>
                         </div>
                     </div>
-                    <asp:Button ID="btnAddDB" runat="server" Text="Add Resource to DB" CssClass="btn" OnClick="btnAddDB_Click" />
+                    <asp:Button ID="btnAddDB" runat="server" Text="Add Job" CssClass="btn" OnClick="btnAddDB_Click" />
               </asp:Panel>
                     
            </div>

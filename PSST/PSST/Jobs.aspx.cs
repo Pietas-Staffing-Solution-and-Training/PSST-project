@@ -68,7 +68,7 @@ namespace PSST
         private void BindGridView()
         {
 
-            string query = "SELECT Resource_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', ROUND(Wage, 2) AS 'Wage p/h', Competencies FROM RESOURCE";
+            string query = "SELECT Job_ID, Description AS 'Description', Resource_ID, Client_ID, ROUND(Budget, 2) AS 'Budget', Required_Resources AS 'Required Resources' FROM JOB";
 
             try
             {
@@ -97,14 +97,14 @@ namespace PSST
 
         private void FillIDBox() // Gets the next ID
         {
-            string query = "SELECT MAX(Resource_ID) FROM RESOURCE";
+            string query = "SELECT MAX(Job_ID) FROM JOB";
             try
             {
-                txtFName.Text = string.Empty;
-                txtLName.Text = string.Empty;
-                txtPhoneNum.Text = string.Empty;
-                txtWage.Text = string.Empty;
-                txtCompetencies.Text = string.Empty;
+                txtResourceID.Text = string.Empty;
+                txtClientID.Text = string.Empty;
+                txtDescription.Text = string.Empty;
+                txtBudget.Text = string.Empty;
+                txtRequiredResources.Text = string.Empty;
 
                 using (MySqlConnection con = new MySqlConnection(connectionString))
                 {
@@ -119,7 +119,7 @@ namespace PSST
                             int nextID = highestID + 1;
 
                             // Set the new ID in the TextBox
-                            txtID.Text = nextID.ToString();
+                            txtJobID.Text = nextID.ToString();
                         }
                     }
                 }
@@ -156,14 +156,14 @@ namespace PSST
             {
                 GridViewRow row = JobData.Rows[e.RowIndex];
 
-                int id = Convert.ToInt32(JobData.DataKeys[e.RowIndex].Value);
-                string name = ((TextBox)row.Cells[4].Controls[0]).Text;
-                string surname = ((TextBox)row.Cells[5].Controls[0]).Text;
-                string number = ((TextBox)row.Cells[6].Controls[0]).Text;
-                string wage = ((TextBox)row.Cells[7].Controls[0]).Text;
-                string competencies = ((TextBox)row.Cells[8].Controls[0]).Text;
+                int jobID = Convert.ToInt32(JobData.DataKeys[e.RowIndex].Value);
+                string description = ((TextBox)row.Cells[4].Controls[0]).Text;
+                string resourceID = ((TextBox)row.Cells[5].Controls[0]).Text;
+                string clientID = ((TextBox)row.Cells[6].Controls[0]).Text;
+                string budget = ((TextBox)row.Cells[7].Controls[0]).Text;
+                string required_resources = ((TextBox)row.Cells[8].Controls[0]).Text;
 
-                updateRecord(id, name, surname, number, wage, competencies);
+                updateRecord(jobID, description, resourceID, clientID, budget, required_resources);
 
                 JobData.EditIndex = -1;
                 BindGridView();
@@ -187,7 +187,7 @@ namespace PSST
             divError.Visible = false; // Hides errors when searching again
             string search = txtSearch.Text;
 
-            string query = $"SELECT Resource_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', ROUND(Wage, 2) AS 'Wage p/h', Competencies FROM RESOURCE WHERE Resource_ID LIKE @SearchTerm OR FName LIKE @SearchTerm OR LName LIKE @SearchTerm OR Phone_Num LIKE @SearchTerm OR Wage LIKE @SearchTerm OR Competencies LIKE @SearchTerm";
+            string query = $"SELECT Job_ID, Description, Resource_ID, Client_ID, ROUND(Budget, 2) AS Budget, Required_Resources FROM JOB WHERE Job_ID LIKE @SearchTerm OR Description LIKE @SearchTerm OR Resource_ID LIKE @SearchTerm OR Client_ID LIKE @SearchTerm OR Budget LIKE @SearchTerm OR Required_Resources LIKE @SearchTerm";
 
             try
             {
@@ -224,7 +224,7 @@ namespace PSST
 
         protected void updateRecord(int id, string name, string surname, string number, string wage, string competencies)
         {
-            string query = @"UPDATE RESOURCE SET FName = @FName, LName = @LName, Phone_Num = @PhoneNum, Wage = @Wage, Competencies = @Competencies WHERE Resource_ID = @ResourceID";
+            string query = @"UPDATE JOB SET FName = @FName, LName = @LName, Phone_Num = @PhoneNum, Wage = @Wage, Competencies = @Competencies WHERE Resource_ID = @ResourceID";
 
             try
             {
@@ -263,7 +263,7 @@ namespace PSST
         protected void deleteRecord(int id)
         {
 
-            string query = @"DELETE FROM RESOURCE WHERE Resource_ID = @ResourceID";
+            string query = @"DELETE FROM JOB WHERE Job_ID = @JobID";
 
             try
             {
@@ -355,7 +355,7 @@ namespace PSST
 
         protected void btnAddDB_Click(object sender, EventArgs e)
         {
-            string query = @"INSERT INTO RESOURCE (Resource_ID, FName, LName, Phone_Num, Wage, Competencies) 
+            string query = @"INSERT INTO JOB (Job_ID, Description, Resource_ID, Client_ID, Budget, Required_Resources) 
                  VALUES (@ResourceID, @FName, @LName, @PhoneNum, @Wage, @Competencies)";
 
             try
@@ -364,34 +364,39 @@ namespace PSST
                 {
                     using (MySqlCommand cmd = new MySqlCommand(query, con))
                     {
-                        int resourceID;
-                        string fName = txtFName.Text;
-                        string lName = txtLName.Text;
-                        string phoneNum = txtPhoneNum.Text;
-                        decimal wage;
-                        string competencies = txtCompetencies.Text;
+                        int jobID;
+                        string description = txtDescription.Text;
+                        int resourceID; ;
+                        int clientID;
+                        decimal budget;
+                        string required_resources = txtRequiredResources.Text;
 
-                        if (!(int.TryParse(txtID.Text, out resourceID)))
+                        if (!(int.TryParse(txtJobID.Text, out jobID)))
+                        {
+                            throw new Exception("Invalid Job ID.");
+                        }
+
+                        if (!(int.TryParse(txtResourceID.Text, out resourceID)))
                         {
                             throw new Exception("Invalid Resource ID.");
                         }
 
-                        if (!(Regex.IsMatch(phoneNum, @"^(\+27|0)[6-8][0-9]{8}$")))
+                        if (!(int.TryParse(txtClientID.Text, out clientID)))
                         {
-                            throw new Exception("Invalid Phone Number.");
+                            throw new Exception("Invalid Client ID.");
                         }
 
-                        if (!(decimal.TryParse(txtWage.Text, out wage)))
+                        if (!(decimal.TryParse(txtBudget.Text, out budget)))
                         {
                             throw new Exception("Invalid Wage.");
                         }
 
-                        cmd.Parameters.AddWithValue("@ResourceID", txtID.Text);
-                        cmd.Parameters.AddWithValue("@FName", fName);
-                        cmd.Parameters.AddWithValue("@LName", lName);
-                        cmd.Parameters.AddWithValue("@PhoneNum", phoneNum);
-                        cmd.Parameters.AddWithValue("@Wage", wage);
-                        cmd.Parameters.AddWithValue("@Competencies", competencies);
+                        cmd.Parameters.AddWithValue("@JobID", jobID);
+                        cmd.Parameters.AddWithValue("@Description", description);
+                        cmd.Parameters.AddWithValue("@ResourceID", resourceID);
+                        cmd.Parameters.AddWithValue("@ClientID", clientID);
+                        cmd.Parameters.AddWithValue("@Budget", budget);
+                        cmd.Parameters.AddWithValue("@RequiredResources", required_resources);
 
                         con.Open();
                         int rowsAffected = cmd.ExecuteNonQuery();
@@ -417,6 +422,11 @@ namespace PSST
             {
                 showError(ex.Message);
             }
+        }
+
+        protected void txtResourceID_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
