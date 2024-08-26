@@ -13,5 +13,17 @@ namespace PSST.Resources.lib
         {
 
         }
+
+        protected void Logout_Click(object sender, EventArgs e)
+        {
+            // Remove the username from the session
+            Session["username"] = null;
+
+            // Optionally abandon the session to clear all session data
+            Session.Abandon();
+
+            // Redirect to the login page
+            Response.Redirect("~/Login.aspx");
+        }
     }
 }
