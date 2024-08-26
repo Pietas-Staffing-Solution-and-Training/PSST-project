@@ -68,7 +68,7 @@ namespace PSST
         private void BindGridView()
         {
 
-            string query = "SELECT Job_ID, Description AS 'Description', Resource_ID, Client_ID, ROUND(Budget, 2) AS 'Budget', Required_Resources AS 'Required Resources' FROM JOB";
+            string query = "SELECT * FROM JOB";
 
             try
             {
@@ -158,9 +158,9 @@ namespace PSST
 
                 int jobID = Convert.ToInt32(JobData.DataKeys[e.RowIndex].Value);
                 string description = ((TextBox)row.Cells[4].Controls[0]).Text;
-                string resourceID = ((TextBox)row.Cells[5].Controls[0]).Text;
-                string clientID = ((TextBox)row.Cells[6].Controls[0]).Text;
-                string budget = ((TextBox)row.Cells[7].Controls[0]).Text;
+                int resourceID = Convert.ToInt32(JobData.DataKeys[e.RowIndex].Value);
+                int clientID = Convert.ToInt32(JobData.DataKeys[e.RowIndex].Value);
+                decimal budget = Convert.ToDecimal(JobData.DataKeys[e.RowIndex].Value);
                 string required_resources = ((TextBox)row.Cells[8].Controls[0]).Text;
 
                 updateRecord(jobID, description, resourceID, clientID, budget, required_resources);
@@ -187,7 +187,7 @@ namespace PSST
             divError.Visible = false; // Hides errors when searching again
             string search = txtSearch.Text;
 
-            string query = $"SELECT Job_ID, Description, Resource_ID, Client_ID, ROUND(Budget, 2) AS Budget, Required_Resources FROM JOB WHERE Job_ID LIKE @SearchTerm OR Description LIKE @SearchTerm OR Resource_ID LIKE @SearchTerm OR Client_ID LIKE @SearchTerm OR Budget LIKE @SearchTerm OR Required_Resources LIKE @SearchTerm";
+            string query = $"SELECT Job_ID, Description, Resource_ID, Client_ID, ROUND(Budget, 2) AS Budget FROM JOB WHERE Job_ID LIKE @SearchTerm OR Description LIKE @SearchTerm OR Resource_ID LIKE @SearchTerm OR Client_ID LIKE @SearchTerm OR Budget LIKE @SearchTerm";
 
             try
             {
@@ -222,9 +222,9 @@ namespace PSST
             }
         }
 
-        protected void updateRecord(int id, string name, string surname, string number, string wage, string competencies)
+        protected void updateRecord(int jobID, string description, int resourceID, int clientID, decimal budget, string requiredResources)
         {
-            string query = @"UPDATE JOB SET FName = @FName, LName = @LName, Phone_Num = @PhoneNum, Wage = @Wage, Competencies = @Competencies WHERE Resource_ID = @ResourceID";
+            string query = @"UPDATE JOB SET Description = @Description, Resource_ID = @ResourceID, Client_ID = @ClientID, Budget = @Budget, Required_Resources = @RequiredResources WHERE Job_ID = @JobID";
 
             try
             {
@@ -234,12 +234,12 @@ namespace PSST
 
                     using (MySqlCommand cmd = new MySqlCommand(query, con))
                     {
-                        cmd.Parameters.AddWithValue("@FName", name);
-                        cmd.Parameters.AddWithValue("@LName", surname);
-                        cmd.Parameters.AddWithValue("@PhoneNum", number);
-                        cmd.Parameters.AddWithValue("@Wage", wage);
-                        cmd.Parameters.AddWithValue("@Competencies", competencies);
-                        cmd.Parameters.AddWithValue("@ResourceID", id);
+                        cmd.Parameters.AddWithValue("@Description", description);
+                        cmd.Parameters.AddWithValue("@ResourceID", resourceID);
+                        cmd.Parameters.AddWithValue("@ClientID", clientID);
+                        cmd.Parameters.AddWithValue("@Budget", budget);
+                        cmd.Parameters.AddWithValue("@Competencies", requiredResources);
+                        cmd.Parameters.AddWithValue("@JobID", jobID);
 
                         con.Open();
                         int rowsAffected = cmd.ExecuteNonQuery();
@@ -273,7 +273,7 @@ namespace PSST
 
                     using (MySqlCommand cmd = new MySqlCommand(query, con))
                     {
-                        cmd.Parameters.AddWithValue("@ResourceID", id);
+                        cmd.Parameters.AddWithValue("@JobID", id);
 
                         con.Open();
                         int rowsAffected = cmd.ExecuteNonQuery();
@@ -302,13 +302,13 @@ namespace PSST
         {
             // Get the id of the job a resource is connected (If Resource Has Job = ifRhasJob)
             string jobId = "";
-            string jobQuery = @"SELECT Job_ID FROM JOB WHERE Resource_ID = @Resource_ID";
+            string jobQuery = @"SELECT Job_ID FROM JOB WHERE Job_ID = @JobID";
 
             using (con = new MySqlConnection(connectionString))
             {
 
                 MySqlCommand command = new MySqlCommand(jobQuery, con);
-                command.Parameters.AddWithValue("@Resource_ID", id);
+                command.Parameters.AddWithValue("@Job_ID", id);
 
                 con.Open();
 
@@ -356,7 +356,7 @@ namespace PSST
         protected void btnAddDB_Click(object sender, EventArgs e)
         {
             string query = @"INSERT INTO JOB (Job_ID, Description, Resource_ID, Client_ID, Budget, Required_Resources) 
-                 VALUES (@ResourceID, @FName, @LName, @PhoneNum, @Wage, @Competencies)";
+                 VALUES (@JobID, @Description, @ResourceID, @ClientID, @Budget, @RequiredResources)";
 
             try
             {
