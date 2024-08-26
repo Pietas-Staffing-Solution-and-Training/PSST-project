@@ -10,6 +10,8 @@ using System.Data.SqlClient;
 using static QuestPDF.Helpers.Colors;
 using System.Xml.Linq;
 using System.Text.RegularExpressions;
+using MySqlX.XDevAPI;
+using System.Security.Cryptography;
 
 namespace PSST
 {
@@ -19,35 +21,40 @@ namespace PSST
         string connectionString = ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
+            bool isAdmin = false;
 
-            //Get session value - returns null if doesn't exist
+            // Get session value - returns null if doesn't exist
             string username = Session["username"]?.ToString();
-            string type = Session["type"]?.ToString();
-            type = "admin"; // REMOVE IN PRODUCTION
 
-            //If string is null
+            if (!IsPostBack)
+            {
+                adminPanel.Visible = false;
+                BindGridView();
+                FillIDBox();
+                divError.Visible = false;
+            }
+            
+            if((int)Session["isAdmin"] == 1)
+            {
+                isAdmin = true;
+            }
+
+            // If username is null
             if (username == null)
             {
                 Response.Redirect("Login.aspx");
                 return;
             }
 
-            if (type == "admin")
+            if (isAdmin)
             {
-
+                adminPanel.Visible = true;
             }
             else
             {
                 adminPanel.Visible = false;
                 Response.Redirect("Dashboard.aspx");
                 return;
-            }
-
-            if (!IsPostBack)
-            {
-                BindGridView();
-                FillIDBox();
-                divError.Visible = false;
             }
         }
 
