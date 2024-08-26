@@ -33,10 +33,13 @@ namespace PSST
                 FillIDBox();
                 divError.Visible = false;
             }
-            
-            if((int)Session["isAdmin"] == 1)
+
+            if (Session["isAdmin"] != null)
             {
-                isAdmin = true;
+                if ((int)Session["isAdmin"] == 1)
+                {
+                    isAdmin = true;
+                }
             }
 
             // If username is null
