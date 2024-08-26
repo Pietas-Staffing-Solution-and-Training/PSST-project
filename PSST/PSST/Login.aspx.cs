@@ -22,29 +22,9 @@ namespace PSST
         protected void Page_Load(object sender, EventArgs e)
         {
             //Comment this in for always successfull connection
-            tbUsername.Text = "Ruan@email.com";
+            tbUsername.Text = "Ruan";
             tbPassword.TextMode = TextBoxMode.SingleLine;
             tbPassword.Text = "TestThisP@s5W0rD!";
-        }
-
-        protected void valUsername_ServerValidate(object source, ServerValidateEventArgs args)
-        {
-            //Get user input
-            string userInput = args.Value;
-
-            //Create instance of security class
-            security usernameVal = new security();
-
-            //Check if email is valid
-            if ( usernameVal.isValidEmailAddress( userInput ) )
-            {
-                args.IsValid = true;
-            } else
-            {
-                args.IsValid = false;
-                return;
-            }
-
         }
 
         protected void CustomValidator1_ServerValidate(object source, ServerValidateEventArgs args)
@@ -56,7 +36,7 @@ namespace PSST
             security passwordVal = new security();
 
             //Check if email is valid
-            if (passwordVal.isValidEmailAddress(userInput))
+            if (passwordVal.isValidPassword(userInput))
             {
                 args.IsValid = true;
             }
@@ -73,6 +53,7 @@ namespace PSST
             //Get data from user
             string username = tbUsername.Text;
             string password = tbPassword.Text;
+            int isAdmin, isUser = 0;
 
             //check if emtpy - redundant - CODE SHOULD NOT REACH HERE IF ITS EMPTY
             if ( stringIsEmpty(username) || stringIsEmpty(password) )
@@ -86,18 +67,36 @@ namespace PSST
             //Encrypt password
             string encryptedPassword = encryptPass.encrypt(password);
 
-            //Drop login if anything other than 1 combination exists in DB
-            if ( CountFromDB(username, encryptedPassword) != 1 )
+            isAdmin = CountFromDB(username, encryptedPassword, true);
+
+            if ( isAdmin != 1 )
+            {
+                isUser = CountFromDB(username, encryptedPassword, false);
+            } else
+            {
+                //Valid session username
+                Session["username"] = username;
+
+                //Valid admin session
+                Session["isAdmin"] = 1;
+
+                //Redirect user to dashboard page
+                Response.Redirect("~/Dashboard.aspx");
+            }
+
+            if ( isUser != 1 )
             {
                 loginFailed();
                 return;
+            } else
+            {
+                //Valid session username
+                Session["username"] = username;
+
+                //Redirect user to dashboard page
+                Response.Redirect("~/Dashboard.aspx");
             }
 
-            //Valid session username
-            Session["username"] = username;
-
-            //Redirect user to dashboard page
-            Response.Redirect("~/Dashboard.aspx");
         }
 
         //Check if a string is empty
@@ -119,7 +118,7 @@ namespace PSST
         }
 
         //Returns number of instances of userInput in DB column
-        private int CountFromDB( string USERNAME, string PASSWORD )
+        private int CountFromDB( string USERNAME, string PASSWORD, bool testAdmin )
         {
             
             try
@@ -128,15 +127,36 @@ namespace PSST
                 {
                     conn.Open();
 
+                    string query = "";
+
                     //Create SQL query
-                    string query = "SELECT COUNT(*) FROM ADMIN WHERE Username = @cleanUsername AND Password = @cleanPassword";
+                    if ( testAdmin )
+                    {
+                        query = "SELECT COUNT(*) FROM ADMIN WHERE Username = @cleanUsername AND Password = @cleanPassword";
+                    } else
+                    {
+                        query = "SELECT COUNT(*) FROM RESOURCE WHERE FName = @cleanFName AND LName = @cleanLName AND Password = @cleanPassword";
+                    }
+                    
 
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
-
                         //Add parameters to query
-                        cmd.Parameters.AddWithValue("@cleanUsername", USERNAME);
-                        cmd.Parameters.AddWithValue("@cleanPassword", PASSWORD);
+                        if (testAdmin) {                            
+                            cmd.Parameters.AddWithValue("@cleanUsername", USERNAME);
+                            cmd.Parameters.AddWithValue("@cleanPassword", PASSWORD);
+                        } else
+                        {
+                            string[] names = USERNAME.Split(' ');
+
+                            string firstName = names[0];
+                            string lastName = names[1];
+
+                            cmd.Parameters.AddWithValue("@cleanFName", firstName);
+                            cmd.Parameters.AddWithValue("@cleanLName", lastName);
+                            cmd.Parameters.AddWithValue("@cleanPassword", PASSWORD);
+                        }
+                        
 
                         int itemToReturn = Convert.ToInt32(cmd.ExecuteScalar());
 

@@ -51,15 +51,6 @@ namespace PSST
         protected global::System.Web.UI.WebControls.TextBox tbUsername;
 
         /// <summary>
-        /// valUsername control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CustomValidator valUsername;
-
-        /// <summary>
         /// tbPassword control.
         /// </summary>
         /// <remarks>

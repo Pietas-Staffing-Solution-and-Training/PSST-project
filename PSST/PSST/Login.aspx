@@ -32,7 +32,6 @@
                                 </div>
                                 <div>
                                     <asp:TextBox ID="tbUsername" runat="server" ToolTip="Please enter your email address" AutoCompleteType="Email"></asp:TextBox>
-                                    <asp:CustomValidator ID="valUsername" runat="server" ErrorMessage="Please enter a valid email address" ClientValidationFunction="ValidateInput_Client" OnServerValidate="valUsername_ServerValidate" ControlToValidate="tbUsername"></asp:CustomValidator>
                                 </div>
                             </div>
 
