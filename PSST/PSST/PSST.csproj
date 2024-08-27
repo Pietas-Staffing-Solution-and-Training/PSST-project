@@ -125,6 +125,7 @@
     <Content Include="Dashboard.aspx" />
     <Content Include="Global.asax" />
     <Content Include="InvoiceForm.aspx" />
+    <Content Include="Jobs.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="Resource.aspx" />
     <Content Include="Resources\Icons\bin - freepik.png" />
@@ -153,6 +154,13 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Jobs.aspx.cs">
+      <DependentUpon>Jobs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Jobs.aspx.designer.cs">
+      <DependentUpon>Jobs.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Dashboard.aspx.cs">
