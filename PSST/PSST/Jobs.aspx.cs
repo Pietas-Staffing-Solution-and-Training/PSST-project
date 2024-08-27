@@ -17,32 +17,35 @@ namespace PSST
     {
         MySqlConnection con;
         string connectionString = ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString;
+        bool admin;
+
         protected void Page_Load(object sender, EventArgs e)
         {
 
-            ////tbUsername.Text = "Ruan@email.com";
-            ////tbPassword.Text = "TestThisP@s5W0rD!";
+            //tbUsername.Text = "Ruan@email.com";
+            //tbPassword.Text = "TestThisP@s5W0rD!";
 
-            ////Get session value - returns null if doesn't exist
-            //string username = Session["username"]?.ToString();
-            //string type = Session["type"]?.ToString();
-            //type = "admin"; // REMOVE IN PRODUCTION
+            //Get session value - returns null if doesn't exist
+            string username = Session["username"]?.ToString();
+            string type = Session["type"]?.ToString();
+            type = "admin"; // REMOVE IN PRODUCTION
 
-            ////If string is null
-            //if (username == null)
-            //{
-            //    Response.Redirect("Login.aspx");
-            //    return;
-            //}
+            //If string is null
+            if (username == null)
+            {
+                Response.Redirect("Login.aspx");
+                return;
+            }
 
-            //if (type == "admin")
-            //{
-
-            //}
-            //else
-            //{
-            //    adminPanel.Visible = false;
-            //}
+            if (type == "admin")
+            {
+                admin = true;
+            }
+            else
+            {
+                adminPanel.Visible = false;
+                admin = false;
+            }
 
             if (!IsPostBack)
             {
@@ -61,16 +64,27 @@ namespace PSST
 
             int id = Convert.ToInt32(row.Cells[3].Text);
 
-            Session["JobId"] = id;
-            Response.Redirect("InvoiceForm.aspx");
-             //then in invoice Page_Load you do the following:
-             //string JobId = Session["JobID"] as string;
+            if (admin)
+            {
+                lblWelcome.Text = admin.ToString();
+                Session["Job_Id"] = id;
+                Response.Redirect("InvoiceForm.aspx");
+            }
+            else
+            {
+                showError("Access denied");
+            }
+
+
+
+            //then in invoice Page_Load you do the following:
+            //string JobId = Session["JobID"] as string;
         }
 
         private void BindGridView()
         {
 
-            string query = "SELECT * FROM JOB";
+            string query = "SELECT Job_ID, Status, Description, Resource_ID, Client_ID, ROUND(Budget, 2) AS 'Budget' FROM JOB";
 
             try
             {
@@ -159,15 +173,13 @@ namespace PSST
                 GridViewRow row = JobData.Rows[e.RowIndex];
 
                 int jobID = Convert.ToInt32(row.Cells[3].Text);
-                string description = ((TextBox)row.Cells[4].Controls[0]).Text;
+                string status = ((TextBox)row.Cells[4].Controls[0]).Text;
+                string description = ((TextBox)row.Cells[5].Controls[0]).Text;
+                int resourceID = convertStringToInt( ( (TextBox)row.Cells[6].Controls[0]).Text);
+                int clientID = convertStringToInt( ( (TextBox)row.Cells[7].Controls[0]).Text);
+                decimal budget = convertStringToDecimal(((TextBox)row.Cells[8].Controls[0]).Text);
 
-                int resourceID = convertStringToInt( ( (TextBox)row.Cells[5].Controls[0]).Text);
-
-
-                int clientID = convertStringToInt( ( (TextBox)row.Cells[6].Controls[0]).Text);
-                decimal budget = convertStringToDecimal(((TextBox)row.Cells[7].Controls[0]).Text);
-
-                updateRecord(jobID, description, resourceID, clientID, budget);
+                updateRecord(jobID, description, resourceID, clientID, budget, status);
 
                 JobData.EditIndex = -1;
                 BindGridView();
@@ -252,9 +264,9 @@ namespace PSST
             return 0;
         }
 
-        protected void updateRecord(int jobID, string description, int resourceID, int clientID, decimal budget)
+        protected void updateRecord(int jobID, string description, int resourceID, int clientID, decimal budget, string status)
         {
-            string query = @"UPDATE JOB SET Description = @Description, Resource_ID = @ResourceID, Client_ID = @ClientID, Budget = @Budget WHERE Job_ID = @JobID";
+            string query = @"UPDATE JOB SET Status = @Status, Description = @Description, Resource_ID = @ResourceID, Client_ID = @ClientID, Budget = @Budget WHERE Job_ID = @JobID";
 
             try
             {
@@ -265,17 +277,15 @@ namespace PSST
                     using (MySqlCommand cmd = new MySqlCommand(query, con))
                     {
 
-                        cmd.Parameters.AddWithValue("@JobID", jobID);                        
+                        cmd.Parameters.AddWithValue("@JobID", jobID);
+                        cmd.Parameters.AddWithValue("@Status", status);
                         cmd.Parameters.AddWithValue("@Description", description);
                         cmd.Parameters.AddWithValue("@ResourceID", resourceID);
                         cmd.Parameters.AddWithValue("@ClientID", clientID);
-                        cmd.Parameters.AddWithValue("@Budget", budget);
-                        //cmd.Parameters.AddWithValue("@RequiredResources", requiredResources);
-                        
+                        cmd.Parameters.AddWithValue("@Budget", budget);                        
 
                         con.Open();
                         int rowsAffected = cmd.ExecuteNonQuery();
-
 
                         adapter.UpdateCommand = cmd;
                         adapter.UpdateCommand.ExecuteNonQuery();
@@ -357,8 +367,8 @@ namespace PSST
 
         protected void btnAddDB_Click(object sender, EventArgs e)
         {
-            string query = @"INSERT INTO JOB (Job_ID, Description, Resource_ID, Client_ID, Budget, Required_Resources) 
-                 VALUES (@JobID, @Description, @ResourceID, @ClientID, @Budget, @RequiredResources)";
+            string query = @"INSERT INTO JOB (Description, Budget) 
+                 VALUES (@Description, @Budget)";
 
             try
             {
@@ -371,22 +381,21 @@ namespace PSST
                         int resourceID; ;
                         int clientID;
                         decimal budget;
-                        string required_resources = txtRequiredResources.Text;
 
                         if (!(int.TryParse(txtJobID.Text, out jobID)))
                         {
                             throw new Exception("Invalid Job ID.");
                         }
 
-                        if (!(int.TryParse(txtResourceID.Text, out resourceID)))
-                        {
-                            throw new Exception("Invalid Resource ID.");
-                        }
+                        //if (!(int.TryParse(txtResourceID.Text, out resourceID)))
+                        //{
+                        //    throw new Exception("Invalid Resource ID.");
+                        //}
 
-                        if (!(int.TryParse(txtClientID.Text, out clientID)))
-                        {
-                            throw new Exception("Invalid Client ID.");
-                        }
+                        //if (!(int.TryParse(txtClientID.Text, out clientID)))
+                        //{
+                        //    throw new Exception("Invalid Client ID.");
+                        //}
 
                         if (!(decimal.TryParse(txtBudget.Text, out budget)))
                         {
@@ -395,10 +404,9 @@ namespace PSST
 
                         cmd.Parameters.AddWithValue("@JobID", jobID);
                         cmd.Parameters.AddWithValue("@Description", description);
-                        cmd.Parameters.AddWithValue("@ResourceID", resourceID);
-                        cmd.Parameters.AddWithValue("@ClientID", clientID);
+                        //cmd.Parameters.AddWithValue("@ResourceID", resourceID);
+                        //cmd.Parameters.AddWithValue("@ClientID", clientID);
                         cmd.Parameters.AddWithValue("@Budget", budget);
-                        cmd.Parameters.AddWithValue("@RequiredResources", required_resources);
 
                         con.Open();
                         int rowsAffected = cmd.ExecuteNonQuery();
