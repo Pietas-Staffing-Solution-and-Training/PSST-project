@@ -13,12 +13,12 @@
            <h5 class="white-text">About PSST</h5>
            <p class="grey-text text-lighten-4">Pieta’s Staffing Solutions and Training (PSST) is a human resources company in South Africa with the functions of recruitment, staffing, training, and other human resources functions. We provide only the best service for our clients, both jobseekers and employers. For queries and concerns, please contact support@psst.com.</p>
          </div>
-         <div class="col l3 s12">
+         <div id="footer_Navigation" runat="server" class="col l3 s12">
            <h5 class="white-text">Navigation</h5>
            <ul>
              <li><a class="footer-link" href="/Clients.aspx">Clients</a></li>
              <li><a class="footer-link" href="/Jobs.aspx">Jobs</a></li>
-             <li><a class="footer-link" href="/Resources.aspx">Resources</a></li>
+             <li><a class="footer-link" href="/Resource.aspx">Resources</a></li>
              <li><a class="footer-link" href="#">Help/Documentation</a></li>
            </ul>
          </div>
