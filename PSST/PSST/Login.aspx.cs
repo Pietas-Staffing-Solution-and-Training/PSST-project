@@ -85,9 +85,6 @@ namespace PSST
                 //Valid session username
                 Session["username"] = username;
 
-                //Valid admin session
-                Session["isAdmin"] = 1;
-
                 //Redirect user to dashboard page
                 Response.Redirect("~/Dashboard.aspx");
             }
