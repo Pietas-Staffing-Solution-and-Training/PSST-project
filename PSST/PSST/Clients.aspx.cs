@@ -10,102 +10,105 @@ using System.Data.SqlClient;
 using static QuestPDF.Helpers.Colors;
 using System.Xml.Linq;
 using System.Text.RegularExpressions;
+using MySqlX.XDevAPI;
+using System.Security.Cryptography;
 
 namespace PSST
 {
-    public partial class Resource : System.Web.UI.Page
+    public partial class Clients : System.Web.UI.Page
     {
         MySqlConnection con;
         string connectionString = ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
-            //Get session value - returns null if doesn't exist
-            string username = Session["username"]?.ToString();
-            string type = Session["type"]?.ToString();
-            type = "admin"; // REMOVE IN PRODUCTION
+            bool isAdmin = false;
 
-            //If string is null
+            // Get session value - returns null if doesn't exist
+            string username = Session["username"]?.ToString();
+
+            if (!IsPostBack)
+            {
+                adminPanel.Visible = false;
+                BindGridView();
+                FillIDBox();
+                divError.Visible = false;
+            }
+
+            if (Session["isAdmin"] != null)
+            {
+                if ((int)Session["isAdmin"] == 1)
+                {
+                    isAdmin = true;
+                }
+            }
+
+            // If username is null
             if (username == null)
             {
                 Response.Redirect("Login.aspx");
                 return;
             }
 
-            if(type == "admin")
+            if (isAdmin)
             {
-                
-            } else {
-                adminPanel.Visible = false;
+                adminPanel.Visible = true;
             }
-
-            if (!IsPostBack)
+            else
             {
-                BindGridView();
-                FillIDBox();
-                divError.Visible = false;
+                adminPanel.Visible = false;
+                Response.Redirect("Dashboard.aspx");
+                return;
             }
         }
 
-        protected void ResourceData_SelectedIndexChanged(object sender, EventArgs e)
+        protected void ClientsData_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int selectedRow = ResourceData.SelectedIndex;
-            GridViewRow row = ResourceData.Rows[selectedRow];
+            int selectedRow = ClientsData.SelectedIndex;
+            GridViewRow row = ClientsData.Rows[selectedRow];
 
             int id = Convert.ToInt32(row.Cells[3].Text);
-
-            //In Jobs.aspx when making the invoice: 
-
-            //Response.Redirect("Invoice.aspx?value=" + id);
-            // then in invoice Page_Load you do the following:
-            // string JobId = Request.QueryString[value];
-
-            //OR using a session
-
-            //Session["JobId"] = id;
-            //Response.Redirect("Invoice.aspx)
-            // then in invoice Page_Load you do the following:
-            // string JobId = Session["JobID"] as string;
         }
 
         private void BindGridView()
         {
 
-            string query = "SELECT Resource_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', ROUND(Wage, 2) AS 'Wage p/h', Competencies FROM RESOURCE";
+            string query = "SELECT Client_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', Address, Email FROM CLIENT";
 
             try
             {
                 using (con = new MySqlConnection(connectionString))
                 {
-                   con.Open();
+                    con.Open();
 
                     MySqlDataAdapter da = new MySqlDataAdapter(query, con);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
 
-                    ResourceData.DataSource = dt;
-                    ResourceData.DataBind();
+                    ClientsData.DataSource = dt;
+                    ClientsData.DataBind();
 
                     con.Close();
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 showError(ex.Message);
             }
 
             // Bind the DataTable to the GridView
-            
+
         }
 
         private void FillIDBox() // Gets the next ID
         {
-            string query = "SELECT MAX(Resource_ID) FROM RESOURCE";
+            string query = "SELECT MAX(Client_ID) FROM CLIENT";
             try
             {
                 txtFName.Text = string.Empty;
                 txtLName.Text = string.Empty;
                 txtPhoneNum.Text = string.Empty;
-                txtWage.Text = string.Empty;
-                txtCompetencies.Text = string.Empty;
+                txtAddress.Text = string.Empty;
+                txtEmail.Text = string.Empty;
 
                 using (MySqlConnection con = new MySqlConnection(connectionString))
                 {
@@ -132,52 +135,53 @@ namespace PSST
             }
         }
 
-        protected void ResourceData_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        protected void ClientsData_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
-            int id = Convert.ToInt32(ResourceData.DataKeys[e.RowIndex].Value);
+            int id = Convert.ToInt32(ClientsData.DataKeys[e.RowIndex].Value);
 
             deleteRecord(id);
 
-            BindGridView();  
+            BindGridView();
         }
 
-        protected void ResourceData_RowEditing(object sender, GridViewEditEventArgs e)
+        protected void ClientsData_RowEditing(object sender, GridViewEditEventArgs e)
         {
-            ResourceData.EditIndex = e.NewEditIndex;
+            ClientsData.EditIndex = e.NewEditIndex;
             BindGridView();
 
-            GridViewRow row = ResourceData.Rows[e.NewEditIndex];
-            TextBox tbName = (TextBox)row.Cells[4].Controls[0];
+            GridViewRow row = ClientsData.Rows[e.NewEditIndex];
+            TextBox tbName = (TextBox)row.Cells[3].Controls[0];
             tbName.Focus();
         }
 
-        protected void ResourceData_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        protected void ClientsData_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
             try
             {
-                GridViewRow row = ResourceData.Rows[e.RowIndex];
+                GridViewRow row = ClientsData.Rows[e.RowIndex];
 
-                int id = Convert.ToInt32(ResourceData.DataKeys[e.RowIndex].Value);
-                string name = ((TextBox)row.Cells[4].Controls[0]).Text;
-                string surname = ((TextBox)row.Cells[5].Controls[0]).Text;
-                string number = ((TextBox)row.Cells[6].Controls[0]).Text;
-                string wage = ((TextBox)row.Cells[7].Controls[0]).Text;
-                string competencies = ((TextBox)row.Cells[8].Controls[0]).Text;
+                int id = Convert.ToInt32(ClientsData.DataKeys[e.RowIndex].Value);
+                string name = ((TextBox)row.Cells[3].Controls[0]).Text;
+                string surname = ((TextBox)row.Cells[4].Controls[0]).Text;
+                string number = ((TextBox)row.Cells[5].Controls[0]).Text;
+                string address = ((TextBox)row.Cells[6].Controls[0]).Text;
+                string email = ((TextBox)row.Cells[7].Controls[0]).Text;
 
-                updateRecord(id, name, surname, number, wage, competencies );
+                updateRecord(id, name, surname, number, address, email);
 
-                ResourceData.EditIndex = -1;
+                ClientsData.EditIndex = -1;
                 BindGridView();
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 showError(ex.Message);
             }
         }
 
-        protected void ResourceData_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        protected void ClientsData_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
-            ResourceData.EditIndex = -1;  
-            BindGridView();  
+            ClientsData.EditIndex = -1;
+            BindGridView();
         }
 
 
@@ -187,13 +191,13 @@ namespace PSST
             divError.Visible = false; // Hides errors when searching again
             string search = txtSearch.Text;
 
-            string query = $"SELECT Resource_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', ROUND(Wage, 2) AS 'Wage p/h', Competencies FROM RESOURCE WHERE Resource_ID LIKE @SearchTerm OR FName LIKE @SearchTerm OR LName LIKE @SearchTerm OR Phone_Num LIKE @SearchTerm OR Wage LIKE @SearchTerm OR Competencies LIKE @SearchTerm";
+            string query = $"SELECT Client_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', Address, Email FROM CLIENT WHERE Client_ID LIKE @SearchTerm OR FName LIKE @SearchTerm OR LName LIKE @SearchTerm OR Phone_Num LIKE @SearchTerm OR Address LIKE @SearchTerm OR Email LIKE @SearchTerm";
 
             try
             {
                 using (con = new MySqlConnection(connectionString))
                 {
-                   
+
                     MySqlCommand cmd = new MySqlCommand(query, con);
                     cmd.Parameters.AddWithValue("@SearchTerm", "%" + search + "%");
 
@@ -203,15 +207,15 @@ namespace PSST
 
                     if (dt.Rows.Count > 0)
                     {
-                        ResourceData.DataSource = dt;
-                        ResourceData.DataBind();
+                        ClientsData.DataSource = dt;
+                        ClientsData.DataBind();
                     }
                     else
                     {
                         // Show error message if no items are found
                         showError($"No item found for {search}");
-                        ResourceData.DataSource = null;
-                        ResourceData.DataBind();
+                        ClientsData.DataSource = null;
+                        ClientsData.DataBind();
                     };
 
                 }
@@ -222,9 +226,9 @@ namespace PSST
             }
         }
 
-        protected void updateRecord(int id, string name, string surname, string number, string wage, string competencies)
+        protected void updateRecord(int id, string name, string surname, string number, string address, string email)
         {
-            string query = @"UPDATE RESOURCE SET FName = @FName, LName = @LName, Phone_Num = @PhoneNum, Wage = @Wage, Competencies = @Competencies WHERE Resource_ID = @ResourceID";
+            string query = @"UPDATE CLIENT SET FName = @FName, LName = @LName, Phone_Num = @PhoneNum, Address = @Address, Email = @Email WHERE Client_ID = @ClientID";
 
             try
             {
@@ -233,9 +237,9 @@ namespace PSST
                     throw new Exception("Invalid Phone Number.");
                 }
 
-                if (!(decimal.TryParse(wage, out decimal outWage)))
+                if (!(Regex.IsMatch(email, @"^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$")))
                 {
-                    throw new Exception("Invalid Wage.");
+                    throw new Exception("Invalid Email Address.");
                 }
 
                 using (con = new MySqlConnection(connectionString))
@@ -247,9 +251,9 @@ namespace PSST
                         cmd.Parameters.AddWithValue("@FName", name);
                         cmd.Parameters.AddWithValue("@LName", surname);
                         cmd.Parameters.AddWithValue("@PhoneNum", number);
-                        cmd.Parameters.AddWithValue("@Wage", outWage);
-                        cmd.Parameters.AddWithValue("@Competencies", competencies);
-                        cmd.Parameters.AddWithValue("@ResourceID", id);
+                        cmd.Parameters.AddWithValue("@Address", address);
+                        cmd.Parameters.AddWithValue("@Email", email);
+                        cmd.Parameters.AddWithValue("@ClientID", id);
 
                         con.Open();
                         int rowsAffected = cmd.ExecuteNonQuery();
@@ -273,7 +277,7 @@ namespace PSST
         protected void deleteRecord(int id)
         {
 
-            string query = @"DELETE FROM RESOURCE WHERE Resource_ID = @ResourceID";
+            string query = @"DELETE FROM CLIENT WHERE Client_ID = @ClientID";
 
             try
             {
@@ -283,7 +287,7 @@ namespace PSST
 
                     using (MySqlCommand cmd = new MySqlCommand(query, con))
                     {
-                        cmd.Parameters.AddWithValue("@ResourceID", id);
+                        cmd.Parameters.AddWithValue("@ClientID", id);
 
                         con.Open();
                         int rowsAffected = cmd.ExecuteNonQuery();
@@ -302,23 +306,23 @@ namespace PSST
             }
             catch (MySqlException)
             {
-               string jobId = ifRhasJob(id);
-                showError($"Cannot delete resource because they are currently assigned a Job (ID: {jobId})");
-                
+                string jobId = ifChasJob(id);
+                showError($"Cannot delete client because they currently issue a Job (ID: {jobId})");
+
             }
         }
 
-        protected string ifRhasJob(int id)
+        protected string ifChasJob(int id)
         {
-            // Get the id of the job a resource is connected (If Resource Has Job = ifRhasJob)
+            // Get the id of the job a client is connected (If Client Has Job = ifRhasJob)
             string jobId = "";
-            string jobQuery = @"SELECT Job_ID FROM JOB WHERE Resource_ID = @Resource_ID";
+            string jobQuery = @"SELECT Job_ID FROM JOB WHERE Client_ID = @Client_ID";
 
             using (con = new MySqlConnection(connectionString))
             {
 
                 MySqlCommand command = new MySqlCommand(jobQuery, con);
-                command.Parameters.AddWithValue("@Resource_ID", id);
+                command.Parameters.AddWithValue("@Client_ID", id);
 
                 con.Open();
 
@@ -365,8 +369,8 @@ namespace PSST
 
         protected void btnAddDB_Click(object sender, EventArgs e)
         {
-            string query = @"INSERT INTO RESOURCE (Resource_ID, FName, LName, Phone_Num, Wage, Competencies) 
-                 VALUES (@ResourceID, @FName, @LName, @PhoneNum, @Wage, @Competencies)";
+            string query = @"INSERT INTO CLIENT (Client_ID, FName, LName, Phone_Num, Address, Email) 
+                 VALUES (@ClientID, @FName, @LName, @PhoneNum, @Wage, @Competencies)";
 
             try
             {
@@ -374,16 +378,16 @@ namespace PSST
                 {
                     using (MySqlCommand cmd = new MySqlCommand(query, con))
                     {
-                        int resourceID;
+                        int clientID;
                         string fName = txtFName.Text;
                         string lName = txtLName.Text;
                         string phoneNum = txtPhoneNum.Text;
-                        decimal wage;
-                        string competencies = txtCompetencies.Text;
+                        string address = txtAddress.Text;
+                        string email = txtEmail.Text;
 
-                        if (!(int.TryParse(txtID.Text, out resourceID)))
+                        if (!(int.TryParse(txtID.Text, out clientID)))
                         {
-                            throw new Exception("Invalid Resource ID.");
+                            throw new Exception("Invalid Client ID.");
                         }
 
                         if (!(Regex.IsMatch(phoneNum, @"^(\+27|0)[6-8][0-9]{8}$")))
@@ -391,26 +395,28 @@ namespace PSST
                             throw new Exception("Invalid Phone Number.");
                         }
 
-                        if (!(decimal.TryParse(txtWage.Text, out wage)))
+                        if (!(Regex.IsMatch(email, @"^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$")))
                         {
-                            throw new Exception("Invalid Wage.");
+                            throw new Exception("Invalid Email Address.");
                         }
 
-                        cmd.Parameters.AddWithValue("@ResourceID", txtID.Text);
+                        cmd.Parameters.AddWithValue("@ClientID", txtID.Text);
                         cmd.Parameters.AddWithValue("@FName", fName);
                         cmd.Parameters.AddWithValue("@LName", lName);
                         cmd.Parameters.AddWithValue("@PhoneNum", phoneNum);
-                        cmd.Parameters.AddWithValue("@Wage", wage);
-                        cmd.Parameters.AddWithValue("@Competencies", competencies);
+                        cmd.Parameters.AddWithValue("@Wage", address);
+                        cmd.Parameters.AddWithValue("@Competencies", email);
 
                         con.Open();
                         int rowsAffected = cmd.ExecuteNonQuery();
 
                         // Check if the insert was successful
-                        if (rowsAffected > 0) {
+                        if (rowsAffected > 0)
+                        {
                             BindGridView();
                         }
-                        else {
+                        else
+                        {
                             showError("Insert operation failed."); // Insert failed or no rows affected
                         }
 
