@@ -39,9 +39,6 @@
                               Width="100%">
                     <Columns>
 
-                        <asp:CommandField ShowSelectButton="True" ButtonType="Image" SelectImageUrl="~/Resources/Icons/invoice - thoseicons.png" >
-                        <ControlStyle Height="20px" />
-                        </asp:CommandField>
                         <asp:CommandField ButtonType="Image" EditImageUrl="~/Resources/Icons/edit - pixelperfect.png" ShowEditButton="True" CancelImageUrl="~/Resources/Icons/cancel - gregorcresnar.png" UpdateImageUrl="~/Resources/Icons/confirm - roundicons.png" >
                         <ControlStyle Height="20px" />
                         </asp:CommandField>

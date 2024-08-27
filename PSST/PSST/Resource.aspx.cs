@@ -7,6 +7,8 @@ using System.Configuration;
 using MySql.Data.MySqlClient;
 using System.Text.RegularExpressions;
 using PSST.Resources.lib;
+using static QuestPDF.Helpers.Colors;
+using System.Xml.Linq;
 
 namespace PSST
 {
@@ -16,12 +18,13 @@ namespace PSST
         string connectionString = ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString;
         bool admin;
         string username;
+        int userID; 
 
         protected void Page_Load(object sender, EventArgs e)
         {
             //Get session value - returns null if doesn't exist
             username = Session["username"]?.ToString();
-            int userID = Convert.ToInt32(Session["userID"]?.ToString());
+            userID = Convert.ToInt32(Session["userID"]?.ToString());
 
             //If string is null
             if (username == null)
@@ -30,19 +33,21 @@ namespace PSST
                 return;
             }
 
-            showError(userID.ToString());
-
             if(Session["userID"] == null)
             {
                 admin = true;
                 adminPanel.Visible = true;
                 resourcePanel.Visible = false;
+                btnAddResource.Text = "Change Password";
 
             } else {
                 admin= false;
                 adminPanel.Visible = false;
                 resourcePanel.Visible = true;
                 btnAddResource.Text = "Change Password";
+                txtSearch.Visible = false;
+                btnSearch.Visible = false;
+                btnSearchClear.Visible = false;
             }
 
             if (!IsPostBack)
@@ -67,31 +72,45 @@ namespace PSST
             if (admin)
             {
                 query = "SELECT Resource_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', ROUND(Wage, 2) AS 'Wage p/h', Competencies FROM RESOURCE";
-            } else {
-                query = "SELECT Resource_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', ROUND(Wage, 2) AS 'Wage p/h', Competencies FROM RESOURCE WHERE ";
             }
+            else
+            {
+                query = "SELECT Resource_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', ROUND(Wage, 2) AS 'Wage p/h', Competencies FROM RESOURCE WHERE Resource_ID = @userID";
+            }
+
             try
             {
                 using (con = new MySqlConnection(connectionString))
                 {
-                   con.Open();
+                    con.Open();
 
-                    MySqlDataAdapter da = new MySqlDataAdapter(query, con);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
+                    using (MySqlCommand cmd = new MySqlCommand(query, con))
+                    {
+                        if (!admin)
+                        {
+                            cmd.Parameters.AddWithValue("@userID", userID);  // Parameterized userID
+                        }
 
-                    ResourceData.DataSource = dt;
-                    ResourceData.DataBind();
+                        using (MySqlDataAdapter da = new MySqlDataAdapter(cmd))
+                        {
+                            DataTable dt = new DataTable();
+                            da.Fill(dt);
+
+                            ResourceData.DataSource = dt;
+                            ResourceData.DataBind();
+                        }
+                    }
 
                     con.Close();
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 showError(ex.Message);
             }
 
             // Bind the DataTable to the GridView
-            
+
         }
 
         private void FillIDBox() // Gets the next ID
@@ -156,11 +175,11 @@ namespace PSST
                 GridViewRow row = ResourceData.Rows[e.RowIndex];
 
                 int id = Convert.ToInt32(ResourceData.DataKeys[e.RowIndex].Value);
-                string name = ((TextBox)row.Cells[4].Controls[0]).Text;
-                string surname = ((TextBox)row.Cells[5].Controls[0]).Text;
-                string number = ((TextBox)row.Cells[6].Controls[0]).Text;
-                string wage = ((TextBox)row.Cells[7].Controls[0]).Text;
-                string competencies = ((TextBox)row.Cells[8].Controls[0]).Text;
+                string name = ((TextBox)row.Cells[3].Controls[0]).Text;
+                string surname = ((TextBox)row.Cells[4].Controls[0]).Text;
+                string number = ((TextBox)row.Cells[5].Controls[0]).Text;
+                string wage = ((TextBox)row.Cells[6].Controls[0]).Text;
+                string competencies = ((TextBox)row.Cells[7].Controls[0]).Text;
 
                 updateRecord(id, name, surname, number, wage, competencies );
 
@@ -427,23 +446,55 @@ namespace PSST
 
         protected void btnChangePass_Click(object sender, EventArgs e)
         {
-            string password = txtPassword.Text;
+            try { 
+                string password = txtPassword.Text;
+                string encryptedPassword = "";
 
-            security encryptPass = new security();
+                security encryptPass = new security();
 
-            bool isvalid = encryptPass.isValidPassword(password);
+                bool isvalid = encryptPass.isValidPassword(password);
 
-            if (isvalid)
+                if (isvalid)
+                {
+
+                    encryptedPassword = encryptPass.encrypt(password);
+                } else
+                {
+                    showError("Invalid password. Password needs 8 chars or more, 1 uppercase, 1 lowercase, 1 number, 1 special character");
+                }
+
+                string query = @"UPDATE RESOURCE SET Password = @Password WHERE Resource_ID = @ResourceID";
+
+
+                using (con = new MySqlConnection(connectionString))
+                {
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(query, con);
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, con))
+                    {
+                        cmd.Parameters.AddWithValue("@Password", encryptedPassword);
+                        cmd.Parameters.AddWithValue("@ResourceID", userID);
+
+                        con.Open();
+                        int rowsAffected = cmd.ExecuteNonQuery();
+
+
+                        adapter.UpdateCommand = cmd;
+                        adapter.UpdateCommand.ExecuteNonQuery();
+
+                        con.Close();
+
+                        BindGridView();
+                    }
+                }
+            }
+            catch (Exception ex)
             {
+                showError(ex.Message);
+            }
 
-                string encryptedPassword = encryptPass.encrypt(password);
-            } else
-            {
-                showError("Invalid password. Password needs 8 chars or more, 1 uppercase, 1 lowercase, 1 number, 1 special character");
-            }     
-            
 
-                                                            
+
         }                                                    
     }                                                        
 }
