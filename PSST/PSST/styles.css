@@ -125,14 +125,13 @@
     margin-bottom: 50px;
 }
 
-#txtSearch, #txtFName, #txtLName, #txtID, #txtPhoneNum, #txtWage, #txtCompetencies, #txtAddress, #txtEmail, #txtPassword {
-#txtSearch, #txtFName, #txtLName, #txtID, #txtPhoneNum, #txtWage, #txtCompetencies, #txtAddress, #txtEmail, #txtResourceID, #txtClientID, #txtDescription, #txtBudget, #txtRequiredResources, #txtJobID {
-  margin-left: 5px;
-  border: 1px solid #9e9e9e;
-  border-radius: 5px;
-  padding: 0 5px 0 5px;
-  margin-top: auto;
-  margin-bottom: auto;
+#txtSearch, #txtFName, #txtLName, #txtID, #txtPhoneNum, #txtWage, #txtCompetencies, #txtAddress, #txtEmail, #Password, #txtResourceID, #txtClientID, #txtDescription, #txtBudget, #txtRequiredResources, #txtJobID {
+    margin-left: 5px;
+    border: 1px solid #9e9e9e;
+    border-radius: 5px;
+    padding: 0 5px 0 5px;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 #txtID, #txtJobID {
