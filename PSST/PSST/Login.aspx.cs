@@ -21,10 +21,13 @@ namespace PSST
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            //Comment this in for always successfull connection
-            tbUsername.Text = "Ruan";
-            tbPassword.TextMode = TextBoxMode.SingleLine;
-            tbPassword.Text = "TestThisP@s5W0rD!";
+            if (!IsPostBack)
+            {
+                //Comment this in for always successfull connection
+                tbUsername.Text = "Ruan";
+                tbPassword.TextMode = TextBoxMode.SingleLine;
+                tbPassword.Text = "TestThisP@s5W0rD!";
+            }
         }
 
         protected void CustomValidator1_ServerValidate(object source, ServerValidateEventArgs args)
