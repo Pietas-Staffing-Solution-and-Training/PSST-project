@@ -20,12 +20,16 @@ namespace PSST.Resources.lib
                 //
             }
 
-            if (Session["isAdmin"] != null)
+            if (Session["username"] == null)
             {
-                if ((int)Session["isAdmin"] == 1)
-                {
-                    isAdmin = true;
-                }
+                clientsLink.Visible = false;
+                logoutButton.Visible = false;
+                return;
+            }
+
+            if (Session["userID"] == null)
+            {
+                isAdmin = true;
             }
 
             if (isAdmin)
@@ -42,6 +46,7 @@ namespace PSST.Resources.lib
         {
             // Remove the username from the session
             Session["username"] = null;
+            Session["userID"] = null;
 
             // Optionally abandon the session to clear all session data
             Session.Abandon();
