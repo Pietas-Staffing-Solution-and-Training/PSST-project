@@ -34,12 +34,9 @@ namespace PSST
                 return;
             }
 
-            if (Session["isAdmin"] != null)
+            if (Session["userID"] == null)
             {
-                if ((int)Session["isAdmin"] == 1)
-                {
-                    isAdmin = true;
-                }
+                isAdmin = true;
             }
 
             if (isAdmin)

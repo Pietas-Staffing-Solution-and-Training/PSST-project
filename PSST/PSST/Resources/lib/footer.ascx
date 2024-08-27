@@ -18,7 +18,7 @@
            <ul>
              <li><a class="footer-link" href="/Clients.aspx">Clients</a></li>
              <li><a class="footer-link" href="/Jobs.aspx">Jobs</a></li>
-             <li><a class="footer-link" href="/Resources.aspx">Resources</a></li>
+             <li><a class="footer-link" href="/Resource.aspx">Resources</a></li>
              <li><a class="footer-link" href="#">Help/Documentation</a></li>
            </ul>
          </div>
