@@ -11,6 +11,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using MySql.Data.MySqlClient;
+using System.Collections;
 
 namespace PSST
 {
@@ -56,7 +57,7 @@ namespace PSST
             //Get data from user
             string username = tbUsername.Text;
             string password = tbPassword.Text;
-            int isAdmin, isUser = 0;
+            int isAdmin, userID = 0;
 
             //check if emtpy - redundant - CODE SHOULD NOT REACH HERE IF ITS EMPTY
             if ( stringIsEmpty(username) || stringIsEmpty(password) )
@@ -70,24 +71,25 @@ namespace PSST
             //Encrypt password
             string encryptedPassword = encryptPass.encrypt(password);
 
-            isAdmin = CountFromDB(username, encryptedPassword, true);
+            //Check if account exists in admin DB
+            isAdmin = CountFromDB(username, encryptedPassword);
 
+            //IF not admin - Check if resource
             if ( isAdmin != 1 )
             {
-                isUser = CountFromDB(username, encryptedPassword, false);
-            } else
+                userID = getUserID(username, encryptedPassword);
+
+            }
+            else
             {
                 //Valid session username
                 Session["username"] = username;
-
-                //Valid admin session
-                Session["isAdmin"] = 1;
 
                 //Redirect user to dashboard page
                 Response.Redirect("~/Dashboard.aspx");
             }
 
-            if ( isUser != 1 )
+            if ( userID == 0 )
             {
                 loginFailed();
                 return;
@@ -95,6 +97,9 @@ namespace PSST
             {
                 //Valid session username
                 Session["username"] = username;
+
+                //Set user ID
+                Session["userID"] = userID;
 
                 //Redirect user to dashboard page
                 Response.Redirect("~/Dashboard.aspx");
@@ -121,7 +126,7 @@ namespace PSST
         }
 
         //Returns number of instances of userInput in DB column
-        private int CountFromDB( string USERNAME, string PASSWORD, bool testAdmin )
+        private int CountFromDB( string USERNAME, string PASSWORD )
         {
             
             try
@@ -130,36 +135,15 @@ namespace PSST
                 {
                     conn.Open();
 
-                    string query = "";
-
-                    //Create SQL query
-                    if ( testAdmin )
-                    {
-                        query = "SELECT COUNT(*) FROM ADMIN WHERE Username = @cleanUsername AND Password = @cleanPassword";
-                    } else
-                    {
-                        query = "SELECT COUNT(*) FROM RESOURCE WHERE FName = @cleanFName AND LName = @cleanLName AND Password = @cleanPassword";
-                    }
+                    string query = "SELECT COUNT(*) FROM ADMIN WHERE Username = @cleanUsername AND Password = @cleanPassword";
                     
 
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
                         //Add parameters to query
-                        if (testAdmin) {                            
-                            cmd.Parameters.AddWithValue("@cleanUsername", USERNAME);
-                            cmd.Parameters.AddWithValue("@cleanPassword", PASSWORD);
-                        } else
-                        {
-                            string[] names = USERNAME.Split(' ');
+                        cmd.Parameters.AddWithValue("@cleanUsername", USERNAME);
+                        cmd.Parameters.AddWithValue("@cleanPassword", PASSWORD);
 
-                            string firstName = names[0];
-                            string lastName = names[1];
-
-                            cmd.Parameters.AddWithValue("@cleanFName", firstName);
-                            cmd.Parameters.AddWithValue("@cleanLName", lastName);
-                            cmd.Parameters.AddWithValue("@cleanPassword", PASSWORD);
-                        }
-                        
 
                         int itemToReturn = Convert.ToInt32(cmd.ExecuteScalar());
 
@@ -182,6 +166,53 @@ namespace PSST
             }
 
             //Query failed if you get this
+            return 0;
+        }
+
+        //Get user ID from database
+        private int getUserID(string USERNAME, string PASSWORD)
+        {
+
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(connString))
+                {
+                    conn.Open();
+
+                    string query = "SELECT Resource_ID FROM RESOURCE WHERE FName = @cleanFName AND LName = @cleanLName AND Password = @cleanPassword";
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+                        string[] names = USERNAME.Split(' ');
+
+                        string firstName = names[0];
+                        string lastName = names[1];
+
+                        cmd.Parameters.AddWithValue("@cleanFName", firstName);
+                        cmd.Parameters.AddWithValue("@cleanLName", lastName);
+                        cmd.Parameters.AddWithValue("@cleanPassword", PASSWORD);
+
+                        int itemToReturn = Convert.ToInt32(cmd.ExecuteScalar());
+
+                        return itemToReturn;
+
+                    }
+
+                }
+
+            }
+            catch (SqlException ex)
+            {
+                //Comment this in for testing
+                Console.WriteLine($"Failed: {ex.Message}");
+
+            }
+            catch (Exception ex)
+            {
+                //Comment this in for testing
+                Console.WriteLine($"Failed: {ex.Message}");
+            }
+
             return 0;
         }
 

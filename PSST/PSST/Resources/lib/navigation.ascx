@@ -9,10 +9,10 @@
                 <asp:Image ID="logo" runat="server" Height="100%" ImageUrl="~/Resources/logo_landscape.png" CssClass="logo" />
               </a>
               <ul class="right hide-on-med-and-down">
-                <li><a href="/Dashboard.aspx">Dashboard</a></li>
+                <li><a id="nav_Dashboard" runat="server" href="/Dashboard.aspx">Dashboard</a></li>
                 <li id="navclients" runat="server"><a href="/Clients.aspx">Clients</a></li>
-                <li><a href="/Jobs.aspx">Jobs</a></li>
-                <li><a href="/Resource.aspx">Resources</a></li>
+                <li><a  id="nav_Jobs" runat="server" href="/Jobs.aspx">Jobs</a></li>
+                <li><a  id="nav_Resource" runat="server" href="/Resource.aspx">Resources</a></li>
                 <li><asp:LinkButton ID="logoutButton" runat="server" OnClick="Logout_Click">Logout</asp:LinkButton></li>
               </ul>
             </div>
