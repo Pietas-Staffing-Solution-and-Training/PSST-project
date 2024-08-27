@@ -10,6 +10,7 @@ using System.Data.SqlClient;
 using static QuestPDF.Helpers.Colors;
 using System.Xml.Linq;
 using System.Text.RegularExpressions;
+using MySqlX.XDevAPI;
 
 namespace PSST
 {
@@ -18,6 +19,7 @@ namespace PSST
         MySqlConnection con;
         string connectionString = ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString;
         bool admin;
+        int user_ID;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -27,8 +29,7 @@ namespace PSST
 
             //Get session value - returns null if doesn't exist
             string username = Session["username"]?.ToString();
-            string type = Session["type"]?.ToString();
-            type = "admin"; // REMOVE IN PRODUCTION
+            
 
             //If string is null
             if (username == null)
@@ -37,14 +38,20 @@ namespace PSST
                 return;
             }
 
-            if (type == "admin")
+            if (Session["userID"] == null)
             {
                 admin = true;
+                userPanel.Visible = false;
             }
             else
             {
                 adminPanel.Visible = false;
                 admin = false;
+                btnAddJob.Text = "Add Time";
+                btnSearch.Visible = false;
+                btnSearchClear.Visible = false;
+                txtSearch.Visible = false;
+                user_ID = Convert.ToInt32(Session["userID"]);               
             }
 
             if (!IsPostBack)
@@ -83,8 +90,16 @@ namespace PSST
 
         private void BindGridView()
         {
+            string query;
 
-            string query = "SELECT Job_ID, Status, Description, Resource_ID, Client_ID, ROUND(Budget, 2) AS 'Budget' FROM JOB";
+            if (admin)
+            {
+                query = "SELECT Job_ID, Status, Description, Resource_ID, Client_ID, ROUND(Budget, 2) AS 'Budget' FROM JOB";
+            }
+            else
+            {
+                query = $"SELECT Job_ID, Status, Description, Resource_ID, Client_ID, ROUND(Budget, 2) AS 'Budget' FROM JOB WHERE Resource_ID = '{user_ID}'";
+            }           
 
             try
             {
@@ -116,11 +131,10 @@ namespace PSST
             string query = "SELECT MAX(Job_ID) FROM JOB";
             try
             {
-                txtResourceID.Text = string.Empty;
+                txtJobID.Text = string.Empty;
                 txtClientID.Text = string.Empty;
                 txtDescription.Text = string.Empty;
                 txtBudget.Text = string.Empty;
-                txtRequiredResources.Text = string.Empty;
 
                 using (MySqlConnection con = new MySqlConnection(connectionString))
                 {
@@ -378,8 +392,8 @@ namespace PSST
                     {
                         int jobID;
                         string description = txtDescription.Text;
-                        int resourceID; ;
-                        int clientID;
+                        //int resourceID; ;
+                        //int clientID;
                         decimal budget;
 
                         if (!(int.TryParse(txtJobID.Text, out jobID)))
@@ -432,11 +446,6 @@ namespace PSST
             {
                 showError(ex.Message);
             }
-        }
-
-        protected void txtResourceID_TextChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }
