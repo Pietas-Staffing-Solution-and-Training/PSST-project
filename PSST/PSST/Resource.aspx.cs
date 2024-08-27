@@ -9,6 +9,8 @@ using System.Text.RegularExpressions;
 using PSST.Resources.lib;
 using static QuestPDF.Helpers.Colors;
 using System.Xml.Linq;
+using System.Web.Security;
+using Org.BouncyCastle.Asn1.Cms;
 
 namespace PSST
 {
@@ -382,8 +384,8 @@ namespace PSST
 
         protected void btnAddDB_Click(object sender, EventArgs e)
         {
-            string query = @"INSERT INTO RESOURCE (Resource_ID, FName, LName, Phone_Num, Wage, Competencies) 
-                 VALUES (@ResourceID, @FName, @LName, @PhoneNum, @Wage, @Competencies)";
+            string query = @"INSERT INTO RESOURCE (Resource_ID, FName, LName, Phone_Num, Password, Wage, Competencies) 
+                 VALUES (@ResourceID, @FName, @LName, @PhoneNum, @Password, @Wage, @Competencies)";
 
             try
             {
@@ -397,6 +399,7 @@ namespace PSST
                         string phoneNum = txtPhoneNum.Text;
                         decimal wage;
                         string competencies = txtCompetencies.Text;
+                        
 
                         if (!(int.TryParse(txtID.Text, out resourceID)))
                         {
@@ -413,12 +416,20 @@ namespace PSST
                             throw new Exception("Invalid Wage.");
                         }
 
+                        string password = resourceID.ToString() + fName + "password1!";
+
+                        password = validatePassword(password);
+
                         cmd.Parameters.AddWithValue("@ResourceID", txtID.Text);
                         cmd.Parameters.AddWithValue("@FName", fName);
                         cmd.Parameters.AddWithValue("@LName", lName);
                         cmd.Parameters.AddWithValue("@PhoneNum", phoneNum);
+                        cmd.Parameters.AddWithValue("@Password", password);
                         cmd.Parameters.AddWithValue("@Wage", wage);
                         cmd.Parameters.AddWithValue("@Competencies", competencies);
+                         
+
+
 
                         con.Open();
                         int rowsAffected = cmd.ExecuteNonQuery();
@@ -448,20 +459,9 @@ namespace PSST
         {
             try { 
                 string password = txtPassword.Text;
-                string encryptedPassword = "";
+                string encryptedPassword = validatePassword(password);
 
-                security encryptPass = new security();
-
-                bool isvalid = encryptPass.isValidPassword(password);
-
-                if (isvalid)
-                {
-
-                    encryptedPassword = encryptPass.encrypt(password);
-                } else
-                {
-                    showError("Invalid password. Password needs 8 chars or more, 1 uppercase, 1 lowercase, 1 number, 1 special character");
-                }
+                
 
                 string query = @"UPDATE RESOURCE SET Password = @Password WHERE Resource_ID = @ResourceID";
 
@@ -495,6 +495,27 @@ namespace PSST
 
 
 
-        }                                                    
+        }  
+        
+        protected string validatePassword(string password)
+        {
+            string encryptedPassword = "";
+
+            security encryptPass = new security();
+
+            bool isvalid = encryptPass.isValidPassword(password);
+
+            if (isvalid)
+            {
+
+                encryptedPassword = encryptPass.encrypt(password);
+            }
+            else
+            {
+                showError("Invalid password. Password needs 8 chars or more, 1 uppercase, 1 lowercase, 1 number, 1 special character");
+            }
+
+            return encryptedPassword;
+        }
     }                                                        
 }
