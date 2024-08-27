@@ -33,6 +33,15 @@ namespace PSST.Resources.lib
         protected global::System.Web.UI.WebControls.Image logo;
 
         /// <summary>
+        /// nav_Dashboard control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor nav_Dashboard;
+
+        /// <summary>
         /// navclients control.
         /// </summary>
         /// <remarks>
@@ -40,6 +49,24 @@ namespace PSST.Resources.lib
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl navclients;
+
+        /// <summary>
+        /// nav_Jobs control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor nav_Jobs;
+
+        /// <summary>
+        /// nav_Resource control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor nav_Resource;
 
         /// <summary>
         /// logoutButton control.

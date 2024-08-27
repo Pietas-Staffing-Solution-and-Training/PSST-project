@@ -24,6 +24,9 @@ namespace PSST.Resources.lib
             {
                 clientsLink.Visible = false;
                 logoutButton.Visible = false;
+                nav_Dashboard.Visible = false;
+                nav_Jobs.Visible = false;
+                nav_Resource.Visible = false;
                 return;
             }
 
