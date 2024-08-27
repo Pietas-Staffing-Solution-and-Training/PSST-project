@@ -21,8 +21,7 @@ namespace PSST
         {
             //Get session value - returns null if doesn't exist
             username = Session["username"]?.ToString();
-            string type = Session["type"]?.ToString();
-            type = "admin"; // REMOVE IN PRODUCTION
+            int userID = Convert.ToInt32(Session["userID"]?.ToString());
 
             //If string is null
             if (username == null)
@@ -31,11 +30,13 @@ namespace PSST
                 return;
             }
 
-            if(type == "admin")
+            showError(userID.ToString());
+
+            if(Session["userID"] == null)
             {
                 admin = true;
-                adminPanel.Visible = false;
-                resourcePanel.Visible = true;
+                adminPanel.Visible = true;
+                resourcePanel.Visible = false;
 
             } else {
                 admin= false;
