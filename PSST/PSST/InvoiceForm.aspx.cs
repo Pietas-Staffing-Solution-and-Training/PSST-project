@@ -5,6 +5,7 @@ using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using MySql.Data.MySqlClient;
 using System.Configuration;
+using System.Web.UI.HtmlControls;
 
 namespace invoices_last_run
 {
@@ -58,8 +59,10 @@ namespace invoices_last_run
         {
             //Initialise variables
             string jobId = Session["Job_ID"]?.ToString();
-            string connectionString = ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString; 
+            string connectionString = ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString;
 
+            lblTitle.Text = "View Invoice " + jobId;
+            
             string invoiceNumber = string.Empty;
             string jobDescription = string.Empty;
             decimal jobBudget = 0;
@@ -260,6 +263,12 @@ namespace invoices_last_run
         protected void btnDownload_Click(object sender, EventArgs e)
         {
             GeneratePDF("download");
+        }
+
+        protected void btnBack_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Jobs.aspx");
+            return;
         }
     }
 }

@@ -11,7 +11,7 @@ namespace PSST
 {
 
 
-    public partial class Resource
+    public partial class Jobs
     {
 
         /// <summary>
@@ -114,13 +114,13 @@ namespace PSST
         protected global::System.Web.UI.WebControls.Button btnSearchClear;
 
         /// <summary>
-        /// ResourceData control.
+        /// JobData control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView ResourceData;
+        protected global::System.Web.UI.WebControls.GridView JobData;
 
         /// <summary>
         /// adminPanel control.
@@ -150,103 +150,103 @@ namespace PSST
         protected global::System.Web.UI.WebControls.Label lblID;
 
         /// <summary>
-        /// txtID control.
+        /// txtJobID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtID;
+        protected global::System.Web.UI.WebControls.TextBox txtJobID;
 
         /// <summary>
-        /// lblPhoneNum control.
+        /// lblDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPhoneNum;
+        protected global::System.Web.UI.WebControls.Label lblDescription;
 
         /// <summary>
-        /// txtPhoneNum control.
+        /// txtDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPhoneNum;
+        protected global::System.Web.UI.WebControls.TextBox txtDescription;
 
         /// <summary>
-        /// lblFName control.
+        /// lblResourceID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblFName;
+        protected global::System.Web.UI.WebControls.Label lblResourceID;
 
         /// <summary>
-        /// txtFName control.
+        /// txtResourceID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFName;
+        protected global::System.Web.UI.WebControls.TextBox txtResourceID;
 
         /// <summary>
-        /// lblWage control.
+        /// lblBudget control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblWage;
+        protected global::System.Web.UI.WebControls.Label lblBudget;
 
         /// <summary>
-        /// txtWage control.
+        /// txtBudget control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtWage;
+        protected global::System.Web.UI.WebControls.TextBox txtBudget;
 
         /// <summary>
-        /// lblLName control.
+        /// lblClientID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblLName;
+        protected global::System.Web.UI.WebControls.Label lblClientID;
 
         /// <summary>
-        /// txtLName control.
+        /// txtClientID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtLName;
+        protected global::System.Web.UI.WebControls.TextBox txtClientID;
 
         /// <summary>
-        /// lblCompetencies control.
+        /// lblRequiredResources control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCompetencies;
+        protected global::System.Web.UI.WebControls.Label lblRequiredResources;
 
         /// <summary>
-        /// txtCompetencies control.
+        /// txtRequiredResources control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCompetencies;
+        protected global::System.Web.UI.WebControls.TextBox txtRequiredResources;
 
         /// <summary>
         /// btnAddDB control.
@@ -256,51 +256,6 @@ namespace PSST
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAddDB;
-
-        /// <summary>
-        /// resourcePanel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel resourcePanel;
-
-        /// <summary>
-        /// lblChangePass control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblChangePass;
-
-        /// <summary>
-        /// lblPassword control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPassword;
-
-        /// <summary>
-        /// txtPassword control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPassword;
-
-        /// <summary>
-        /// btnChangePass control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnChangePass;
 
         /// <summary>
         /// footer control.

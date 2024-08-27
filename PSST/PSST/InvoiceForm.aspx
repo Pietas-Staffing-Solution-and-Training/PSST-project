@@ -9,11 +9,12 @@
     <form id="form1" runat="server">
         <uc:navigation runat="server" id="navigation" />
             <div class="invoice-form">
-                <h4>Preview Invoice</h4>
+                <h4><asp:Label ID="lblTitle" runat="server" Text="View Invoice"></asp:Label></h4>
                 <div class="form-group">
                 </div>
                 <div class="form-group">
                     <asp:Button ID="btnDownload" runat="server" Text="Download PDF" OnClick="btnDownload_Click" CssClass="btn" />
+                    <asp:Button ID="btnBack" runat="server" Text="Go Back" OnClick="btnBack_Click" CssClass="btn" />
                 </div>
             </div>
             <div class="preview-container">

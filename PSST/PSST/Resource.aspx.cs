@@ -5,11 +5,12 @@ using System.Data;
 using System;
 using System.Configuration;
 using MySql.Data.MySqlClient;
-using System.Drawing;
-using System.Data.SqlClient;
+using System.Text.RegularExpressions;
+using PSST.Resources.lib;
 using static QuestPDF.Helpers.Colors;
 using System.Xml.Linq;
-using System.Text.RegularExpressions;
+using System.Web.Security;
+using Org.BouncyCastle.Asn1.Cms;
 
 namespace PSST
 {
@@ -17,12 +18,15 @@ namespace PSST
     {
         MySqlConnection con;
         string connectionString = ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString;
+        bool admin;
+        string username;
+        int userID; 
+
         protected void Page_Load(object sender, EventArgs e)
         {
             //Get session value - returns null if doesn't exist
-            string username = Session["username"]?.ToString();
-            string type = Session["type"]?.ToString();
-            type = "admin"; // REMOVE IN PRODUCTION
+            username = Session["username"]?.ToString();
+            userID = Convert.ToInt32(Session["userID"]?.ToString());
 
             //If string is null
             if (username == null)
@@ -31,11 +35,21 @@ namespace PSST
                 return;
             }
 
-            if(type == "admin")
+            if(Session["userID"] == null)
             {
-                
+                admin = true;
+                adminPanel.Visible = true;
+                resourcePanel.Visible = false;
+                btnAddResource.Text = "Change Password";
+
             } else {
+                admin= false;
                 adminPanel.Visible = false;
+                resourcePanel.Visible = true;
+                btnAddResource.Text = "Change Password";
+                txtSearch.Visible = false;
+                btnSearch.Visible = false;
+                btnSearchClear.Visible = false;
             }
 
             if (!IsPostBack)
@@ -52,48 +66,53 @@ namespace PSST
             GridViewRow row = ResourceData.Rows[selectedRow];
 
             int id = Convert.ToInt32(row.Cells[3].Text);
-
-            //In Jobs.aspx when making the invoice: 
-
-            //Response.Redirect("Invoice.aspx?value=" + id);
-            // then in invoice Page_Load you do the following:
-            // string JobId = Request.QueryString[value];
-
-            //OR using a session
-
-            //Session["JobId"] = id;
-            //Response.Redirect("Invoice.aspx)
-            // then in invoice Page_Load you do the following:
-            // string JobId = Session["JobID"] as string;
         }
 
         private void BindGridView()
         {
-
-            string query = "SELECT Resource_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', ROUND(Wage, 2) AS 'Wage p/h', Competencies FROM RESOURCE";
+            string query;
+            if (admin)
+            {
+                query = "SELECT Resource_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', ROUND(Wage, 2) AS 'Wage p/h', Competencies FROM RESOURCE";
+            }
+            else
+            {
+                query = "SELECT Resource_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', ROUND(Wage, 2) AS 'Wage p/h', Competencies FROM RESOURCE WHERE Resource_ID = @userID";
+            }
 
             try
             {
                 using (con = new MySqlConnection(connectionString))
                 {
-                   con.Open();
+                    con.Open();
 
-                    MySqlDataAdapter da = new MySqlDataAdapter(query, con);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
+                    using (MySqlCommand cmd = new MySqlCommand(query, con))
+                    {
+                        if (!admin)
+                        {
+                            cmd.Parameters.AddWithValue("@userID", userID);  // Parameterized userID
+                        }
 
-                    ResourceData.DataSource = dt;
-                    ResourceData.DataBind();
+                        using (MySqlDataAdapter da = new MySqlDataAdapter(cmd))
+                        {
+                            DataTable dt = new DataTable();
+                            da.Fill(dt);
+
+                            ResourceData.DataSource = dt;
+                            ResourceData.DataBind();
+                        }
+                    }
 
                     con.Close();
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 showError(ex.Message);
             }
 
             // Bind the DataTable to the GridView
-            
+
         }
 
         private void FillIDBox() // Gets the next ID
@@ -158,11 +177,11 @@ namespace PSST
                 GridViewRow row = ResourceData.Rows[e.RowIndex];
 
                 int id = Convert.ToInt32(ResourceData.DataKeys[e.RowIndex].Value);
-                string name = ((TextBox)row.Cells[4].Controls[0]).Text;
-                string surname = ((TextBox)row.Cells[5].Controls[0]).Text;
-                string number = ((TextBox)row.Cells[6].Controls[0]).Text;
-                string wage = ((TextBox)row.Cells[7].Controls[0]).Text;
-                string competencies = ((TextBox)row.Cells[8].Controls[0]).Text;
+                string name = ((TextBox)row.Cells[3].Controls[0]).Text;
+                string surname = ((TextBox)row.Cells[4].Controls[0]).Text;
+                string number = ((TextBox)row.Cells[5].Controls[0]).Text;
+                string wage = ((TextBox)row.Cells[6].Controls[0]).Text;
+                string competencies = ((TextBox)row.Cells[7].Controls[0]).Text;
 
                 updateRecord(id, name, surname, number, wage, competencies );
 
@@ -365,8 +384,8 @@ namespace PSST
 
         protected void btnAddDB_Click(object sender, EventArgs e)
         {
-            string query = @"INSERT INTO RESOURCE (Resource_ID, FName, LName, Phone_Num, Wage, Competencies) 
-                 VALUES (@ResourceID, @FName, @LName, @PhoneNum, @Wage, @Competencies)";
+            string query = @"INSERT INTO RESOURCE (Resource_ID, FName, LName, Phone_Num, Password, Wage, Competencies) 
+                 VALUES (@ResourceID, @FName, @LName, @PhoneNum, @Password, @Wage, @Competencies)";
 
             try
             {
@@ -380,6 +399,7 @@ namespace PSST
                         string phoneNum = txtPhoneNum.Text;
                         decimal wage;
                         string competencies = txtCompetencies.Text;
+                        
 
                         if (!(int.TryParse(txtID.Text, out resourceID)))
                         {
@@ -396,12 +416,20 @@ namespace PSST
                             throw new Exception("Invalid Wage.");
                         }
 
+                        string password = resourceID.ToString() + fName + "password1!";
+
+                        password = validatePassword(password);
+
                         cmd.Parameters.AddWithValue("@ResourceID", txtID.Text);
                         cmd.Parameters.AddWithValue("@FName", fName);
                         cmd.Parameters.AddWithValue("@LName", lName);
                         cmd.Parameters.AddWithValue("@PhoneNum", phoneNum);
+                        cmd.Parameters.AddWithValue("@Password", password);
                         cmd.Parameters.AddWithValue("@Wage", wage);
                         cmd.Parameters.AddWithValue("@Competencies", competencies);
+                         
+
+
 
                         con.Open();
                         int rowsAffected = cmd.ExecuteNonQuery();
@@ -426,5 +454,68 @@ namespace PSST
                 showError(ex.Message);
             }
         }
-    }
+
+        protected void btnChangePass_Click(object sender, EventArgs e)
+        {
+            try { 
+                string password = txtPassword.Text;
+                string encryptedPassword = validatePassword(password);
+
+                
+
+                string query = @"UPDATE RESOURCE SET Password = @Password WHERE Resource_ID = @ResourceID";
+
+
+                using (con = new MySqlConnection(connectionString))
+                {
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(query, con);
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, con))
+                    {
+                        cmd.Parameters.AddWithValue("@Password", encryptedPassword);
+                        cmd.Parameters.AddWithValue("@ResourceID", userID);
+
+                        con.Open();
+                        int rowsAffected = cmd.ExecuteNonQuery();
+
+
+                        adapter.UpdateCommand = cmd;
+                        adapter.UpdateCommand.ExecuteNonQuery();
+
+                        con.Close();
+
+                        BindGridView();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                showError(ex.Message);
+            }
+
+
+
+        }  
+        
+        protected string validatePassword(string password)
+        {
+            string encryptedPassword = "";
+
+            security encryptPass = new security();
+
+            bool isvalid = encryptPass.isValidPassword(password);
+
+            if (isvalid)
+            {
+
+                encryptedPassword = encryptPass.encrypt(password);
+            }
+            else
+            {
+                showError("Invalid password. Password needs 8 chars or more, 1 uppercase, 1 lowercase, 1 number, 1 special character");
+            }
+
+            return encryptedPassword;
+        }
+    }                                                        
 }
