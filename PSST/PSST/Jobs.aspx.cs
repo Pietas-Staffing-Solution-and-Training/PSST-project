@@ -20,29 +20,29 @@ namespace PSST
         protected void Page_Load(object sender, EventArgs e)
         {
 
-            //tbUsername.Text = "Ruan@email.com";
-            //tbPassword.Text = "TestThisP@s5W0rD!";
+            ////tbUsername.Text = "Ruan@email.com";
+            ////tbPassword.Text = "TestThisP@s5W0rD!";
 
-            //Get session value - returns null if doesn't exist
-            string username = Session["username"]?.ToString();
-            string type = Session["type"]?.ToString();
-            type = "admin"; // REMOVE IN PRODUCTION
+            ////Get session value - returns null if doesn't exist
+            //string username = Session["username"]?.ToString();
+            //string type = Session["type"]?.ToString();
+            //type = "admin"; // REMOVE IN PRODUCTION
 
-            //If string is null
-            if (username == null)
-            {
-                Response.Redirect("Login.aspx");
-                return;
-            }
+            ////If string is null
+            //if (username == null)
+            //{
+            //    Response.Redirect("Login.aspx");
+            //    return;
+            //}
 
-            if (type == "admin")
-            {
+            //if (type == "admin")
+            //{
 
-            }
-            else
-            {
-                adminPanel.Visible = false;
-            }
+            //}
+            //else
+            //{
+            //    adminPanel.Visible = false;
+            //}
 
             if (!IsPostBack)
             {
@@ -50,6 +50,8 @@ namespace PSST
                 FillIDBox();
                 divError.Visible = false;
             }
+
+
         }
 
         protected void JobData_SelectedIndexChanged(object sender, EventArgs e)
@@ -156,14 +158,16 @@ namespace PSST
             {
                 GridViewRow row = JobData.Rows[e.RowIndex];
 
-                int jobID = Convert.ToInt32(JobData.DataKeys[e.RowIndex].Value);
+                int jobID = Convert.ToInt32(row.Cells[3].Text);
                 string description = ((TextBox)row.Cells[4].Controls[0]).Text;
-                int resourceID = Convert.ToInt32(JobData.DataKeys[e.RowIndex].Value);
-                int clientID = Convert.ToInt32(JobData.DataKeys[e.RowIndex].Value);
-                decimal budget = Convert.ToDecimal(JobData.DataKeys[e.RowIndex].Value);
-                string required_resources = ((TextBox)row.Cells[8].Controls[0]).Text;
 
-                updateRecord(jobID, description, resourceID, clientID, budget, required_resources);
+                int resourceID = convertStringToInt( ( (TextBox)row.Cells[5].Controls[0]).Text);
+
+
+                int clientID = convertStringToInt( ( (TextBox)row.Cells[6].Controls[0]).Text);
+                decimal budget = convertStringToDecimal(((TextBox)row.Cells[7].Controls[0]).Text);
+
+                updateRecord(jobID, description, resourceID, clientID, budget);
 
                 JobData.EditIndex = -1;
                 BindGridView();
@@ -179,8 +183,6 @@ namespace PSST
             JobData.EditIndex = -1;
             BindGridView();
         }
-
-
 
         protected void txtSearch_TextChanged(object sender, EventArgs e)
         {
@@ -222,9 +224,37 @@ namespace PSST
             }
         }
 
-        protected void updateRecord(int jobID, string description, int resourceID, int clientID, decimal budget, string requiredResources)
+        private int convertStringToInt(string stringInput)
         {
-            string query = @"UPDATE JOB SET Description = @Description, Resource_ID = @ResourceID, Client_ID = @ClientID, Budget = @Budget, Required_Resources = @RequiredResources WHERE Job_ID = @JobID";
+            
+            int output;
+            bool success = int.TryParse(stringInput, out output);
+
+            if (success)
+            {
+                return output;
+            }
+            
+            return 0;
+            
+        }
+
+        private decimal convertStringToDecimal(string stringInput)
+        {
+            decimal output;
+            bool success = decimal.TryParse(stringInput, out output);
+
+            if (success)
+            {
+                return output; 
+            }
+
+            return 0;
+        }
+
+        protected void updateRecord(int jobID, string description, int resourceID, int clientID, decimal budget)
+        {
+            string query = @"UPDATE JOB SET Description = @Description, Resource_ID = @ResourceID, Client_ID = @ClientID, Budget = @Budget WHERE Job_ID = @JobID";
 
             try
             {
@@ -234,12 +264,14 @@ namespace PSST
 
                     using (MySqlCommand cmd = new MySqlCommand(query, con))
                     {
+
+                        cmd.Parameters.AddWithValue("@JobID", jobID);                        
                         cmd.Parameters.AddWithValue("@Description", description);
                         cmd.Parameters.AddWithValue("@ResourceID", resourceID);
                         cmd.Parameters.AddWithValue("@ClientID", clientID);
                         cmd.Parameters.AddWithValue("@Budget", budget);
-                        cmd.Parameters.AddWithValue("@Competencies", requiredResources);
-                        cmd.Parameters.AddWithValue("@JobID", jobID);
+                        //cmd.Parameters.AddWithValue("@RequiredResources", requiredResources);
+                        
 
                         con.Open();
                         int rowsAffected = cmd.ExecuteNonQuery();
@@ -290,40 +322,10 @@ namespace PSST
                 clearError();
                 FillIDBox();
             }
-            catch (MySqlException)
+            catch (MySqlException e)
             {
-                string jobId = ifRhasJob(id);
-                showError($"Cannot delete resource because they are currently assigned a Job (ID: {jobId})");
-
+                showError($"{e.ToString()}");
             }
-        }
-
-        protected string ifRhasJob(int id)
-        {
-            // Get the id of the job a resource is connected (If Resource Has Job = ifRhasJob)
-            string jobId = "";
-            string jobQuery = @"SELECT Job_ID FROM JOB WHERE Job_ID = @JobID";
-
-            using (con = new MySqlConnection(connectionString))
-            {
-
-                MySqlCommand command = new MySqlCommand(jobQuery, con);
-                command.Parameters.AddWithValue("@Job_ID", id);
-
-                con.Open();
-
-                using (MySqlDataReader reader = command.ExecuteReader())
-                {
-
-                    while (reader.Read())
-                    {
-                        jobId = reader["Job_ID"].ToString();
-                    }
-                }
-
-                con.Close();
-            }
-            return jobId;
         }
 
         protected void showError(string error)
