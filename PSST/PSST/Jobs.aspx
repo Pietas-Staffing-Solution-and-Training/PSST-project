@@ -24,7 +24,7 @@
                
                <div class="content-container">
                    <div class="add-btn-div">
-                       <asp:Button ID="btnAddResource" runat="server" Text="Add Jobs" CssClass="waves-effect waves-light btn" style="left: 0px; top: 0px; height: 36px" PostBackUrl="~/Jobs.aspx#scrollTarget" />
+                       <asp:Button ID="btnAddResource" runat="server" Text="Add Job" CssClass="waves-effect waves-light btn" style="left: 0px; top: 0px; height: 36px" PostBackUrl="~/Jobs.aspx#scrollTarget" />
                    </div>
                    <div class="search-div">
                        <asp:TextBox ID="txtSearch" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Search" AutoPostBack="True" OnTextChanged="txtSearch_TextChanged"></asp:TextBox>
@@ -93,7 +93,7 @@
                             <asp:TextBox ID="txtRequiredResources" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Competencies" ></asp:TextBox>
                         </div>
                     </div>
-                    <asp:Button ID="btnAddDB" runat="server" Text="Add Job" CssClass="btn" OnClick="btnAddDB_Click" />
+                    <asp:Button ID="btnAddDB" runat="server" Text="Add" CssClass="btn" OnClick="btnAddDB_Click" />
               </asp:Panel>
                     
            </div>
