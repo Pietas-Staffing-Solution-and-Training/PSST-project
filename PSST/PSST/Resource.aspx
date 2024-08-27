@@ -39,9 +39,6 @@
                               Width="100%">
                     <Columns>
 
-                        <asp:CommandField ShowSelectButton="True" ButtonType="Image" SelectImageUrl="~/Resources/Icons/invoice - thoseicons.png" >
-                        <ControlStyle Height="20px" />
-                        </asp:CommandField>
                         <asp:CommandField ButtonType="Image" EditImageUrl="~/Resources/Icons/edit - pixelperfect.png" ShowEditButton="True" CancelImageUrl="~/Resources/Icons/cancel - gregorcresnar.png" UpdateImageUrl="~/Resources/Icons/confirm - roundicons.png" >
                         <ControlStyle Height="20px" />
                         </asp:CommandField>
@@ -89,9 +86,21 @@
                             <asp:TextBox ID="txtLName" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Last Name" ></asp:TextBox>
                             <asp:Label ID="lblCompetencies" runat="server" CssClass="add-label" Text="Competencies:" ></asp:Label>
                             <asp:TextBox ID="txtCompetencies" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Competencies" ></asp:TextBox>
+                            
                         </div>
                     </div>
                     <asp:Button ID="btnAddDB" runat="server" Text="Add" CssClass="btn" OnClick="btnAddDB_Click" />
+              </asp:Panel>
+               <asp:Panel ID="resourcePanel" runat="server" CssClass="admin-only">
+                   <hr class="add-divider" />
+                     <asp:Label ID="lblChangePass" runat="server" Text="Change Password" Font-Size="X-Large" ForeColor="#003479"></asp:Label>
+                     <div class="edit-container" id="scrollTarget">
+                        <div>
+                            <asp:Label ID="lblPassword" runat="server" CssClass="add-label" Text="Password:" ></asp:Label>
+                            <asp:TextBox ID="txtPassword" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Password" ></asp:TextBox>
+                        </div>
+                    </div>
+                    <asp:Button ID="btnChangePass" runat="server" Text="Change" CssClass="btn" OnClick="btnChangePass_Click" />
               </asp:Panel>
                     
            </div>
