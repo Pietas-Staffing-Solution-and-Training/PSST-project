@@ -5,11 +5,8 @@ using System.Data;
 using System;
 using System.Configuration;
 using MySql.Data.MySqlClient;
-using System.Drawing;
-using System.Data.SqlClient;
-using static QuestPDF.Helpers.Colors;
-using System.Xml.Linq;
 using System.Text.RegularExpressions;
+using PSST.Resources.lib;
 
 namespace PSST
 {
@@ -17,10 +14,13 @@ namespace PSST
     {
         MySqlConnection con;
         string connectionString = ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString;
+        bool admin;
+        string username;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             //Get session value - returns null if doesn't exist
-            string username = Session["username"]?.ToString();
+            username = Session["username"]?.ToString();
             string type = Session["type"]?.ToString();
             type = "admin"; // REMOVE IN PRODUCTION
 
@@ -33,9 +33,15 @@ namespace PSST
 
             if(type == "admin")
             {
-                
-            } else {
+                admin = true;
                 adminPanel.Visible = false;
+                resourcePanel.Visible = true;
+
+            } else {
+                admin= false;
+                adminPanel.Visible = false;
+                resourcePanel.Visible = true;
+                btnAddResource.Text = "Change Password";
             }
 
             if (!IsPostBack)
@@ -52,26 +58,17 @@ namespace PSST
             GridViewRow row = ResourceData.Rows[selectedRow];
 
             int id = Convert.ToInt32(row.Cells[3].Text);
-
-            //In Jobs.aspx when making the invoice: 
-
-            //Response.Redirect("Invoice.aspx?value=" + id);
-            // then in invoice Page_Load you do the following:
-            // string JobId = Request.QueryString[value];
-
-            //OR using a session
-
-            //Session["JobId"] = id;
-            //Response.Redirect("Invoice.aspx)
-            // then in invoice Page_Load you do the following:
-            // string JobId = Session["JobID"] as string;
         }
 
         private void BindGridView()
         {
-
-            string query = "SELECT Resource_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', ROUND(Wage, 2) AS 'Wage p/h', Competencies FROM RESOURCE";
-
+            string query;
+            if (admin)
+            {
+                query = "SELECT Resource_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', ROUND(Wage, 2) AS 'Wage p/h', Competencies FROM RESOURCE";
+            } else {
+                query = "SELECT Resource_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', ROUND(Wage, 2) AS 'Wage p/h', Competencies FROM RESOURCE WHERE ";
+            }
             try
             {
                 using (con = new MySqlConnection(connectionString))
@@ -426,5 +423,26 @@ namespace PSST
                 showError(ex.Message);
             }
         }
-    }
+
+        protected void btnChangePass_Click(object sender, EventArgs e)
+        {
+            string password = txtPassword.Text;
+
+            security encryptPass = new security();
+
+            bool isvalid = encryptPass.isValidPassword(password);
+
+            if (isvalid)
+            {
+
+                string encryptedPassword = encryptPass.encrypt(password);
+            } else
+            {
+                showError("Invalid password. Password needs 8 chars or more, 1 uppercase, 1 lowercase, 1 number, 1 special character");
+            }     
+            
+
+                                                            
+        }                                                    
+    }                                                        
 }

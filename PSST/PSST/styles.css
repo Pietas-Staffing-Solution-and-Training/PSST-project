@@ -100,6 +100,13 @@
     align-items: center;
 }
 
+.edit-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin:20px;
+}
+
 .add-divider {
     margin: 40px;
     width: 90%;
@@ -117,7 +124,7 @@
     margin-bottom: 50px;
 }
 
-#txtSearch, #txtFName, #txtLName, #txtID, #txtPhoneNum, #txtWage, #txtCompetencies, #txtAddress, #txtEmail {
+#txtSearch, #txtFName, #txtLName, #txtID, #txtPhoneNum, #txtWage, #txtCompetencies, #txtAddress, #txtEmail, #txtPassword {
   margin-left: 5px;
   border: 1px solid #9e9e9e;
   border-radius: 5px;
