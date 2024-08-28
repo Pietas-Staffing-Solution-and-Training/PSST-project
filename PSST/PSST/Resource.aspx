@@ -36,7 +36,7 @@
                               OnSelectedIndexChanged="ResourceData_SelectedIndexChanged"   
                               OnRowDeleting="ResourceData_RowDeleting" OnRowEditing="ResourceData_RowEditing" 
                               OnRowCancelingEdit="ResourceData_RowCancelingEdit" OnRowUpdating="ResourceData_RowUpdating" 
-                              Width="100%">
+                              Width="100%" AllowSorting="True" OnSorting="ResourceData_Sorting">
                     <Columns>
 
                         <asp:CommandField ButtonType="Image" EditImageUrl="~/Resources/Icons/edit - pixelperfect.png" ShowEditButton="True" CancelImageUrl="~/Resources/Icons/cancel - gregorcresnar.png" UpdateImageUrl="~/Resources/Icons/confirm - roundicons.png" >
