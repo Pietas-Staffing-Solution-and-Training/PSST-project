@@ -102,7 +102,7 @@
                             <asp:TextBox ID="txtTime" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Time Worked"></asp:TextBox>                           
                         </div>
                     </div>
-                    <asp:Button ID="btnAddTime" runat="server" Text="Add" CssClass="btn" />
+                    <asp:Button ID="btnAddTime" runat="server" Text="Add" CssClass="btn" OnClick="btnAddTime_Click" />
                 </asp:Panel>
 
             </div>
