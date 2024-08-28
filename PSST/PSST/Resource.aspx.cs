@@ -69,17 +69,28 @@ namespace PSST
             int id = Convert.ToInt32(row.Cells[3].Text);
         }
 
-        private void BindGridView()
+        private void BindGridView(string optQuery = "")
         {
             string query;
+
+
+            
             if (admin)
-            {
-                query = "SELECT Resource_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', ROUND(Wage, 2) AS 'Wage p/h', Competencies FROM RESOURCE";
+                {
+                    query = "SELECT Resource_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', ROUND(Wage, 2) AS 'Wage p/h', Competencies FROM RESOURCE";
+                
+                if (optQuery.Length > 0)
+                {
+                    query = optQuery;
+                }
             }
             else
             {
                 query = "SELECT Resource_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', ROUND(Wage, 2) AS 'Wage p/h', Competencies FROM RESOURCE WHERE Resource_ID = @userID";
             }
+            
+
+            
 
             try
             {
@@ -521,6 +532,35 @@ namespace PSST
 
         protected void ResourceData_Sorting(object sender, GridViewSortEventArgs e)
         {
+            string sortExpression = e.SortExpression;
+            string columnName = "Resource_ID";
+            
+
+            switch (sortExpression)
+            {
+                case "First Name":
+                    columnName = "FName";
+                    break;
+                case "Last Name":
+                    columnName = "LName";
+                    break;
+                case "Phone Number":
+                    columnName = "Phone_Num";
+                    break;
+                case "Wage p/h":
+                    columnName = "Wage";
+                    break;
+                case "Competencies":
+                    columnName = "Competencies";
+                    break;
+            }
+
+            string query = $"SELECT Resource_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', ROUND(Wage, 2) AS 'Wage p/h', Competencies FROM RESOURCE ORDER BY {columnName}";
+
+
+            BindGridView(query);
+
+
 
         }
     }                                                        
