@@ -24,24 +24,25 @@ namespace PSST
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            //Get session value - returns null if doesn't exist
+            // Get session value - returns null if doesn't exist
             username = Session["username"]?.ToString();
             userID = Convert.ToInt32(Session["userID"]?.ToString());
 
-            //If string is null
+            // If string is null, user not logged in
             if (username == null)
             {
                 Response.Redirect("Login.aspx");
                 return;
             }
 
+            // If userID is not null but user has username, user is admin
             if(Session["userID"] == null)
             {
                 admin = true;
                 adminPanel.Visible = true;
                 resourcePanel.Visible = false;
-                btnAddResource.Text = "Change Password";
-
+                btnAddResource.Text = "Add Resource";
+            // If user is normal user (not admin)
             } else {
                 admin= false;
                 adminPanel.Visible = false;
@@ -516,6 +517,11 @@ namespace PSST
             }
 
             return encryptedPassword;
+        }
+
+        protected void ResourceData_Sorting(object sender, GridViewSortEventArgs e)
+        {
+
         }
     }                                                        
 }
