@@ -6,7 +6,7 @@
        <div class="row">
          <div class="col l3 s12" style="height: 150px;">
            <a href="/Dashboard.aspx">
-             <asp:Image ID="Image1" runat="server" Height="100%" ImageUrl="~/Resources/logo_landscape.png" CssClass="logo" />
+             <img id="imgLogo" src="/Resources/logo_landscape.png" alt="Logo" class="logo" />
            </a>
          </div>
          <div class="col l6 s12">

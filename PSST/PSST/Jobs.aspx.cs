@@ -88,13 +88,18 @@ namespace PSST
             //string JobId = Session["JobID"] as string;
         }
 
-        private void BindGridView()
+        private void BindGridView(string optQuery = "")
         {
             string query;
 
             if (admin)
             {
                 query = "SELECT Job_ID, Status, Description, Resource_ID, Client_ID, ROUND(Budget, 2) AS 'Budget' FROM JOB";
+
+                if (optQuery.Length > 0)
+                {
+                    query = optQuery;
+                }
             }
             else
             {
@@ -446,6 +451,47 @@ namespace PSST
             {
                 showError(ex.Message);
             }
+        }
+
+        protected void JobData_Sorting(object sender, GridViewSortEventArgs e) // Sorts GridView
+        {
+            string sortExpression = e.SortExpression;
+            string columnName = "Job_ID";
+            string sortDirection = "ASC";
+
+            // Check if the current column is the same as the last sorted column, then toggle
+            if (ViewState["SortExpression"] != null && ViewState["SortExpression"].ToString() == sortExpression)
+            {
+                sortDirection = ViewState["SortDirection"].ToString() == "ASC" ? "DESC" : "ASC";
+            }
+
+            // Update ViewState to store the sort expression and direction
+            ViewState["SortExpression"] = sortExpression;
+            ViewState["SortDirection"] = sortDirection;
+
+            // Select correct column to sort
+            switch (sortExpression)
+            {
+                case "Status":
+                    columnName = "Status";
+                    break;
+                case "Description":
+                    columnName = "Description";
+                    break;
+                case "Resource_ID":
+                    columnName = "Resource_ID";
+                    break;
+                case "Client_ID":
+                    columnName = "Client_ID";
+                    break;
+                case "Budget":
+                    columnName = "Budget";
+                    break;
+            }
+
+            string query = $"SELECT Job_ID, Status, Description, Resource_ID, Client_ID, ROUND(Budget, 2) AS 'Budget' FROM JOB ORDER BY {columnName} {sortDirection}";
+
+            BindGridView(query);
         }
 
         protected void btnAddTime_Click(object sender, EventArgs e)
