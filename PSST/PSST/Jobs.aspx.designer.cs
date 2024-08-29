@@ -78,13 +78,13 @@ namespace PSST
         protected global::System.Web.UI.WebControls.ImageButton btnExitErr;
 
         /// <summary>
-        /// btnAddResource control.
+        /// btnAddJob control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAddResource;
+        protected global::System.Web.UI.WebControls.Button btnAddJob;
 
         /// <summary>
         /// txtSearch control.
@@ -177,13 +177,13 @@ namespace PSST
         protected global::System.Web.UI.WebControls.TextBox txtDescription;
 
         /// <summary>
-        /// lblResourceID control.
+        /// lblJobID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblResourceID;
+        protected global::System.Web.UI.WebControls.Label lblJobID;
 
         /// <summary>
         /// txtResourceID control.
@@ -231,24 +231,6 @@ namespace PSST
         protected global::System.Web.UI.WebControls.TextBox txtClientID;
 
         /// <summary>
-        /// lblRequiredResources control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblRequiredResources;
-
-        /// <summary>
-        /// txtRequiredResources control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtRequiredResources;
-
-        /// <summary>
         /// btnAddDB control.
         /// </summary>
         /// <remarks>
@@ -256,6 +238,51 @@ namespace PSST
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAddDB;
+
+        /// <summary>
+        /// userPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel userPanel;
+
+        /// <summary>
+        /// lblTime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblTime;
+
+        /// <summary>
+        /// lblTimeAdd control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblTimeAdd;
+
+        /// <summary>
+        /// txtTime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtTime;
+
+        /// <summary>
+        /// btnAddTime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnAddTime;
 
         /// <summary>
         /// footer control.

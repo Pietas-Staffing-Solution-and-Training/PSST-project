@@ -10,6 +10,7 @@ using System.Data.SqlClient;
 using static QuestPDF.Helpers.Colors;
 using System.Xml.Linq;
 using System.Text.RegularExpressions;
+using MySqlX.XDevAPI;
 
 namespace PSST
 {
@@ -18,6 +19,7 @@ namespace PSST
         MySqlConnection con;
         string connectionString = ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString;
         bool admin;
+        int user_ID, jobID;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -27,8 +29,7 @@ namespace PSST
 
             //Get session value - returns null if doesn't exist
             string username = Session["username"]?.ToString();
-            string type = Session["type"]?.ToString();
-            type = "admin"; // REMOVE IN PRODUCTION
+            
 
             //If string is null
             if (username == null)
@@ -37,14 +38,20 @@ namespace PSST
                 return;
             }
 
-            if (type == "admin")
+            if (Session["userID"] == null)
             {
                 admin = true;
+                userPanel.Visible = false;
             }
             else
             {
                 adminPanel.Visible = false;
                 admin = false;
+                btnAddJob.Text = "Add Time";
+                btnSearch.Visible = false;
+                btnSearchClear.Visible = false;
+                txtSearch.Visible = false;
+                user_ID = Convert.ToInt32(Session["userID"]);               
             }
 
             if (!IsPostBack)
@@ -83,8 +90,16 @@ namespace PSST
 
         private void BindGridView()
         {
+            string query;
 
-            string query = "SELECT Job_ID, Status, Description, Resource_ID, Client_ID, ROUND(Budget, 2) AS 'Budget' FROM JOB";
+            if (admin)
+            {
+                query = "SELECT Job_ID, Status, Description, Resource_ID, Client_ID, ROUND(Budget, 2) AS 'Budget' FROM JOB";
+            }
+            else
+            {
+                query = $"SELECT Job_ID, Status, Description, Resource_ID, Client_ID, ROUND(Budget, 2) AS 'Budget' FROM JOB WHERE Resource_ID = '{user_ID}'";
+            }           
 
             try
             {
@@ -116,11 +131,10 @@ namespace PSST
             string query = "SELECT MAX(Job_ID) FROM JOB";
             try
             {
-                txtResourceID.Text = string.Empty;
+                txtJobID.Text = string.Empty;
                 txtClientID.Text = string.Empty;
                 txtDescription.Text = string.Empty;
                 txtBudget.Text = string.Empty;
-                txtRequiredResources.Text = string.Empty;
 
                 using (MySqlConnection con = new MySqlConnection(connectionString))
                 {
@@ -172,7 +186,7 @@ namespace PSST
             {
                 GridViewRow row = JobData.Rows[e.RowIndex];
 
-                int jobID = Convert.ToInt32(row.Cells[3].Text);
+                jobID = Convert.ToInt32(row.Cells[3].Text);
                 string status = ((TextBox)row.Cells[4].Controls[0]).Text;
                 string description = ((TextBox)row.Cells[5].Controls[0]).Text;
                 int resourceID = convertStringToInt( ( (TextBox)row.Cells[6].Controls[0]).Text);
@@ -367,8 +381,8 @@ namespace PSST
 
         protected void btnAddDB_Click(object sender, EventArgs e)
         {
-            string query = @"INSERT INTO JOB (Description, Budget) 
-                 VALUES (@Description, @Budget)";
+            string query = @"INSERT INTO JOB (Description, Resource_ID, Client_ID,Budget) 
+                 VALUES (@Description, @ResourceID, @ClientID, @Budget)";
 
             try
             {
@@ -387,15 +401,15 @@ namespace PSST
                             throw new Exception("Invalid Job ID.");
                         }
 
-                        //if (!(int.TryParse(txtResourceID.Text, out resourceID)))
-                        //{
-                        //    throw new Exception("Invalid Resource ID.");
-                        //}
+                        if (!(int.TryParse(txtResourceID.Text, out resourceID)))
+                        {
+                            throw new Exception("Invalid Resource ID.");
+                        }
 
-                        //if (!(int.TryParse(txtClientID.Text, out clientID)))
-                        //{
-                        //    throw new Exception("Invalid Client ID.");
-                        //}
+                        if (!(int.TryParse(txtClientID.Text, out clientID)))
+                        {
+                            throw new Exception("Invalid Client ID.");
+                        }
 
                         if (!(decimal.TryParse(txtBudget.Text, out budget)))
                         {
@@ -404,8 +418,8 @@ namespace PSST
 
                         cmd.Parameters.AddWithValue("@JobID", jobID);
                         cmd.Parameters.AddWithValue("@Description", description);
-                        //cmd.Parameters.AddWithValue("@ResourceID", resourceID);
-                        //cmd.Parameters.AddWithValue("@ClientID", clientID);
+                        cmd.Parameters.AddWithValue("@ResourceID", resourceID);
+                        cmd.Parameters.AddWithValue("@ClientID", clientID);
                         cmd.Parameters.AddWithValue("@Budget", budget);
 
                         con.Open();
@@ -434,9 +448,46 @@ namespace PSST
             }
         }
 
-        protected void txtResourceID_TextChanged(object sender, EventArgs e)
+        protected void btnAddTime_Click(object sender, EventArgs e)
         {
+            GridViewRow row = JobData.Rows[0];
+            string jobID = row.Cells[3].Text;
+            float hours_worked;
+            if (!(float.TryParse(txtTime.Text, out hours_worked))) {
+                showError("Insert a valid time.");
+            }
+            else
+            {
+                string query = $"UPDATE INVOICE SET Hours_Worked = '{hours_worked}' WHERE Job_ID = '{jobID}'";
+                try
+                {
+                    using (con = new MySqlConnection(connectionString))
+                    {
+                        MySqlDataAdapter adapter = new MySqlDataAdapter(query, con);
 
+                        using (MySqlCommand cmd = new MySqlCommand(query, con))
+                        {
+                            
+
+                            con.Open();
+
+                            adapter.UpdateCommand = cmd;
+                            adapter.UpdateCommand.ExecuteNonQuery();
+
+                            con.Close();
+                            BindGridView();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    showError(ex.Message);
+                }
+
+
+            }
+            
+            
         }
     }
 }
