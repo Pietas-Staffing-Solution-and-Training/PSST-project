@@ -61,7 +61,7 @@ namespace PSST
             }
         }
 
-        protected void ResourceData_SelectedIndexChanged(object sender, EventArgs e)
+        protected void ResourceData_SelectedIndexChanged(object sender, EventArgs e) // Gets the GridView selection
         {
             int selectedRow = ResourceData.SelectedIndex;
             GridViewRow row = ResourceData.Rows[selectedRow];
@@ -69,15 +69,13 @@ namespace PSST
             int id = Convert.ToInt32(row.Cells[3].Text);
         }
 
-        private void BindGridView(string optQuery = "")
+        private void BindGridView(string optQuery = "") // Bind the DataTable to the GridView
         {
             string query;
 
-
-            
             if (admin)
-                {
-                    query = "SELECT Resource_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', ROUND(Wage, 2) AS 'Wage p/h', Competencies FROM RESOURCE";
+            {
+                query = "SELECT Resource_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', ROUND(Wage, 2) AS 'Wage p/h', Competencies FROM RESOURCE";
                 
                 if (optQuery.Length > 0)
                 {
@@ -88,9 +86,6 @@ namespace PSST
             {
                 query = "SELECT Resource_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', ROUND(Wage, 2) AS 'Wage p/h', Competencies FROM RESOURCE WHERE Resource_ID = @userID";
             }
-            
-
-            
 
             try
             {
@@ -114,7 +109,6 @@ namespace PSST
                             ResourceData.DataBind();
                         }
                     }
-
                     con.Close();
                 }
             }
@@ -122,9 +116,6 @@ namespace PSST
             {
                 showError(ex.Message);
             }
-
-            // Bind the DataTable to the GridView
-
         }
 
         private void FillIDBox() // Gets the next ID
@@ -163,7 +154,7 @@ namespace PSST
             }
         }
 
-        protected void ResourceData_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        protected void ResourceData_RowDeleting(object sender, GridViewDeleteEventArgs e) // Delete a row button
         {
             int id = Convert.ToInt32(ResourceData.DataKeys[e.RowIndex].Value);
 
@@ -172,7 +163,7 @@ namespace PSST
             BindGridView();  
         }
 
-        protected void ResourceData_RowEditing(object sender, GridViewEditEventArgs e)
+        protected void ResourceData_RowEditing(object sender, GridViewEditEventArgs e) // Edit a row button
         {
             ResourceData.EditIndex = e.NewEditIndex;
             BindGridView();
@@ -182,7 +173,7 @@ namespace PSST
             tbName.Focus();
         }
 
-        protected void ResourceData_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        protected void ResourceData_RowUpdating(object sender, GridViewUpdateEventArgs e) // Update a row button
         {
             try
             {
@@ -205,7 +196,7 @@ namespace PSST
             }
         }
 
-        protected void ResourceData_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        protected void ResourceData_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e) // Cancel the edit process
         {
             ResourceData.EditIndex = -1;  
             BindGridView();  
@@ -213,11 +204,10 @@ namespace PSST
 
 
 
-        protected void txtSearch_TextChanged(object sender, EventArgs e)
+        protected void txtSearch_TextChanged(object sender, EventArgs e) // Searches when the text in Search textbox changes
         {
             divError.Visible = false; // Hides errors when searching again
             string search = txtSearch.Text;
-
             string query = $"SELECT Resource_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', ROUND(Wage, 2) AS 'Wage p/h', Competencies FROM RESOURCE WHERE Resource_ID LIKE @SearchTerm OR FName LIKE @SearchTerm OR LName LIKE @SearchTerm OR Phone_Num LIKE @SearchTerm OR Wage LIKE @SearchTerm OR Competencies LIKE @SearchTerm";
 
             try
@@ -243,8 +233,7 @@ namespace PSST
                         showError($"No item found for {search}");
                         ResourceData.DataSource = null;
                         ResourceData.DataBind();
-                    };
-
+                    }
                 }
             }
             catch (Exception ex)
@@ -253,7 +242,7 @@ namespace PSST
             }
         }
 
-        protected void updateRecord(int id, string name, string surname, string number, string wage, string competencies)
+        protected void updateRecord(int id, string name, string surname, string number, string wage, string competencies) // Updates a Resource record in the GridView
         {
             string query = @"UPDATE RESOURCE SET FName = @FName, LName = @LName, Phone_Num = @PhoneNum, Wage = @Wage, Competencies = @Competencies WHERE Resource_ID = @ResourceID";
 
@@ -283,9 +272,8 @@ namespace PSST
                         cmd.Parameters.AddWithValue("@ResourceID", id);
 
                         con.Open();
+
                         int rowsAffected = cmd.ExecuteNonQuery();
-
-
                         adapter.UpdateCommand = cmd;
                         adapter.UpdateCommand.ExecuteNonQuery();
 
@@ -301,9 +289,8 @@ namespace PSST
             }
         }
 
-        protected void deleteRecord(int id)
+        protected void deleteRecord(int id) // Deletes a record from the DB
         {
-
             string query = @"DELETE FROM RESOURCE WHERE Resource_ID = @ResourceID";
 
             try
@@ -334,14 +321,12 @@ namespace PSST
             catch (MySqlException)
             {
                string jobId = ifRhasJob(id);
-                showError($"Cannot delete resource because they are currently assigned a Job (ID: {jobId})");
-                
+               showError($"Cannot delete resource because they are currently assigned a Job (ID: {jobId})");
             }
         }
 
-        protected string ifRhasJob(int id)
+        protected string ifRhasJob(int id) // Get the id of the job a resource is connected (If Resource Has Job = ifRhasJob)
         {
-            // Get the id of the job a resource is connected (If Resource Has Job = ifRhasJob)
             string jobId = "";
             string jobQuery = @"SELECT Job_ID FROM JOB WHERE Resource_ID = @Resource_ID";
 
@@ -367,20 +352,20 @@ namespace PSST
             return jobId;
         }
 
-        protected void showError(string error)
+        protected void showError(string error) // Shows an error
         {
             divError.Visible = true;
             lblError.Text = error;
         }
 
-        protected void clearError()
+        protected void clearError() // Clears the error
         {
             divError.Visible = false;
         }
 
-        protected void btnExitErr_Click(object sender, EventArgs e)
+        protected void btnExitErr_Click(object sender, EventArgs e) // Button to close the error
         {
-            divError.Visible = false;
+            clearError();
         }
 
         protected void btnSearch_Click(object sender, EventArgs e) // Acts as if text changed in textbox for search
@@ -388,13 +373,13 @@ namespace PSST
             txtSearch_TextChanged(sender, e);
         }
 
-        protected void btnSearchClear_Click(object sender, EventArgs e)
+        protected void btnSearchClear_Click(object sender, EventArgs e) // Clears the search bar
         {
             txtSearch.Text = "";
             txtSearch_TextChanged(sender, e);
         }
 
-        protected void btnAddDB_Click(object sender, EventArgs e)
+        protected void btnAddDB_Click(object sender, EventArgs e) // Adds new Resource to DB
         {
             string query = @"INSERT INTO RESOURCE (Resource_ID, FName, LName, Phone_Num, Password, Wage, Competencies) 
                  VALUES (@ResourceID, @FName, @LName, @PhoneNum, @Password, @Wage, @Competencies)";
@@ -412,7 +397,6 @@ namespace PSST
                         decimal wage;
                         string competencies = txtCompetencies.Text;
                         
-
                         if (!(int.TryParse(txtID.Text, out resourceID)))
                         {
                             throw new Exception("Invalid Resource ID.");
@@ -439,10 +423,7 @@ namespace PSST
                         cmd.Parameters.AddWithValue("@Password", password);
                         cmd.Parameters.AddWithValue("@Wage", wage);
                         cmd.Parameters.AddWithValue("@Competencies", competencies);
-                         
-
-
-
+                        
                         con.Open();
                         int rowsAffected = cmd.ExecuteNonQuery();
 
@@ -467,16 +448,12 @@ namespace PSST
             }
         }
 
-        protected void btnChangePass_Click(object sender, EventArgs e)
+        protected void btnChangePass_Click(object sender, EventArgs e) // Allows changing password as Resource (user)
         {
             try { 
                 string password = txtPassword.Text;
                 string encryptedPassword = validatePassword(password);
-
-                
-
                 string query = @"UPDATE RESOURCE SET Password = @Password WHERE Resource_ID = @ResourceID";
-
 
                 using (con = new MySqlConnection(connectionString))
                 {
@@ -488,9 +465,8 @@ namespace PSST
                         cmd.Parameters.AddWithValue("@ResourceID", userID);
 
                         con.Open();
+
                         int rowsAffected = cmd.ExecuteNonQuery();
-
-
                         adapter.UpdateCommand = cmd;
                         adapter.UpdateCommand.ExecuteNonQuery();
 
@@ -504,12 +480,9 @@ namespace PSST
             {
                 showError(ex.Message);
             }
-
-
-
         }  
         
-        protected string validatePassword(string password)
+        protected string validatePassword(string password) // Validates correct password format
         {
             string encryptedPassword = "";
 
@@ -519,7 +492,6 @@ namespace PSST
 
             if (isvalid)
             {
-
                 encryptedPassword = encryptPass.encrypt(password);
             }
             else
@@ -530,12 +502,23 @@ namespace PSST
             return encryptedPassword;
         }
 
-        protected void ResourceData_Sorting(object sender, GridViewSortEventArgs e)
+        protected void ResourceData_Sorting(object sender, GridViewSortEventArgs e) // Sorts GridView
         {
             string sortExpression = e.SortExpression;
             string columnName = "Resource_ID";
-            
+            string sortDirection = "ASC";
 
+            // Check if the current column is the same as the last sorted column, then toggle
+            if (ViewState["SortExpression"] != null && ViewState["SortExpression"].ToString() == sortExpression)
+            {
+                sortDirection = ViewState["SortDirection"].ToString() == "ASC" ? "DESC" : "ASC";
+            }
+
+            // Update ViewState to store the sort expression and direction
+            ViewState["SortExpression"] = sortExpression;
+            ViewState["SortDirection"] = sortDirection;
+
+            // Select correct column to sort
             switch (sortExpression)
             {
                 case "First Name":
@@ -555,13 +538,9 @@ namespace PSST
                     break;
             }
 
-            string query = $"SELECT Resource_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', ROUND(Wage, 2) AS 'Wage p/h', Competencies FROM RESOURCE ORDER BY {columnName}";
-
+            string query = $"SELECT Resource_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', ROUND(Wage, 2) AS 'Wage p/h', Competencies FROM RESOURCE ORDER BY {columnName} {sortDirection}";
 
             BindGridView(query);
-
-
-
         }
     }                                                        
 }
