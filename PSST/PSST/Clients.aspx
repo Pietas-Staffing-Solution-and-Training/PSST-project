@@ -40,16 +40,18 @@
                     <Columns>
 
                         <asp:CommandField ButtonType="Image" EditImageUrl="~/Resources/Icons/edit - pixelperfect.png" ShowEditButton="True" CancelImageUrl="~/Resources/Icons/cancel - gregorcresnar.png" UpdateImageUrl="~/Resources/Icons/confirm - roundicons.png" >
-                        <ControlStyle Height="20px" />
+                            <ControlStyle Height="20px" />
                         </asp:CommandField>
                         <asp:TemplateField>
                             <ItemTemplate>
-                                <!--throw confirmation before an item is deleted-->
-                                <asp:ImageButton ID="DeleteButton" runat="server" ImageUrl="~/Resources/Icons/bin - freepik.png" 
-                                                 CommandName="Delete" 
-                                                 OnClientClick="return confirm('Are you sure you want to delete this item?');" />
+                            <!--throw confirmation before an item is deleted-->
+                            <asp:ImageButton ID="DeleteButton" runat="server" ImageUrl="~/Resources/Icons/bin - freepik.png" 
+                                                    CommandName="Delete" 
+                                                    ToolTip="Delete Item" 
+                                                    OnClientClick="return confirm('Are you sure you want to delete this item?');" />
                             </ItemTemplate>
-                          <ControlStyle Height="20px" />
+                        <ControlStyle Height="20px" />
+
                         </asp:TemplateField>
                     </Columns>
                     <AlternatingRowStyle BackColor="White" ForeColor="#284775" />

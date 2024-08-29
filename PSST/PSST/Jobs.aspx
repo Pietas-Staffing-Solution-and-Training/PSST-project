@@ -52,6 +52,7 @@
                                     <!--throw confirmation before an item is deleted-->
                                     <asp:ImageButton ID="DeleteButton" runat="server" ImageUrl="~/Resources/Icons/bin - freepik.png"
                                         CommandName="Delete"
+                                        ToolTip="Delete Item" 
                                         OnClientClick="return confirm('Are you sure you want to delete this item?');" />
                                 </ItemTemplate>
                                 <ControlStyle Height="20px" />

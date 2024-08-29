@@ -81,11 +81,6 @@ namespace PSST
             {
                 showError("Access denied");
             }
-
-
-
-            //then in invoice Page_Load you do the following:
-            //string JobId = Session["JobID"] as string;
         }
 
         private void BindGridView(string optQuery = "")
@@ -126,9 +121,6 @@ namespace PSST
             {
                 showError(ex.Message);
             }
-
-            // Bind the DataTable to the GridView
-
         }
 
         private void FillIDBox() // Gets the next ID
