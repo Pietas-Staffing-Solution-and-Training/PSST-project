@@ -79,7 +79,7 @@ namespace PSST
             }
             else
             {
-                showError("Access denied");
+                showError("You cannot create an invoice for this Job. Contact Admin for assistance.");
             }
         }
 
@@ -160,22 +160,35 @@ namespace PSST
 
         protected void JobData_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
-            int id = Convert.ToInt32(JobData.DataKeys[e.RowIndex].Value);
+            if (admin)
+            {
+                int id = Convert.ToInt32(JobData.DataKeys[e.RowIndex].Value);
 
-            deleteRecord(id);
+                completeRecord(id);
 
-            BindGridView();
+                BindGridView();
+            } else
+            {
+                showError("You cannot edit this record. Contact Admin for assistance.");
+            }
         }
 
         protected void JobData_RowEditing(object sender, GridViewEditEventArgs e)
         {
-            JobData.EditIndex = e.NewEditIndex;
-            BindGridView();
+            if (admin)
+            {
+                JobData.EditIndex = e.NewEditIndex;
+                BindGridView();
 
-            GridViewRow row = JobData.Rows[e.NewEditIndex];
-            TextBox tbName = (TextBox)row.Cells[4].Controls[0];
-            tbName.Focus();
-        }
+                GridViewRow row = JobData.Rows[e.NewEditIndex];
+                TextBox tbName = (TextBox)row.Cells[4].Controls[0];
+                tbName.Focus();
+
+            } else
+            {
+                showError("You cannot edit this record. Contact Admin for assistance.");
+            }
+}
 
         protected void JobData_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
@@ -184,14 +197,14 @@ namespace PSST
                 GridViewRow row = JobData.Rows[e.RowIndex];
 
                 jobID = Convert.ToInt32(row.Cells[3].Text);
-                string status = ((TextBox)row.Cells[4].Controls[0]).Text;
+                string status = row.Cells[4].Text;
                 string description = ((TextBox)row.Cells[5].Controls[0]).Text;
                 int resourceID = convertStringToInt( ( (TextBox)row.Cells[6].Controls[0]).Text);
                 int clientID = convertStringToInt( ( (TextBox)row.Cells[7].Controls[0]).Text);
                 decimal budget = convertStringToDecimal(((TextBox)row.Cells[8].Controls[0]).Text);
 
-                updateRecord(jobID, description, resourceID, clientID, budget, status);
-
+                updateRecord(jobID, description, resourceID, clientID, budget);
+                
                 JobData.EditIndex = -1;
                 BindGridView();
             }
@@ -275,9 +288,9 @@ namespace PSST
             return 0;
         }
 
-        protected void updateRecord(int jobID, string description, int resourceID, int clientID, decimal budget, string status)
+        protected void updateRecord(int jobID, string description, int resourceID, int clientID, decimal budget)
         {
-            string query = @"UPDATE JOB SET Status = @Status, Description = @Description, Resource_ID = @ResourceID, Client_ID = @ClientID, Budget = @Budget WHERE Job_ID = @JobID";
+            string query = @"UPDATE JOB SET Description = @Description, Resource_ID = @ResourceID, Client_ID = @ClientID, Budget = @Budget WHERE Job_ID = @JobID";
 
             try
             {
@@ -289,7 +302,6 @@ namespace PSST
                     {
 
                         cmd.Parameters.AddWithValue("@JobID", jobID);
-                        cmd.Parameters.AddWithValue("@Status", status);
                         cmd.Parameters.AddWithValue("@Description", description);
                         cmd.Parameters.AddWithValue("@ResourceID", resourceID);
                         cmd.Parameters.AddWithValue("@ClientID", clientID);
@@ -313,10 +325,10 @@ namespace PSST
             }
         }
 
-        protected void deleteRecord(int id)
+        protected void completeRecord(int id)
         {
 
-            string query = @"DELETE FROM JOB WHERE Job_ID = @JobID";
+            string query = @"UPDATE JOB SET Status = 'Complete' WHERE Job_ID = @JobID";
 
             try
             {
@@ -332,8 +344,8 @@ namespace PSST
                         int rowsAffected = cmd.ExecuteNonQuery();
 
 
-                        adapter.DeleteCommand = cmd;
-                        adapter.DeleteCommand.ExecuteNonQuery();
+                        adapter.UpdateCommand = cmd;
+                        adapter.UpdateCommand.ExecuteNonQuery();
 
                         con.Close();
 
