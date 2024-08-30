@@ -36,7 +36,7 @@
                     <p>This is the landing page where you'll receive a quick explanation of the PSST system's purpose and foundational functionality.</p>
                     <p>Select one of the buttons to start your PSST journey.</p>
                     <h5>The Jobs Page</h5>
-                    <p>This page shows a list of all the jobs you are assigned to and allows you to search and sort if you're assigned to more than one job. You can also add your time to this page.</p>
+                    <p>This page shows the job you are currently assigned to. You can also add your time to the job on this page.</p>
                     <p>To <b>search</b>, simply select the search textbox at the top right of the table and start typing. Click the Search button when you're ready to search. The clear button clears the search box.</p>
                     <p>To <b>update an entry</b>, simply click the <img class="help-icons" src="/Resources/Icons/edit - pixelperfect.png" /> button to start editing that row, then edit the desired field, and click the <img class="help-icons" src="/Resources/Icons/confirm - roundicons.png" /> icon to confirm or the <img class="help-icons" src="/Resources/Icons/cancel - gregorcresnar.png" /> icon to cancel editing.</p>
                     <p>To <b>delete an entry</b>, click the <img class="help-icons" src="/Resources/Icons/bin - freepik.png" /> button to delete that row's entry. This action is permanent, so please think carefully before confirming deletion.</p>

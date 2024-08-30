@@ -53,7 +53,7 @@ namespace PSST
                 txtSearch.Visible = false;
                 user_ID = Convert.ToInt32(Session["userID"]);
 
-                string css = "<style>input[type='image'] { visibility: hidden; }</style>"; // Hides the icon buttons
+                string css = "#editIcons { visibility: hidden; }</style>"; // Hides the icon buttons
                 ClientScript.RegisterStartupScript(this.GetType(), "hideImageInput", css, false);
             }
 
@@ -67,6 +67,30 @@ namespace PSST
             }
 
 
+        }
+
+        protected void JobData_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (!admin)
+            {
+                // Find the Edit button in the CommandField
+                CommandField invoiceField = (CommandField)JobData.Columns[0];
+                CommandField editField = (CommandField)JobData.Columns[1];
+                ImageButton deleteButton = (ImageButton)e.Row.FindControl("DeleteButton");
+
+                if (invoiceField != null)
+                {
+                    invoiceField.ShowSelectButton = false;
+                }
+                if (editField != null)
+                {
+                    editField.ShowEditButton = false;
+                }
+                if (deleteButton != null)
+                {
+                    deleteButton.Visible = false;
+                }
+            }
         }
 
         protected void JobData_SelectedIndexChanged(object sender, EventArgs e)
@@ -108,10 +132,12 @@ namespace PSST
                         j.Job_ID, 
                         j.Status, 
                         j.Description, 
-                        CONCAT(r.FName, ' ', r.LName, ' (', j.Resource_ID, ')') AS 'Resource Name (ID)',
-                        CONCAT(c.FName, ' ', c.LName, ' (', j.Client_ID, ')') AS 'Client Name (ID)', 
+                        CONCAT(r.FName, ' ', r.LName) AS 'Resource Name',
+                        j.Resource_ID,
+                        CONCAT(c.FName, ' ', c.LName) AS 'Client Name', 
+                        j.Client_ID,
                         ROUND(j.Budget, 2) AS 'Budget', 
-                        i.Hours_Worked
+                        i.Hours_Worked AS 'Hours Worked'
                     FROM 
                         JOB j
                     LEFT JOIN
@@ -135,14 +161,20 @@ namespace PSST
                         j.Job_ID, 
                         j.Status, 
                         j.Description, 
-                        j.Resource_ID, 
-                        j.Client_ID, 
+                        CONCAT(r.FName, ' ', r.LName) AS 'Resource Name',
+                        j.Resource_ID,
+                        CONCAT(c.FName, ' ', c.LName) AS 'Client Name', 
+                        j.Client_ID,
                         ROUND(j.Budget, 2) AS 'Budget', 
-                        i.Hours_Worked as 'Hours Worked'
+                        i.Hours_Worked AS 'Hours Worked'
                     FROM 
                         JOB j
-                    LEFT JOIN 
+                    LEFT JOIN
                         INVOICE i ON j.Job_ID = i.Job_ID
+                    LEFT JOIN
+                        RESOURCE r ON j.Resource_ID = r.Resource_ID
+                    LEFT JOIN
+                        CLIENT c ON j.Client_ID = c.Client_ID
                     WHERE 
                         j.Resource_ID = '{user_ID}';
                 ";
@@ -283,9 +315,9 @@ namespace PSST
                 jobID = Convert.ToInt32(row.Cells[3].Text);
                 string status = row.Cells[4].Text;
                 string description = ((TextBox)row.Cells[5].Controls[0]).Text;
-                int resourceID = convertStringToInt( ( (TextBox)row.Cells[6].Controls[0]).Text);
-                int clientID = convertStringToInt( ( (TextBox)row.Cells[7].Controls[0]).Text);
-                decimal budget = convertStringToDecimal(((TextBox)row.Cells[8].Controls[0]).Text);
+                int resourceID = convertStringToInt( ( (TextBox)row.Cells[7].Controls[0]).Text);
+                int clientID = convertStringToInt( ( (TextBox)row.Cells[9].Controls[0]).Text);
+                decimal budget = convertStringToDecimal(((TextBox)row.Cells[10].Controls[0]).Text);
 
                 updateRecord(jobID, description, resourceID, clientID, budget);
                 
@@ -596,7 +628,7 @@ namespace PSST
             }
         }
 
-        protected void PopulateResourceDropdown() // Makes selecting client easier by showing name then parsing to ID later
+        protected void PopulateResourceDropdown() // Makes selecting resource easier by showing name then parsing to ID later
         {
             string query = "SELECT Resource_ID, CONCAT(FName, ' ', LName, ' (', Resource_ID, ')') AS FullName FROM RESOURCE";
 
@@ -664,7 +696,25 @@ namespace PSST
 
         protected void btnAddTime_Click(object sender, EventArgs e)
         {
-            GridViewRow row = JobData.Rows[0];
+            int numRows = JobData.Rows.Count;
+            GridViewRow row = null;
+            bool found = false;
+
+            for(int i = 0; i < numRows; i++)
+            {
+                row = JobData.Rows[i];
+                if (row.Cells[4].Text == "Active")
+                {
+                    found = true;
+                }
+            }
+
+            if (!found)
+            {
+                showError("No active job found to edit time.");
+                return;
+            }
+
             string jobID = row.Cells[3].Text;
             float hours_worked;
             if (!(float.TryParse(txtTime.Text, out hours_worked))) {
