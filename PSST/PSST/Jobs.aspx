@@ -50,10 +50,10 @@
                             <asp:TemplateField>
                                 <ItemTemplate>
                                     <!--throw confirmation before an item is deleted-->
-                                    <asp:ImageButton ID="DeleteButton" runat="server" ImageUrl="~/Resources/Icons/bin - freepik.png"
+                                    <asp:ImageButton ID="DeleteButton" runat="server" ImageUrl="~/Resources/Icons/flag - iconmania.png"
                                         CommandName="Delete"
-                                        ToolTip="Delete Item" 
-                                        OnClientClick="return confirm('Are you sure you want to delete this item?');" />
+                                        ToolTip="Complete Job" 
+                                        OnClientClick="return confirm('Are you sure you want to complete this job? This action cannot be undone!');" />
                                 </ItemTemplate>
                                 <ControlStyle Height="20px" />
                             </asp:TemplateField>

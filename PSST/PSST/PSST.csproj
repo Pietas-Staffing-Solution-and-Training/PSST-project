@@ -134,6 +134,7 @@
     <Content Include="Resources\Icons\close - pixelperfect.png" />
     <Content Include="Resources\Icons\confirm - roundicons.png" />
     <Content Include="Resources\Icons\edit - pixelperfect.png" />
+    <Content Include="Resources\Icons\flag - iconmania.png" />
     <Content Include="Resources\Icons\invoice - thoseicons.png" />
     <Content Include="Resources\lib\footer.ascx" />
     <Content Include="Resources\lib\head.ascx" />
