@@ -6,6 +6,17 @@
  */
 
 /* CSS added by CMPG223 Distance Group 1 2024 */
+
+.logo { /* Default logo for larger screens */
+    content: url('/Resources/logo_landscape.png');
+}
+
+@media (max-width: 1500px) { /* For screens smaller than 1500px */
+    .logo {
+        content: url('/Resources/logo.png');
+    }
+}
+
 .add-btn-div {
     margin-top: auto;
     margin-bottom: auto;
@@ -47,15 +58,24 @@
 }
 
 .invoice-form {
-	max-width: 500px;
-	margin-top: 50px;
-	margin: 0 auto;
-	padding: 20px;
-	font-family: Arial, sans-serif;
+	//max-width: 500px;
+	//margin-top: 50px;
+	//margin: 0 auto;
+	//padding: 20px;
+	//font-family: Arial, sans-serif;
 	flex: 1;
+	//display: flex;
+	//align-items: center;
+	//flex-direction: column;
+
 	display: flex;
-	align-items: center;
-	flex-direction: column;
+    	flex-direction: column;
+    	align-items: center;
+    	min-width: 90vw;
+    	background: #ffffffde;
+    	padding: 20px;
+    	border-radius: 5px;
+    	margin: 0 50px 50px 50px;
 }
 
 .form-group {
@@ -75,10 +95,12 @@
 	justify-content: center;
 	margin-top: 20px;
 	height: 80em;
+	width: 100%;
 }
 
 #pdfPreview {
-	width: 50%; 
+	width: 50%;
+	min-width: 600px;
 	margin-bottom: 100px;
 	border: 1px solid #ccc;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -126,7 +148,7 @@
     margin-bottom: 50px;
 }
 
-#txtSearch, #txtPassword, #txtFName, #txtLName, #txtID, #txtPhoneNum, #txtWage, #txtCompetencies, #txtAddress, #txtEmail, #Password, #txtResourceID, #txtClientID, #txtDescription, #txtBudget, #txtRequiredResources, #txtJobID {
+#txtSearch, #txtTime, #txtPassword, #txtFName, #txtLName, #txtID, #txtPhoneNum, #txtWage, #txtCompetencies, #txtAddress, #txtEmail, #Password, #txtResourceID, #txtClientID, #txtDescription, #txtBudget, #txtRequiredResources, #txtJobID {
     margin-left: 5px;
     border: 1px solid #9e9e9e;
     border-radius: 5px;

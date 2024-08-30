@@ -8,17 +8,19 @@
 <body>
     <form id="form1" runat="server">
         <uc:navigation runat="server" id="navigation" />
-            <div class="invoice-form">
-                <h4><asp:Label ID="lblTitle" runat="server" Text="View Invoice"></asp:Label></h4>
-                <div class="form-group">
+            <div class="main-div">
+                <div class="invoice-form">
+                    <asp:Label ID="lblTitle" runat="server" Text="View Invoice" Font-Size="XX-Large" ForeColor="#003479"></asp:Label>
+                    <div class="form-group">
+                    </div>
+                    <div class="form-group">
+                        <asp:Button ID="btnDownload" runat="server" Text="Download PDF" OnClick="btnDownload_Click" CssClass="btn" />
+                        <asp:Button ID="btnBack" runat="server" Text="Go Back" OnClick="btnBack_Click" CssClass="btn" />
+                    </div>
+                    <div class="preview-container">
+                       <iframe id="pdfPreview" runat="server" style="display:none;"></iframe>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <asp:Button ID="btnDownload" runat="server" Text="Download PDF" OnClick="btnDownload_Click" CssClass="btn" />
-                    <asp:Button ID="btnBack" runat="server" Text="Go Back" OnClick="btnBack_Click" CssClass="btn" />
-                </div>
-            </div>
-            <div class="preview-container">
-               <iframe id="pdfPreview" runat="server" style="display:none;"></iframe>
             </div>
       <uc:footer runat="server" id="footer" />
     </form>

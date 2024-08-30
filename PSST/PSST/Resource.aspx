@@ -14,7 +14,7 @@
         <!-- Body -->
        <div class="main-div">
            <div class="resource-contain">
-               <asp:Label ID="lblWelcome" runat="server" Text="Manage Resources" Font-Size="X-Large" ForeColor="#003479"></asp:Label>
+               <asp:Label ID="lblWelcome" runat="server" Text="Manage Resources" Font-Size="XX-Large" ForeColor="#003479"></asp:Label>
                <div ID="divError" class="error-label" runat="server">
                     <asp:Label ID="lblError" runat="server" Text="Error" ></asp:Label>
                     <asp:ImageButton ID="btnExitErr" runat="server" ImageUrl="~/Resources/Icons/close - pixelperfect.png" AlternateText="Exit Error" CssClass="error-button" OnClick="btnExitErr_Click"/> 
@@ -47,6 +47,7 @@
                                 <!--throw confirmation before an item is deleted-->
                                 <asp:ImageButton ID="DeleteButton" runat="server" ImageUrl="~/Resources/Icons/bin - freepik.png" 
                                                  CommandName="Delete" 
+                                                 ToolTip="Delete Item" 
                                                  OnClientClick="return confirm('Are you sure you want to delete this item?');" />
                             </ItemTemplate>
                           <ControlStyle Height="20px" />

@@ -16,7 +16,7 @@
 
         <div class="main-div">
             <div class="resource-contain">
-                <asp:Label ID="lblWelcome" runat="server" Text="Manage Jobs" Font-Size="X-Large" ForeColor="#003479"></asp:Label>
+                <asp:Label ID="lblWelcome" runat="server" Text="Manage Jobs" Font-Size="XX-Large" ForeColor="#003479"></asp:Label>
                 <div id="divError" class="error-label" runat="server">
                     <asp:Label ID="lblError" runat="server" Text="Error"></asp:Label>
                     <asp:ImageButton ID="btnExitErr" runat="server" ImageUrl="~/Resources/Icons/close - pixelperfect.png" AlternateText="Exit Error" CssClass="error-button" OnClick="btnExitErr_Click" />
@@ -38,7 +38,7 @@
                         OnSelectedIndexChanged="JobData_SelectedIndexChanged"
                         OnRowDeleting="JobData_RowDeleting" OnRowEditing="JobData_RowEditing"
                         OnRowCancelingEdit="JobData_RowCancelingEdit" OnRowUpdating="JobData_RowUpdating"
-                        Width="100%">
+                        Width="100%" AllowSorting="True" OnSorting="JobData_Sorting">
                         <Columns>
 
                             <asp:CommandField ShowSelectButton="True" ButtonType="Image" SelectImageUrl="~/Resources/Icons/invoice - thoseicons.png">
@@ -52,6 +52,7 @@
                                     <!--throw confirmation before an item is deleted-->
                                     <asp:ImageButton ID="DeleteButton" runat="server" ImageUrl="~/Resources/Icons/bin - freepik.png"
                                         CommandName="Delete"
+                                        ToolTip="Delete Item" 
                                         OnClientClick="return confirm('Are you sure you want to delete this item?');" />
                                 </ItemTemplate>
                                 <ControlStyle Height="20px" />
