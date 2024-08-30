@@ -51,6 +51,8 @@ namespace PSST
                 txtSearch.Visible = false;
                 btnSearch.Visible = false;
                 btnSearchClear.Visible = false;
+                string css = "<style>input[type='image'] { visibility: hidden; }</style>"; // Hides the icon buttons
+                ClientScript.RegisterStartupScript(this.GetType(), "hideImageInput", css, false);
             }
 
             if (!IsPostBack)

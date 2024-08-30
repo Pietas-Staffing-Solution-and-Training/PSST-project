@@ -177,13 +177,13 @@ namespace PSST
         protected global::System.Web.UI.WebControls.TextBox txtDescription;
 
         /// <summary>
-        /// lblJobID control.
+        /// lblResourceID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblJobID;
+        protected global::System.Web.UI.WebControls.Label lblResourceID;
 
         /// <summary>
         /// txtResourceID control.
@@ -193,6 +193,15 @@ namespace PSST
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtResourceID;
+
+        /// <summary>
+        /// ddlResource control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlResource;
 
         /// <summary>
         /// lblBudget control.
@@ -229,6 +238,15 @@ namespace PSST
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtClientID;
+
+        /// <summary>
+        /// ddlClient control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlClient;
 
         /// <summary>
         /// btnAddDB control.

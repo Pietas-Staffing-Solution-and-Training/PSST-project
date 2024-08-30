@@ -38,7 +38,7 @@
                         OnSelectedIndexChanged="JobData_SelectedIndexChanged"
                         OnRowDeleting="JobData_RowDeleting" OnRowEditing="JobData_RowEditing"
                         OnRowCancelingEdit="JobData_RowCancelingEdit" OnRowUpdating="JobData_RowUpdating"
-                        Width="100%" AllowSorting="True" OnSorting="JobData_Sorting">
+                        Width="100%" AllowSorting="True" OnSorting="JobData_Sorting" EnableViewState="true">
                         <Columns>
 
                             <asp:CommandField ShowSelectButton="True" ButtonType="Image" SelectImageUrl="~/Resources/Icons/invoice - thoseicons.png">
@@ -79,17 +79,23 @@
                             <asp:Label ID="lblID" runat="server" CssClass="add-label" Text="Job ID:"></asp:Label>
                             <asp:TextBox ID="txtJobID" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Job ID" ReadOnly="True"></asp:TextBox>
                             <asp:Label ID="lblDescription" runat="server" CssClass="add-label" Text="Description:"></asp:Label>
-                            <asp:TextBox ID="txtDescription" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Phone Number"></asp:TextBox>
+                            <asp:TextBox ID="txtDescription" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Description"></asp:TextBox>
                         </div>
                         <div class="add-row">
-                            <asp:Label ID="lblJobID" runat="server" CssClass="add-label" Text="Job ID:"></asp:Label>
-                            <asp:TextBox ID="txtResourceID" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="First Name"></asp:TextBox>
+                            <asp:Label ID="lblResourceID" runat="server" CssClass="add-label" Text="Resource:"></asp:Label>
+                            <!--<asp:TextBox ID="txtResourceID" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Resource ID"></asp:TextBox>-->
+                            <asp:DropDownList ID="ddlResource" runat="server" CssClass="custom-dropdown" 
+                                DataTextField="FullName" DataValueField="Resource_ID" ToolTip="Select Resource (ID)">
+                            </asp:DropDownList>
                             <asp:Label ID="lblBudget" runat="server" CssClass="add-label" Text="Budget:"></asp:Label>
-                            <asp:TextBox ID="txtBudget" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Wage"></asp:TextBox>
+                            <asp:TextBox ID="txtBudget" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Budget"></asp:TextBox>
                         </div>
                         <div class="add-row">
-                            <asp:Label ID="lblClientID" runat="server" CssClass="add-label" Text="Client ID:"></asp:Label>
-                            <asp:TextBox ID="txtClientID" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Last Name"></asp:TextBox>                           
+                            <asp:Label ID="lblClientID" runat="server" CssClass="add-label" Text="Client:"></asp:Label>
+                            <!--<asp:TextBox ID="txtClientID" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Client"></asp:TextBox>-->                          
+                            <asp:DropDownList ID="ddlClient" runat="server" CssClass="custom-dropdown" 
+                                DataTextField="FullName" DataValueField="Client_ID" ToolTip="Select Client (ID)">
+                            </asp:DropDownList>
                         </div>
                     </div>
                     <asp:Button ID="btnAddDB" runat="server" Text="Add" CssClass="btn" OnClick="btnAddDB_Click" />

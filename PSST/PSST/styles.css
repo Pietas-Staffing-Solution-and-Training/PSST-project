@@ -7,6 +7,14 @@
 
 /* CSS added by CMPG223 Distance Group 1 2024 */
 
+#notlogged {
+	color: #009688;
+}
+
+.help-icons {
+	max-width:20px;
+}
+
 .logo { /* Default logo for larger screens */
     content: url('/Resources/logo_landscape.png');
 }
@@ -28,7 +36,7 @@
   flex: 1;
 }
 
-.resource-contain {
+.resource-contain, .help-contain {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -37,6 +45,19 @@
   padding: 20px;
   border-radius: 5px;
   margin: 0 50px 50px 50px;
+}
+
+.help-contain {
+	flex: 1;
+	text-align: center;
+	max-width: 1000px;
+	min-width: 100px;
+}
+
+#help {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 .login-contain {
@@ -7501,9 +7522,9 @@ input[type=checkbox]:not(:disabled).tabbed:focus ~ .lever::before {
 
 /* Select Field
    ========================================================================== */
-select {
-  display: none;
-}
+//select {
+//  display: none;
+//}
 
 select.browser-default {
   display: block;
