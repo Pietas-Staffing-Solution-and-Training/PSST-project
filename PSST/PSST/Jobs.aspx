@@ -102,7 +102,7 @@
                 </asp:Panel>
                 <asp:Panel ID="userPanel" runat="server" CssClass="admin-only">
                     <hr class="add-divider" />
-                    <asp:Label ID="lblTime" runat="server" Text="Edit Time Worked" Font-Size="X-Large" ForeColor="#003479"></asp:Label>
+                    <asp:Label ID="lblTime" runat="server" Text="Edit Time Worked (hr)" Font-Size="X-Large" ForeColor="#003479"></asp:Label>
                     <div class="edit-container" id="scrollTarget">
                         <div>
                             <asp:Label ID="lblTimeAdd" runat="server" CssClass="add-label" Text="Time:"></asp:Label>

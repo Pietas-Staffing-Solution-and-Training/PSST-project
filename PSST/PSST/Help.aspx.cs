@@ -33,7 +33,7 @@ namespace PSST
                 loggedAdmin.Visible = false;
             }
 
-            if (isAdmin)
+            if (isAdmin && username != null)
             {
                 loggedAdmin.Visible = true;
             }

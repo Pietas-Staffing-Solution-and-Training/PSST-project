@@ -718,7 +718,7 @@ namespace PSST
             string jobID = row.Cells[3].Text;
             float hours_worked;
             if (!(float.TryParse(txtTime.Text, out hours_worked))) {
-                showError("Insert a valid time.");
+                showError("Insert a valid time (in hours).");
             }
             else
             {

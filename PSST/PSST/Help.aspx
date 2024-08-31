@@ -36,26 +36,36 @@
                     <p>This is the landing page where you'll receive a quick explanation of the PSST system's purpose and foundational functionality.</p>
                     <p>Select one of the buttons to start your PSST journey.</p>
                     <h5>The Jobs Page</h5>
-                    <p>This page shows the job you are currently assigned to. You can also add your time to the job on this page.</p>
-                    <p>To <b>search</b>, simply select the search textbox at the top right of the table and start typing. Click the Search button when you're ready to search. The clear button clears the search box.</p>
-                    <p>To <b>update an entry</b>, simply click the <img class="help-icons" src="/Resources/Icons/edit - pixelperfect.png" /> button to start editing that row, then edit the desired field, and click the <img class="help-icons" src="/Resources/Icons/confirm - roundicons.png" /> icon to confirm or the <img class="help-icons" src="/Resources/Icons/cancel - gregorcresnar.png" /> icon to cancel editing.</p>
-                    <p>To <b>delete an entry</b>, click the <img class="help-icons" src="/Resources/Icons/bin - freepik.png" /> button to delete that row's entry. This action is permanent, so please think carefully before confirming deletion.</p>
-                    <p>To <b>add a new entry</b>, click the "Add Client" button at the top left of the table. This takes you to the section under the table where you can enter in the new client's details. The ID field is automatically filled with the next ID and cannot be changed. Phone numbers must start with a 0 or a +27 code and email addresses must be written correctly.</p>
-                    <p> To <b>sort the table</b>, click once on any of the column headers to sort by that column, and click to again to sort in the opposite order (ascending or descending).</p>
+                    <p>This page shows the job you are currently assigned to, including ones previously completed. You can also add your time to the current active job on this page.</p>
+                    <p>To <b>add the time you spent on a job</b>, click the "Edit Time" button at the top left of the table. This takes you to the section under the table where you can enter in the new time spent as the number of hours.</p>
+                    <p>You cannot edit anything else on this page. Please contact an admin if you notice any erroneous information.</p>
+                    <h5>The Resources Page</h5>
+                    <p>You, as a Resource, are able to view your Resource information stored with PSST and change the password if required on this page.</p>
+                    <p>To <b>change your password</b>, simply click the "Change Password" button at the top left of the table which will take you to the section at the bottom of the page. Then, enter a new password that has as least one capital letter, one number, and one special character in it.</p>
+                    <p>You cannot edit anything else on this page. Please contact an admin if you notice any erroneous information.</p>
                 </asp:Panel>
                 <asp:Panel ID="loggedAdmin" runat="server">
                     <h4>Information for Admins Only</h4>
                     <h5>The Clients Page</h5>
                     <p>Only admins are able to access the Clients page. This page shows a list of all the clients and allows you to search, sort, and maintain client data.</p>
                     <p>To <b>search</b>, simply select the search textbox at the top right of the table and start typing. Click the Search button when you're ready to search. The clear button clears the search box.</p>
-                    <p>To <b>update an entry</b>, simply click the <img class="help-icons" src="/Resources/Icons/edit - pixelperfect.png" /> button to start editing that row, then edit the desired field, and click the <img class="help-icons" src="/Resources/Icons/confirm - roundicons.png" /> icon to confirm or the <img class="help-icons" src="/Resources/Icons/cancel - gregorcresnar.png" /> icon to cancel editing.</p>
-                    <p>To <b>delete an entry</b>, click the <img class="help-icons" src="/Resources/Icons/bin - freepik.png" /> button to delete that row's entry. This action is permanent, so please think carefully before confirming deletion.</p>
-                    <p>To <b>add a new entry</b>, click the "Add Client" button at the top left of the table. This takes you to the section under the table where you can enter in the new client's details. The ID field is automatically filled with the next ID and cannot be changed. Phone numbers must start with a 0 or a +27 code and email addresses must be written correctly.</p>
+                    <p>To <b>update a Client</b>, simply click the <img class="help-icons" src="/Resources/Icons/edit - pixelperfect.png" /> button to start editing that row, then edit the desired field, and click the <img class="help-icons" src="/Resources/Icons/confirm - roundicons.png" /> icon to confirm or the <img class="help-icons" src="/Resources/Icons/cancel - gregorcresnar.png" /> icon to cancel editing.</p>
+                    <p>To <b>delete a Client</b>, click the <img class="help-icons" src="/Resources/Icons/bin - freepik.png" /> button to delete that row's entry. This action is permanent, so please think carefully before confirming deletion.</p>
+                    <p>To <b>add a new Client</b>, click the "Add Client" button at the top left of the table. This takes you to the section under the table where you can enter in the new client's details. The ID field is automatically filled with the next ID and cannot be changed. Phone numbers must start with a 0 or a +27 code and email addresses must be written correctly.</p>
                     <p> To <b>sort the table</b>, click once on any of the column headers to sort by that column, and click to again to sort in the opposite order (ascending or descending).</p>
                     <h5>The Jobs Page</h5>
-                    <p></p>
+                    <p>Admins have permissions to do much more on the Jobs page than users. You can view all the jobs at PSST, both active and complete, edit information, add new Jobs, and generate invoices.</p>
+                    <p>To <b>add a new Job</b>, click the "Add Job" button which takes you to the section at the bottom of the page. There, you must select the Resource and Client from the dropdown and then add a descriptio text and budget number in ZAR. Press "Add" to confirm the new Job. <b>Remember that only one active job can be assigned to a Resource at one time. Clients can have multiple active jobs.</b></p>
+                    <p>To <b>update a Job</b>, simply click the <img class="help-icons" src="/Resources/Icons/edit - pixelperfect.png" /> button to start editing that row, then edit the desired field (only edit Resource and Client IDs, not their names), and click the <img class="help-icons" src="/Resources/Icons/confirm - roundicons.png" /> icon to confirm or the <img class="help-icons" src="/Resources/Icons/cancel - gregorcresnar.png" /> icon to cancel editing.</p>
+                    <p>To <b>mark at job as complete</b>, click the <img class="help-icons" src="/Resources/Icons/flag - iconmania.png" /> button to mark that row's entry as complete. This action is permanent, so ensure it is truly complete before clicking.</p>
+                    <p> To <b>sort the table</b>, click once on any of the column headers to sort by that column, and click to again to sort in the opposite order (ascending or descending).</p>
+                    <p>To <b>view and optionally download a job's invoice</b>, click the <img class="help-icons" src="/Resources/Icons/invoice - thoseicons.png" /> button which will take you to that job's invoice page. There, you can preview the invoice, select the "Download PDF" button to download it, or "Go Back" to the jobs page.</p>
                     <h5>The Resources Page</h5>
-                    <p></p>
+                    <p>Admins have permissions to do much more on the Resources page than users. You can view all the Resources at PSST, edit their information, delete Resources, and add new Resources.</p>
+                    <p>To <b>update a Resource</b>, simply click the <img class="help-icons" src="/Resources/Icons/edit - pixelperfect.png" /> button to start editing that row, then edit the desired field, and click the <img class="help-icons" src="/Resources/Icons/confirm - roundicons.png" /> icon to confirm or the <img class="help-icons" src="/Resources/Icons/cancel - gregorcresnar.png" /> icon to cancel editing.</p>
+                    <p>To <b>delete a Resource</b>, click the <img class="help-icons" src="/Resources/Icons/bin - freepik.png" /> button to delete that row's entry. This action is permanent, so please think carefully before confirming deletion.</p>
+                    <p>To <b>add a new Resource</b>, click the "Add Resource" button at the top left of the table. This takes you to the section under the table where you can enter in the new resource's details. The ID field is automatically filled with the next ID and cannot be changed. Phone numbers must start with a 0 or a +27 code and wages must be numbers only.</p>
+                    <p> To <b>sort the table</b>, click once on any of the column headers to sort by that column, and click to again to sort in the opposite order (ascending or descending).</p>
                 </asp:Panel>
             </div>
         </div>
