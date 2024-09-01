@@ -57,5 +57,11 @@ namespace PSST.Resources.lib
             // Redirect to the login page
             Response.Redirect("~/Login.aspx");
         }
+
+        protected void Help_Click(object sender, EventArgs e)
+        {
+            // Redirect to the help page
+            Response.Redirect("~/Help.aspx");
+        }
     }
 }
