@@ -14,6 +14,7 @@
                 <li><a  id="nav_Jobs" runat="server" href="/Jobs.aspx">Jobs</a></li>
                 <li><a  id="nav_Resource" runat="server" href="/Resource.aspx">Resources</a></li>
                 <li><asp:LinkButton ID="logoutButton" runat="server" OnClick="Logout_Click">Logout</asp:LinkButton></li>
+                <li id="helpbtn"><asp:ImageButton ID="helpButton" runat="server" OnClick="Help_Click" ImageUrl="~/Resources/Icons/question - freepik.png" Height="20px" /></li>
               </ul>
             </div>
         </nav>

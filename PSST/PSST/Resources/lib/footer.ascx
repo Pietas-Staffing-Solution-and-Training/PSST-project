@@ -16,10 +16,10 @@
          <div id="footer_Navigation" runat="server" class="col l3 s12">
            <h5 class="white-text">Navigation</h5>
            <ul>
-             <li><a class="footer-link" href="/Clients.aspx">Clients</a></li>
+             <li><div id="footerClients" runat="server"><a class="footer-link" href="/Clients.aspx">Clients</a></div></li>
              <li><a class="footer-link" href="/Jobs.aspx">Jobs</a></li>
              <li><a class="footer-link" href="/Resource.aspx">Resources</a></li>
-             <li><a class="footer-link" href="#">Help/Documentation</a></li>
+             <li><a class="footer-link" href="/Help.aspx">Help & Docs</a></li>
            </ul>
          </div>
        </div>

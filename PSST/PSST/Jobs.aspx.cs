@@ -11,6 +11,7 @@ using static QuestPDF.Helpers.Colors;
 using System.Xml.Linq;
 using System.Text.RegularExpressions;
 using MySqlX.XDevAPI;
+using System.Collections.Generic;
 
 namespace PSST
 {
@@ -23,7 +24,6 @@ namespace PSST
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
             //tbUsername.Text = "Ruan@email.com";
             //tbPassword.Text = "TestThisP@s5W0rD!";
 
@@ -51,7 +51,10 @@ namespace PSST
                 btnSearch.Visible = false;
                 btnSearchClear.Visible = false;
                 txtSearch.Visible = false;
-                user_ID = Convert.ToInt32(Session["userID"]);               
+                user_ID = Convert.ToInt32(Session["userID"]);
+
+                string css = "#editIcons { visibility: hidden; }</style>"; // Hides the icon buttons
+                ClientScript.RegisterStartupScript(this.GetType(), "hideImageInput", css, false);
             }
 
             if (!IsPostBack)
@@ -59,17 +62,51 @@ namespace PSST
                 BindGridView();
                 FillIDBox();
                 divError.Visible = false;
+                PopulateClientDropdown();
+                PopulateResourceDropdown();
             }
 
 
         }
 
+        protected void JobData_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (!admin)
+            {
+                // Find the Edit button in the CommandField
+                CommandField invoiceField = (CommandField)JobData.Columns[0];
+                CommandField editField = (CommandField)JobData.Columns[1];
+                ImageButton deleteButton = (ImageButton)e.Row.FindControl("DeleteButton");
+
+                if (invoiceField != null)
+                {
+                    invoiceField.ShowSelectButton = false;
+                }
+                if (editField != null)
+                {
+                    editField.ShowEditButton = false;
+                }
+                if (deleteButton != null)
+                {
+                    deleteButton.Visible = false;
+                }
+            }
+        }
+
         protected void JobData_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int selectedRow = JobData.SelectedIndex;
-            GridViewRow row = JobData.Rows[selectedRow];
+            GridViewRow row = null;
+            if (JobData.SelectedRow != null)
+            {
+                row = JobData.SelectedRow;
+            }
+            //int selectedRow = JobData.SelectedIndex;
+            int selectedRow = 2;
+            //row = JobData.Rows[selectedRow];
 
             int id = Convert.ToInt32(row.Cells[3].Text);
+
+            //int id = 1;
 
             if (admin)
             {
@@ -89,7 +126,27 @@ namespace PSST
 
             if (admin)
             {
-                query = "SELECT Job_ID, Status, Description, Resource_ID, Client_ID, ROUND(Budget, 2) AS 'Budget' FROM JOB";
+                //query = "SELECT Job_ID, Status, Description, Resource_ID, Client_ID, ROUND(Budget, 2) AS 'Budget' FROM JOB";
+                query = $@"
+                    SELECT 
+                        j.Job_ID, 
+                        j.Status, 
+                        j.Description, 
+                        CONCAT(r.FName, ' ', r.LName) AS 'Resource Name',
+                        j.Resource_ID,
+                        CONCAT(c.FName, ' ', c.LName) AS 'Client Name', 
+                        j.Client_ID,
+                        ROUND(j.Budget, 2) AS 'Budget', 
+                        i.Hours_Worked AS 'Hours Worked'
+                    FROM 
+                        JOB j
+                    LEFT JOIN
+                        INVOICE i ON j.Job_ID = i.Job_ID
+                    LEFT JOIN
+                        RESOURCE r ON j.Resource_ID = r.Resource_ID
+                    LEFT JOIN
+                        CLIENT c ON j.Client_ID = c.Client_ID;
+                ";
 
                 if (optQuery.Length > 0)
                 {
@@ -98,7 +155,29 @@ namespace PSST
             }
             else
             {
-                query = $"SELECT Job_ID, Status, Description, Resource_ID, Client_ID, ROUND(Budget, 2) AS 'Budget' FROM JOB WHERE Resource_ID = '{user_ID}'";
+                //query = $"SELECT Job_ID, Status, Description, Resource_ID, Client_ID, ROUND(Budget, 2) AS 'Budget' FROM JOB WHERE Resource_ID = '{user_ID}'";
+                query = $@"
+                    SELECT 
+                        j.Job_ID, 
+                        j.Status, 
+                        j.Description, 
+                        CONCAT(r.FName, ' ', r.LName) AS 'Resource Name',
+                        j.Resource_ID,
+                        CONCAT(c.FName, ' ', c.LName) AS 'Client Name', 
+                        j.Client_ID,
+                        ROUND(j.Budget, 2) AS 'Budget', 
+                        i.Hours_Worked AS 'Hours Worked'
+                    FROM 
+                        JOB j
+                    LEFT JOIN
+                        INVOICE i ON j.Job_ID = i.Job_ID
+                    LEFT JOIN
+                        RESOURCE r ON j.Resource_ID = r.Resource_ID
+                    LEFT JOIN
+                        CLIENT c ON j.Client_ID = c.Client_ID
+                    WHERE 
+                        j.Resource_ID = '{user_ID}';
+                ";
             }           
 
             try
@@ -158,6 +237,43 @@ namespace PSST
             }
         }
 
+        // Run this in the page_load to delete a job
+        protected void deleteRecord(int id)
+        {
+
+            string query = @"DELETE FROM JOB WHERE Job_ID = @JobID";
+
+            try
+            {
+                using (con = new MySqlConnection(connectionString))
+                {
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(query, con);
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, con))
+                    {
+                        cmd.Parameters.AddWithValue("@JobID", id);
+
+                        con.Open();
+                        int rowsAffected = cmd.ExecuteNonQuery();
+
+
+                        adapter.DeleteCommand = cmd;
+                        adapter.DeleteCommand.ExecuteNonQuery();
+
+                        con.Close();
+
+                        BindGridView();
+                    }
+                }
+                clearError();
+                FillIDBox();
+            }
+            catch (MySqlException)
+            {
+
+            }
+        }
+
         protected void JobData_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
             if (admin)
@@ -199,9 +315,9 @@ namespace PSST
                 jobID = Convert.ToInt32(row.Cells[3].Text);
                 string status = row.Cells[4].Text;
                 string description = ((TextBox)row.Cells[5].Controls[0]).Text;
-                int resourceID = convertStringToInt( ( (TextBox)row.Cells[6].Controls[0]).Text);
-                int clientID = convertStringToInt( ( (TextBox)row.Cells[7].Controls[0]).Text);
-                decimal budget = convertStringToDecimal(((TextBox)row.Cells[8].Controls[0]).Text);
+                int resourceID = convertStringToInt( ( (TextBox)row.Cells[7].Controls[0]).Text);
+                int clientID = convertStringToInt( ( (TextBox)row.Cells[9].Controls[0]).Text);
+                decimal budget = convertStringToDecimal(((TextBox)row.Cells[10].Controls[0]).Text);
 
                 updateRecord(jobID, description, resourceID, clientID, budget);
                 
@@ -225,7 +341,27 @@ namespace PSST
             divError.Visible = false; // Hides errors when searching again
             string search = txtSearch.Text;
 
-            string query = $"SELECT Job_ID, Description, Resource_ID, Client_ID, ROUND(Budget, 2) AS Budget FROM JOB WHERE Job_ID LIKE @SearchTerm OR Description LIKE @SearchTerm OR Resource_ID LIKE @SearchTerm OR Client_ID LIKE @SearchTerm OR Budget LIKE @SearchTerm";
+            //string query = $"SELECT Job_ID, Description, Resource_ID, Client_ID, ROUND(Budget, 2) AS Budget FROM JOB WHERE Job_ID LIKE @SearchTerm OR Description LIKE @SearchTerm OR Resource_ID LIKE @SearchTerm OR Client_ID LIKE @SearchTerm OR Budget LIKE @SearchTerm";
+            string query = $@"
+                SELECT 
+                    j.Job_ID, 
+                    j.Status, 
+                    j.Description, 
+                    j.Resource_ID, 
+                    j.Client_ID, 
+                    ROUND(j.Budget, 2) AS 'Budget', 
+                    i.Hours_Worked as 'Hours Worked'
+                FROM 
+                    JOB j
+                LEFT JOIN 
+                    INVOICE i ON j.Job_ID = i.Job_ID
+                WHERE 
+                    j.Job_ID LIKE @SearchTerm 
+                    OR j.Description LIKE @SearchTerm 
+                    OR j.Resource_ID LIKE @SearchTerm 
+                    OR j.Client_ID LIKE @SearchTerm 
+                    OR ROUND(j.Budget, 2) LIKE @SearchTerm;
+            ";
 
             try
             {
@@ -401,7 +537,7 @@ namespace PSST
                     {
                         int jobID;
                         string description = txtDescription.Text;
-                        int resourceID; ;
+                        int resourceID;
                         int clientID;
                         decimal budget;
 
@@ -410,15 +546,25 @@ namespace PSST
                             throw new Exception("Invalid Job ID.");
                         }
 
-                        if (!(int.TryParse(txtResourceID.Text, out resourceID)))
-                        {
-                            throw new Exception("Invalid Resource ID.");
-                        }
+                        //if (!(int.TryParse(txtResourceID.Text, out resourceID)))
+                        //{
+                        //    throw new Exception("Invalid Resource ID.");
+                        //}
 
-                        if (!(int.TryParse(txtClientID.Text, out clientID)))
+                        if (!(int.TryParse(ddlClient.SelectedValue, out clientID)))
                         {
                             throw new Exception("Invalid Client ID.");
                         }
+
+                        if (!(int.TryParse(ddlResource.SelectedValue, out resourceID)))
+                        {
+                            throw new Exception("Invalid Client ID.");
+                        }
+
+                        //if (!(int.TryParse(txtClientID.Text, out clientID)))
+                        //{
+                        //    throw new Exception("Invalid Client ID.");
+                        //}
 
                         if (!(decimal.TryParse(txtBudget.Text, out budget)))
                         {
@@ -454,6 +600,56 @@ namespace PSST
             catch (Exception ex)
             {
                 showError(ex.Message);
+            }
+        }
+
+        protected void PopulateClientDropdown() // Makes selecting client easier by showing name then parsing to ID later
+        {
+            string query = "SELECT Client_ID, CONCAT(FName, ' ', LName, ' (', Client_ID, ')') AS FullName FROM CLIENT";
+
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                MySqlCommand cmd = new MySqlCommand(query, con);
+                con.Open();
+
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read()) // Create a ListItem for each client
+                    {
+                        string clientId = reader["Client_ID"].ToString();
+                        string fullName = reader["FullName"].ToString();
+
+                        ListItem item = new ListItem(fullName, clientId);
+                        ddlClient.Items.Add(item);
+                    }
+                }
+
+                con.Close();
+            }
+        }
+
+        protected void PopulateResourceDropdown() // Makes selecting resource easier by showing name then parsing to ID later
+        {
+            string query = "SELECT Resource_ID, CONCAT(FName, ' ', LName, ' (', Resource_ID, ')') AS FullName FROM RESOURCE";
+
+            using (MySqlConnection con = new MySqlConnection(connectionString))
+            {
+                MySqlCommand cmd = new MySqlCommand(query, con);
+                con.Open();
+
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read()) // Create a ListItem for each client
+                    {
+                        string clientId = reader["Resource_ID"].ToString();
+                        string fullName = reader["FullName"].ToString();
+
+                        ListItem item = new ListItem(fullName, clientId);
+                        ddlResource.Items.Add(item);
+                    }
+                }
+
+                con.Close();
             }
         }
 
@@ -500,11 +696,29 @@ namespace PSST
 
         protected void btnAddTime_Click(object sender, EventArgs e)
         {
-            GridViewRow row = JobData.Rows[0];
+            int numRows = JobData.Rows.Count;
+            GridViewRow row = null;
+            bool found = false;
+
+            for(int i = 0; i < numRows; i++)
+            {
+                row = JobData.Rows[i];
+                if (row.Cells[4].Text == "Active")
+                {
+                    found = true;
+                }
+            }
+
+            if (!found)
+            {
+                showError("No active job found to edit time.");
+                return;
+            }
+
             string jobID = row.Cells[3].Text;
             float hours_worked;
             if (!(float.TryParse(txtTime.Text, out hours_worked))) {
-                showError("Insert a valid time.");
+                showError("Insert a valid time (in hours).");
             }
             else
             {

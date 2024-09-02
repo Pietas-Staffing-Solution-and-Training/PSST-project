@@ -11,10 +11,16 @@ namespace PSST.Resources.lib
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            footerClients.Visible = false;
+
             if (Session["username"] == null)
             {
                 footer_Navigation.Visible = false;
                 return;
+            }
+            if (Session["userID"] == null)
+            {
+                footerClients.Visible = true;
             }
         }
     }

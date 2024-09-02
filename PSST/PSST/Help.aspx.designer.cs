@@ -11,7 +11,7 @@ namespace PSST
 {
 
 
-    public partial class Dashboard
+    public partial class Help
     {
 
         /// <summary>
@@ -24,13 +24,13 @@ namespace PSST
         protected global::PSST.Resources.lib.head Head;
 
         /// <summary>
-        /// form1 control.
+        /// help control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.HtmlControls.HtmlForm help;
 
         /// <summary>
         /// navigation control.
@@ -42,15 +42,6 @@ namespace PSST
         protected global::PSST.Resources.lib.navigation navigation;
 
         /// <summary>
-        /// imgLogo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Image imgLogo;
-
-        /// <summary>
         /// lblWelcome control.
         /// </summary>
         /// <remarks>
@@ -60,58 +51,31 @@ namespace PSST
         protected global::System.Web.UI.WebControls.Label lblWelcome;
 
         /// <summary>
-        /// lblIntro control.
+        /// notlogged control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblIntro;
+        protected global::System.Web.UI.WebControls.Panel notlogged;
 
         /// <summary>
-        /// btnClients control.
+        /// loggedUser control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnClients;
+        protected global::System.Web.UI.WebControls.Panel loggedUser;
 
         /// <summary>
-        /// btnJobs control.
+        /// loggedAdmin control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnJobs;
-
-        /// <summary>
-        /// btnResources control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnResources;
-
-        /// <summary>
-        /// btnHelp control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnHelp;
-
-        /// <summary>
-        /// lblExplain control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblExplain;
+        protected global::System.Web.UI.WebControls.Panel loggedAdmin;
 
         /// <summary>
         /// footer control.
