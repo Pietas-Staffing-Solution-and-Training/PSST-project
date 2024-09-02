@@ -7,6 +7,16 @@
 
 /* CSS added by CMPG223 Distance Group 1 2024 */
 
+ul.right.hide-on-med-and-down {
+	height: 100%;
+}
+
+#helpbtn {
+	display: flex;
+	align-items: center;
+	height: 100%;
+}
+
 #notlogged {
 	color: #009688;
 }
