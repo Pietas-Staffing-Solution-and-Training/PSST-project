@@ -81,7 +81,7 @@
                             <asp:TextBox ID="txtDescription" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Phone Number"></asp:TextBox>
                         </div>
                         <div class="add-row">
-                            <asp:Label ID="lblJobID" runat="server" CssClass="add-label" Text="Job ID:"></asp:Label>
+                            <asp:Label ID="lblResourceID" runat="server" CssClass="add-label" Text="Resource ID:"></asp:Label>
                             <asp:TextBox ID="txtResourceID" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="First Name"></asp:TextBox>
                             <asp:Label ID="lblBudget" runat="server" CssClass="add-label" Text="Budget:"></asp:Label>
                             <asp:TextBox ID="txtBudget" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Wage"></asp:TextBox>
