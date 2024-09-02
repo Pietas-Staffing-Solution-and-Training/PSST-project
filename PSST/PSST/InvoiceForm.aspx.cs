@@ -24,11 +24,10 @@ namespace invoices_last_run
                 Response.Redirect("Login.aspx");
                 return;
             }
-            
-            QuestPDF.Settings.License = LicenseType.Community;
 
             if (!IsPostBack)
             {
+                QuestPDF.Settings.License = LicenseType.Community;
                 ClearTempFolder();
                 GeneratePDF("preview");
             }

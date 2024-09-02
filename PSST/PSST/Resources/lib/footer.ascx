@@ -6,7 +6,7 @@
        <div class="row">
          <div class="col l3 s12" style="height: 150px;">
            <a href="/Dashboard.aspx">
-             <asp:Image ID="Image1" runat="server" Height="100%" ImageUrl="~/Resources/logo_landscape.png" CssClass="logo" />
+             <img id="imgLogo" src="/Resources/logo_landscape.png" alt="Logo" class="logo" />
            </a>
          </div>
          <div class="col l6 s12">
@@ -16,10 +16,10 @@
          <div id="footer_Navigation" runat="server" class="col l3 s12">
            <h5 class="white-text">Navigation</h5>
            <ul>
-             <li><a class="footer-link" href="/Clients.aspx">Clients</a></li>
+             <li><div id="footerClients" runat="server"><a class="footer-link" href="/Clients.aspx">Clients</a></div></li>
              <li><a class="footer-link" href="/Jobs.aspx">Jobs</a></li>
              <li><a class="footer-link" href="/Resource.aspx">Resources</a></li>
-             <li><a class="footer-link" href="#">Help/Documentation</a></li>
+             <li><a class="footer-link" href="/Help.aspx">Help & Docs</a></li>
            </ul>
          </div>
        </div>

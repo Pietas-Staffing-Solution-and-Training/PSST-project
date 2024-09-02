@@ -1,4 +1,5 @@
 ﻿using System.Web;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
@@ -19,9 +20,10 @@ namespace PSST
     {
         MySqlConnection con;
         string connectionString = ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString;
+        bool isAdmin;
         protected void Page_Load(object sender, EventArgs e)
         {
-            bool isAdmin = false;
+            isAdmin = false;
 
             // Get session value - returns null if doesn't exist
             string username = Session["username"]?.ToString();
@@ -66,10 +68,14 @@ namespace PSST
             int id = Convert.ToInt32(row.Cells[3].Text);
         }
 
-        private void BindGridView()
+        private void BindGridView(string optQuery = "")
         {
-
             string query = "SELECT Client_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', Address, Email FROM CLIENT";
+
+            if (optQuery.Length > 0)
+            {
+                query = optQuery;
+            }
 
             try
             {
@@ -428,6 +434,47 @@ namespace PSST
             {
                 showError(ex.Message);
             }
+        }
+
+        protected void ClientsData_Sorting(object sender, GridViewSortEventArgs e) // Sorts GridView
+        {
+            string sortExpression = e.SortExpression;
+            string columnName = "Client_ID";
+            string sortDirection = "ASC";
+
+            // Check if the current column is the same as the last sorted column, then toggle
+            if (ViewState["SortExpression"] != null && ViewState["SortExpression"].ToString() == sortExpression)
+            {
+                sortDirection = ViewState["SortDirection"].ToString() == "ASC" ? "DESC" : "ASC";
+            }
+
+            // Update ViewState to store the sort expression and direction
+            ViewState["SortExpression"] = sortExpression;
+            ViewState["SortDirection"] = sortDirection;
+
+            // Select correct column to sort
+            switch (sortExpression)
+            {
+                case "First Name":
+                    columnName = "FName";
+                    break;
+                case "Last Name":
+                    columnName = "LName";
+                    break;
+                case "Phone Number":
+                    columnName = "Phone_Num";
+                    break;
+                case "Address":
+                    columnName = "Address";
+                    break;
+                case "Email":
+                    columnName = "Email";
+                    break;
+            }
+
+            string query = $"SELECT Client_ID, FName AS 'First Name', LName AS 'Last Name', Phone_Num AS 'Phone Number', Address, Email FROM CLIENT ORDER BY {columnName} {sortDirection}";
+
+            BindGridView(query);
         }
     }
 }
