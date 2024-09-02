@@ -42,6 +42,13 @@
                                 </div>
                                 <div>
                                     <asp:TextBox ID="tbPassword" runat="server" ToolTip="Please enter your password" TextMode="Password"></asp:TextBox>
+                                    <div id="showPWContainer" runat="server">
+                                        
+                                        <label for="CBshowPassword">
+                                            <asp:CheckBox ID="CBshowPassword" runat="server" OnCheckedChanged="CBshowPassword_CheckedChanged" AutoPostBack="true"/>
+                                            <span>Show password</span>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
 

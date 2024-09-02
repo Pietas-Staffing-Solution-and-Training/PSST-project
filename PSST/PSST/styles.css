@@ -382,11 +382,21 @@ body {
     margin-bottom: 15px;
 }
 
-
-/* Original Materialize CSS */
-.materialize-red {
-    background-color: #e51c23 !important;
+#showPWContainer span {
+    color: #ffffff !important;
+    line-height: 20px;
 }
+
+    #showPWContainer span:before {
+        border-right-color: #5a5a5a !important;
+        border-bottom-color: #5a5a5a !important;
+    }
+
+
+    /* Original Materialize CSS */
+    .materialize-red {
+        background-color: #e51c23 !important;
+    }
 
 .materialize-red-text {
   color: #e51c23 !important;
