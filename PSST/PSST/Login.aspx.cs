@@ -25,31 +25,12 @@ namespace PSST
             if (!IsPostBack)
             {
                 //Comment this in for always successfull connection
-                tbUsername.Text = "Ruan";
+
+                /*tbUsername.Text = "Ruan";
                 tbPassword.TextMode = TextBoxMode.SingleLine;
-                tbPassword.Text = "TestThisP@s5W0rD!";
+                tbPassword.Text = "TestThisP@s5W0rD!";*/
+
             }
-        }
-
-        protected void CustomValidator1_ServerValidate(object source, ServerValidateEventArgs args)
-        {
-            //Get user input
-            string userInput = args.Value;
-
-            //Create instance of security class
-            security passwordVal = new security();
-
-            //Check if email is valid
-            if (passwordVal.isValidPassword(userInput))
-            {
-                args.IsValid = true;
-            }
-            else
-            {
-                args.IsValid = false;
-                return;
-            }
-
         }
 
         protected void btnLogin_Click(object sender, EventArgs e)
@@ -57,7 +38,7 @@ namespace PSST
             //Get data from user
             string username = tbUsername.Text;
             string password = tbPassword.Text;
-            int isAdmin, userID = 0;
+            int isAdmin = 0, userID = 0;
 
             //check if emtpy - redundant - CODE SHOULD NOT REACH HERE IF ITS EMPTY
             if ( stringIsEmpty(username) || stringIsEmpty(password) )
@@ -71,39 +52,60 @@ namespace PSST
             //Encrypt password
             string encryptedPassword = encryptPass.encrypt(password);
 
-            //Check if account exists in admin DB
-            isAdmin = CountFromDB(username, encryptedPassword);
+            //Check if username is admin
+            if ( CheckNameInDB(username,"ADMIN") )
+            {
+                isAdmin = CountFromDB(username, encryptedPassword);
 
-            //IF not admin - Check if resource
-            if ( isAdmin != 1 )
+                if ( isAdmin == 1 ) 
+                {
+                    //Valid session username
+                    Session["username"] = username;
+
+                    //Redirect user to dashboard page
+                    Response.Redirect("~/Dashboard.aspx");
+
+                    return;
+                } 
+                else
+                {
+                    //Login failed entirely.
+                    loginFailed();
+                    return;
+                }
+
+            }
+
+            //Check if username is Resource
+            if ( CheckNameInDB(username, "RESOURCE") )
             {
                 userID = getUserID(username, encryptedPassword);
 
+                if (userID != 0) 
+                {
+                    //Valid session username
+                    Session["username"] = username;
+
+                    //Set user ID
+                    Session["userID"] = userID;
+
+                    //Redirect user to dashboard page
+                    Response.Redirect("~/Dashboard.aspx");
+
+                    return;
+                } 
+                else
+                {
+                    //Login failed entirely.
+                    loginFailed();
+                    return;
+                }
+
             }
-            else
-            {
-                //Valid session username
-                Session["username"] = username;
 
-                //Redirect user to dashboard page
-                Response.Redirect("~/Dashboard.aspx");
-            }
-
-            if ( userID == 0 )
-            {
-                loginFailed();
-                return;
-            } else
-            {
-                //Valid session username
-                Session["username"] = username;
-
-                //Set user ID
-                Session["userID"] = userID;
-
-                //Redirect user to dashboard page
-                Response.Redirect("~/Dashboard.aspx");
-            }
+            //Username incorrect
+            lblLoginFailed.Text = "Incorrect username, please try again.";
+            lblLoginFailed.Visible = true;
 
         }
 
@@ -122,6 +124,8 @@ namespace PSST
         //Displays failed to login message
         private void loginFailed()
         {
+            lblLoginFailed.Text = "Incorrect password, please try again";
+
             lblLoginFailed.Visible = true;
         }
 
@@ -214,6 +218,149 @@ namespace PSST
             }
 
             return 0;
+        }
+
+        private bool CheckNameInDB(string input, string tableName)
+        {
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(connString))
+                {
+                    conn.Open();
+
+                    //Initialise variables
+                    string query = "";
+                    string firstName = "";
+                    string lastName = "";
+
+                    //
+                    if ( tableName == "ADMIN" )
+                    {
+                        query = $"SELECT COUNT(*) FROM {tableName} WHERE Username = @safeUsername";
+                    } 
+                    else if ( tableName == "RESOURCE" )
+                    {
+                        string[] names = input.Split(' ');
+
+                        firstName = names[0];
+                        lastName = names[1];
+
+                        query = $"SELECT COUNT(*) FROM {tableName} WHERE Fname = @safeFirstName AND LName = @safeLastName";
+                    }
+
+                    
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+
+                        if ( tableName == "ADMIN" )
+                        {
+                            cmd.Parameters.AddWithValue("@safeUsername", input);
+                        } 
+                        else if ( tableName == "RESOURCE" )
+                        {
+                            cmd.Parameters.AddWithValue("@safeFirstName", firstName);
+                            cmd.Parameters.AddWithValue("@safeLastName", lastName);
+                        }
+                        
+                        int amountOfHits = Convert.ToInt32(cmd.ExecuteScalar());
+
+                        if (amountOfHits == 1)
+                        {
+                            return true;
+                        }
+
+                    }
+
+                }
+
+            }
+            catch (SqlException ex)
+            {
+                //Comment this in for testing
+                Console.WriteLine($"Failed: {ex.Message}");
+
+            }
+            catch (Exception ex)
+            {
+                //Comment this in for testing
+                Console.WriteLine($"Failed: {ex.Message}");
+            }
+
+
+            return false;
+        }
+
+        private bool CheckResourceName(string input, string tableName)
+        {
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(connString))
+                {
+                    conn.Open();
+
+                    //Initialise variables
+                    string query = "";
+                    string firstName = "";
+                    string lastName = "";
+
+                    //
+                    if (tableName == "ADMIN")
+                    {
+                        query = $"SELECT Username FROM {tableName} WHERE Username = @safeUsername";
+                    }
+                    else if (tableName == "RESOURCE")
+                    {
+                        string[] names = input.Split(' ');
+
+                        firstName = names[0];
+                        lastName = names[1];
+
+                        query = $"SELECT FName, LName FROM {tableName} WHERE Fname = @safeFirstName AND LName = @safeLastName";
+                    }
+
+
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+
+                        if (tableName == "ADMIN")
+                        {
+                            cmd.Parameters.AddWithValue("@safeUsername", input);
+                        }
+                        else if (tableName == "RESOURCE")
+                        {
+                            cmd.Parameters.AddWithValue("@safeFirstName", firstName);
+                            cmd.Parameters.AddWithValue("@safeLastName", lastName);
+                        }
+
+
+                        int amountOfHits = Convert.ToInt32(cmd.ExecuteScalar());
+
+                        if (amountOfHits == 1)
+                        {
+                            return true;
+                        }
+
+                    }
+
+                }
+
+            }
+            catch (SqlException ex)
+            {
+                //Comment this in for testing
+                Console.WriteLine($"Failed: {ex.Message}");
+
+            }
+            catch (Exception ex)
+            {
+                //Comment this in for testing
+                Console.WriteLine($"Failed: {ex.Message}");
+            }
+
+
+            return false;
         }
 
     }

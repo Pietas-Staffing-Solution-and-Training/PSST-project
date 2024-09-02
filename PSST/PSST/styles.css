@@ -378,25 +378,14 @@ body {
     margin-top: 0;
 }
 
-/*#btnLogin {
-    width: 70%;
-    padding: 15px;
-    margin-top: 15px;
-    background-color: #fff !important;
-    cursor: pointer;
-    font-size: 20px;
-    border: none !important;
-    transition: 200ms ease-in-out;
+#failedLogin {
+    margin-bottom: 15px;
 }
-
-#btnLogin:hover {
-	transform: scale(1.1);
-}*/
 
 
 /* Original Materialize CSS */
 .materialize-red {
-	background-color: #e51c23 !important;
+    background-color: #e51c23 !important;
 }
 
 .materialize-red-text {
