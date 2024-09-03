@@ -41,7 +41,7 @@ namespace PSST
             string password = tbPassword.Text;
             int isAdmin = 0, userID = 0;
 
-            //check if emtpy - redundant - CODE SHOULD NOT REACH HERE IF ITS EMPTY
+            //check if em[ty - redundant - CODE SHOULD NOT REACH HERE IF ITS EMPTY
             if ( stringIsEmpty(username) || stringIsEmpty(password) )
             {
                 return;
@@ -112,20 +112,21 @@ namespace PSST
 
         protected void CBshowPassword_CheckedChanged(object sender, EventArgs e)
         {
-
             //Gets inserted password
             string password = tbPassword.Text;
 
-            //Makes password field visible
-            tbPassword.TextMode = TextBoxMode.SingleLine;
+            if (CBshowPassword.Checked)
+            {
+                tbPassword.TextMode = TextBoxMode.SingleLine;
+            }
+            else
+            {
+                //Makes password field visible
+                tbPassword.TextMode = TextBoxMode.Password;
+            }
 
             //Injects password to front end
-            tbPassword.Text = password;
-
-            //Hides toggle button - Ensures that password is not wiped from text box
-            showPWContainer.Visible = false;
-
-
+            tbPassword.Attributes.Add("value", password);
         }
 
         //Check if a string is empty
