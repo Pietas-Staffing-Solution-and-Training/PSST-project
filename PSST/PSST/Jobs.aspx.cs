@@ -24,6 +24,7 @@ namespace PSST
 
         protected void Page_Load(object sender, EventArgs e)
         {
+
             //Get session value - returns null if doesn't exist
             string username = Session["username"]?.ToString();
             
@@ -523,71 +524,95 @@ namespace PSST
 
         protected void btnAddDB_Click(object sender, EventArgs e)
         {
-            string query = @"INSERT INTO JOB (Description, Resource_ID, Client_ID,Budget) 
-                 VALUES (@Description, @ResourceID, @ClientID, @Budget)";
+            string query;
+            int jobCount;
+            int jobID;
+            string description = txtDescription.Text;
+            int resourceID;
+            int clientID;
+            decimal budget;
 
             try
             {
+
+                if (!(int.TryParse(txtJobID.Text, out jobID)))
+                {
+                    throw new Exception("Invalid Job ID.");
+                }
+
+                if (!(int.TryParse(ddlResource.SelectedValue, out resourceID)))
+                {
+                    throw new Exception("Invalid Resource ID.");
+                }
+
+                //if (!(int.TryParse(txtResourceID.Text, out resourceID)))
+                //{
+                //    throw new Exception("Invalid Resource ID.");
+                //}
+
+                if (!(int.TryParse(ddlClient.SelectedValue, out clientID)))
+                {
+                    throw new Exception("Invalid Client ID.");
+                }
+
+                //if (!(int.TryParse(txtClientID.Text, out clientID)))
+                //{
+                //    throw new Exception("Invalid Client ID.");
+                //}
+
+                if (!(decimal.TryParse(txtBudget.Text, out budget)))
+                {
+                    throw new Exception("Invalid Wage.");
+                }
+
+
+                
+
                 using (MySqlConnection con = new MySqlConnection(connectionString))
                 {
-                    using (MySqlCommand cmd = new MySqlCommand(query, con))
+                    query = @"SELECT COUNT(*) FROM JOB WHERE Resource_ID = @ResourceID";
+
+                    MySqlCommand command = new MySqlCommand(query, con);
+                    command.Parameters.AddWithValue("@ResourceID", resourceID);
+
+                    con.Open();
+                    jobCount = Convert.ToInt32(command.ExecuteScalar());
+                    con.Close();
+
+
+                    if (jobCount < 1)
                     {
-                        int jobID;
-                        string description = txtDescription.Text;
-                        int resourceID;
-                        int clientID;
-                        decimal budget;
+                        query = @"INSERT INTO JOB (Description, Resource_ID, Client_ID,Budget) 
+                         VALUES (@Description, @ResourceID, @ClientID, @Budget)";
 
-                        if (!(int.TryParse(txtJobID.Text, out jobID)))
+                        using (MySqlCommand cmd = new MySqlCommand(query, con))
                         {
-                            throw new Exception("Invalid Job ID.");
+                     
+                            cmd.Parameters.AddWithValue("@JobID", jobID);
+                            cmd.Parameters.AddWithValue("@Description", description);
+                            cmd.Parameters.AddWithValue("@ResourceID", resourceID);
+                            cmd.Parameters.AddWithValue("@ClientID", clientID);
+                            cmd.Parameters.AddWithValue("@Budget", budget);
+
+                            con.Open();
+                            int rowsAffected = cmd.ExecuteNonQuery();
+
+                            // Check if the insert was successful
+                            if (rowsAffected > 0)
+                            {
+                                BindGridView();
+                            }
+                            else
+                            {
+                                showError("Insert operation failed."); // Insert failed or no rows affected
+                            }
+
+                            con.Close();
                         }
-
-                        //if (!(int.TryParse(txtResourceID.Text, out resourceID)))
-                        //{
-                        //    throw new Exception("Invalid Resource ID.");
-                        //}
-
-                        if (!(int.TryParse(ddlClient.SelectedValue, out clientID)))
-                        {
-                            throw new Exception("Invalid Client ID.");
-                        }
-
-                        if (!(int.TryParse(ddlResource.SelectedValue, out resourceID)))
-                        {
-                            throw new Exception("Invalid Client ID.");
-                        }
-
-                        //if (!(int.TryParse(txtClientID.Text, out clientID)))
-                        //{
-                        //    throw new Exception("Invalid Client ID.");
-                        //}
-
-                        if (!(decimal.TryParse(txtBudget.Text, out budget)))
-                        {
-                            throw new Exception("Invalid Wage.");
-                        }
-
-                        cmd.Parameters.AddWithValue("@JobID", jobID);
-                        cmd.Parameters.AddWithValue("@Description", description);
-                        cmd.Parameters.AddWithValue("@ResourceID", resourceID);
-                        cmd.Parameters.AddWithValue("@ClientID", clientID);
-                        cmd.Parameters.AddWithValue("@Budget", budget);
-
-                        con.Open();
-                        int rowsAffected = cmd.ExecuteNonQuery();
-
-                        // Check if the insert was successful
-                        if (rowsAffected > 0)
-                        {
-                            BindGridView();
-                        }
-                        else
-                        {
-                            showError("Insert operation failed."); // Insert failed or no rows affected
-                        }
-
-                        con.Close();
+                    }
+                    else
+                    {
+                        throw new Exception("Cannot have a resource on more than 1 job");
                     }
                 }
 
