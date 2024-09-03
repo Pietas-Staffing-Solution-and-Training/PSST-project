@@ -24,9 +24,6 @@ namespace PSST
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            //tbUsername.Text = "Ruan@email.com";
-            //tbPassword.Text = "TestThisP@s5W0rD!";
-
             //Get session value - returns null if doesn't exist
             string username = Session["username"]?.ToString();
             
