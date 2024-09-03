@@ -42,11 +42,17 @@
                                 </div>
                                 <div>
                                     <asp:TextBox ID="tbPassword" runat="server" ToolTip="Please enter your password" TextMode="Password"></asp:TextBox>
-                                    <asp:CustomValidator ID="CustomValidator1" runat="server" ErrorMessage="Password incorrect" ClientValidationFunction="ValidateInput_Client" ControlToValidate="tbPassword" OnServerValidate="CustomValidator1_ServerValidate"></asp:CustomValidator>
+                                    <div id="showPWContainer" runat="server">
+                                        
+                                        <label for="CBshowPassword">
+                                            <asp:CheckBox ID="CBshowPassword" runat="server" OnCheckedChanged="CBshowPassword_CheckedChanged" AutoPostBack="true"/>
+                                            <span>Show password</span>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div>
+                            <div id="failedLogin">
                                 <asp:Label ID="lblLoginFailed" runat="server" Text="Login failed, please try again or contact &lt;a href=&quot;mailto:admin@psst.co.za&quot;&gt;admin&lt;/a&gt; for assistance." Visible="False"></asp:Label>
                             </div>
 

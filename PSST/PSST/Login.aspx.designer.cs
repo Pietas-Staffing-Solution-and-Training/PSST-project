@@ -60,13 +60,22 @@ namespace PSST
         protected global::System.Web.UI.WebControls.TextBox tbPassword;
 
         /// <summary>
-        /// CustomValidator1 control.
+        /// showPWContainer control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CustomValidator CustomValidator1;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl showPWContainer;
+
+        /// <summary>
+        /// CBshowPassword control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CBshowPassword;
 
         /// <summary>
         /// lblLoginFailed control.
