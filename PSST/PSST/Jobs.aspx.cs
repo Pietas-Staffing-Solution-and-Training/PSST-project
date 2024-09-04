@@ -124,7 +124,6 @@ namespace PSST
 
             if (admin)
             {
-                //query = "SELECT Job_ID, Status, Description, Resource_ID, Client_ID, ROUND(Budget, 2) AS 'Budget' FROM JOB";
                 query = $@"
                     SELECT 
                         j.Job_ID, 
@@ -153,7 +152,6 @@ namespace PSST
             }
             else
             {
-                //query = $"SELECT Job_ID, Status, Description, Resource_ID, Client_ID, ROUND(Budget, 2) AS 'Budget' FROM JOB WHERE Resource_ID = '{user_ID}'";
                 query = $@"
                     SELECT 
                         j.Job_ID, 
@@ -344,27 +342,6 @@ namespace PSST
             divError.Visible = false; // Hides errors when searching again
             string search = txtSearch.Text;
 
-            //string query = $"SELECT Job_ID, Description, Resource_ID, Client_ID, ROUND(Budget, 2) AS Budget FROM JOB WHERE Job_ID LIKE @SearchTerm OR Description LIKE @SearchTerm OR Resource_ID LIKE @SearchTerm OR Client_ID LIKE @SearchTerm OR Budget LIKE @SearchTerm";
-            /*string query = $@"
-                SELECT 
-                    j.Job_ID, 
-                    j.Status, 
-                    j.Description, 
-                    j.Resource_ID, 
-                    j.Client_ID, 
-                    ROUND(j.Budget, 2) AS 'Budget', 
-                    i.Hours_Worked as 'Hours Worked'
-                FROM 
-                    JOB j
-                LEFT JOIN 
-                    INVOICE i ON j.Job_ID = i.Job_ID
-                WHERE 
-                    j.Job_ID LIKE @SearchTerm 
-                    OR j.Description LIKE @SearchTerm 
-                    OR j.Resource_ID LIKE @SearchTerm 
-                    OR j.Client_ID LIKE @SearchTerm 
-                    OR ROUND(j.Budget, 2) LIKE @SearchTerm;
-            ";*/
             string query = $@"
                 SELECT 
                     j.Job_ID, 
@@ -386,6 +363,7 @@ namespace PSST
                     CLIENT c ON j.Client_ID = c.Client_ID
                 WHERE 
                     j.Job_ID LIKE @SearchTerm 
+                    OR j.Status LIKE @SearchTerm
                     OR j.Description LIKE @SearchTerm 
                     OR j.Resource_ID LIKE @SearchTerm 
                     OR j.Client_ID LIKE @SearchTerm 
@@ -528,7 +506,7 @@ namespace PSST
             }
         }
 
-        protected void showError(string error)
+        protected void showError(string error) // Shows an error at the top of the page
         {
             divError.Visible = true;
             lblError.Text = error;
@@ -578,20 +556,10 @@ namespace PSST
                     throw new Exception("Invalid Resource ID.");
                 }
 
-                //if (!(int.TryParse(txtResourceID.Text, out resourceID)))
-                //{
-                //    throw new Exception("Invalid Resource ID.");
-                //}
-
                 if (!(int.TryParse(ddlClient.SelectedValue, out clientID)))
                 {
                     throw new Exception("Invalid Client ID.");
                 }
-
-                //if (!(int.TryParse(txtClientID.Text, out clientID)))
-                //{
-                //    throw new Exception("Invalid Client ID.");
-                //}
 
                 if (!(decimal.TryParse(txtBudget.Text, out budget)))
                 {
@@ -744,8 +712,29 @@ namespace PSST
                     break;
             }
 
-            string query = $"SELECT Job_ID, Status, Description, Resource_ID, Client_ID, ROUND(Budget, 2) AS 'Budget' FROM JOB ORDER BY {columnName} {sortDirection}";
-
+            //string query = $"SELECT Job_ID, Status, Description, Resource_ID, Client_ID, ROUND(Budget, 2) AS 'Budget' FROM JOB ORDER BY {columnName} {sortDirection}";
+            string query = $@"
+                SELECT 
+                    j.Job_ID, 
+                    j.Status, 
+                    j.Description, 
+                    CONCAT(r.FName, ' ', r.LName) AS 'Resource Name',
+                    j.Resource_ID,
+                    CONCAT(c.FName, ' ', c.LName) AS 'Client Name', 
+                    j.Client_ID,
+                    ROUND(j.Budget, 2) AS 'Budget', 
+                    i.Hours_Worked AS 'Hours Worked'
+                FROM 
+                    JOB j
+                LEFT JOIN 
+                    INVOICE i ON j.Job_ID = i.Job_ID
+                LEFT JOIN 
+                    RESOURCE r ON j.Resource_ID = r.Resource_ID
+                LEFT JOIN 
+                    CLIENT c ON j.Client_ID = c.Client_ID
+                ORDER BY 
+                    {columnName} {sortDirection};
+            ";
             BindGridView(query);
         }
 

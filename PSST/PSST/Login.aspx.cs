@@ -22,15 +22,7 @@ namespace PSST
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
-            {
-                //Comment this in for always successfull connection
 
-                /*tbUsername.Text = "Ruan";
-                tbPassword.TextMode = TextBoxMode.SingleLine;
-                tbPassword.Text = "TestThisP@s5W0rD!";*/
-
-            }
         }
 
 
@@ -41,7 +33,7 @@ namespace PSST
             string password = tbPassword.Text;
             int isAdmin = 0, userID = 0;
 
-            //check if em[ty - redundant - CODE SHOULD NOT REACH HERE IF ITS EMPTY
+            //check if empty - redundant - CODE SHOULD NOT REACH HERE IF ITS EMPTY
             if ( stringIsEmpty(username) || stringIsEmpty(password) )
             {
                 return;
