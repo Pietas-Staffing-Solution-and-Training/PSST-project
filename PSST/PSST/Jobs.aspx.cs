@@ -176,6 +176,11 @@ namespace PSST
                     WHERE 
                         j.Resource_ID = '{user_ID}';
                 ";
+
+                if (optQuery.Length > 0)
+                {
+                    query = optQuery;
+                }
             }           
 
             try
@@ -340,7 +345,7 @@ namespace PSST
             string search = txtSearch.Text;
 
             //string query = $"SELECT Job_ID, Description, Resource_ID, Client_ID, ROUND(Budget, 2) AS Budget FROM JOB WHERE Job_ID LIKE @SearchTerm OR Description LIKE @SearchTerm OR Resource_ID LIKE @SearchTerm OR Client_ID LIKE @SearchTerm OR Budget LIKE @SearchTerm";
-            string query = $@"
+            /*string query = $@"
                 SELECT 
                     j.Job_ID, 
                     j.Status, 
@@ -359,6 +364,34 @@ namespace PSST
                     OR j.Resource_ID LIKE @SearchTerm 
                     OR j.Client_ID LIKE @SearchTerm 
                     OR ROUND(j.Budget, 2) LIKE @SearchTerm;
+            ";*/
+            string query = $@"
+                SELECT 
+                    j.Job_ID, 
+                    j.Status, 
+                    j.Description, 
+                    CONCAT(r.FName, ' ', r.LName) AS 'Resource Name',
+                    j.Resource_ID,
+                    CONCAT(c.FName, ' ', c.LName) AS 'Client Name', 
+                    j.Client_ID,
+                    ROUND(j.Budget, 2) AS 'Budget', 
+                    i.Hours_Worked AS 'Hours Worked'
+                FROM 
+                    JOB j
+                LEFT JOIN 
+                    INVOICE i ON j.Job_ID = i.Job_ID
+                LEFT JOIN 
+                    RESOURCE r ON j.Resource_ID = r.Resource_ID
+                LEFT JOIN 
+                    CLIENT c ON j.Client_ID = c.Client_ID
+                WHERE 
+                    j.Job_ID LIKE @SearchTerm 
+                    OR j.Description LIKE @SearchTerm 
+                    OR j.Resource_ID LIKE @SearchTerm 
+                    OR j.Client_ID LIKE @SearchTerm 
+                    OR ROUND(j.Budget, 2) LIKE @SearchTerm
+                    OR CONCAT(r.FName, ' ', r.LName) LIKE @SearchTerm
+                    OR CONCAT(c.FName, ' ', c.LName) LIKE @SearchTerm;
             ";
 
             try
