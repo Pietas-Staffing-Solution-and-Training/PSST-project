@@ -75,19 +75,19 @@
                             <asp:Label ID="lblID" runat="server" CssClass="add-label" Text="Client ID:" ></asp:Label>
                             <asp:TextBox ID="txtID" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Client ID" ReadOnly="True" ></asp:TextBox>
                             <asp:Label ID="lblPhoneNum" runat="server" CssClass="add-label" Text="Phone Number:" ></asp:Label>
-                            <asp:TextBox ID="txtPhoneNum" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Phone Number" ></asp:TextBox>
+                            <asp:TextBox ID="txtPhoneNum" runat="server" TabIndex="3" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Phone Number" ></asp:TextBox>
                         </div>
                         <div class="add-row">
                             <asp:Label ID="lblFName" runat="server" CssClass="add-label" Text="First Name:" ></asp:Label>
-                            <asp:TextBox ID="txtFName" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="First Name" ></asp:TextBox>
+                            <asp:TextBox ID="txtFName" runat="server" TabIndex="1" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="First Name" ></asp:TextBox>
                             <asp:Label ID="lblAddress" runat="server" CssClass="add-label" Text="Address:" ></asp:Label>
-                            <asp:TextBox ID="txtAddress" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Wage" ></asp:TextBox>
+                            <asp:TextBox ID="txtAddress" runat="server" TabIndex="4" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Wage" ></asp:TextBox>
                         </div>
                         <div class="add-row">
                             <asp:Label ID="lblLName" runat="server" CssClass="add-label" Text="Last Name:" ></asp:Label>
-                            <asp:TextBox ID="txtLName" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Last Name" ></asp:TextBox>
+                            <asp:TextBox ID="txtLName" runat="server" TabIndex="2" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Last Name" ></asp:TextBox>
                             <asp:Label ID="lblEmail" runat="server" CssClass="add-label" Text="Email:" ></asp:Label>
-                            <asp:TextBox ID="txtEmail" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Competencies" ></asp:TextBox>
+                            <asp:TextBox ID="txtEmail" runat="server" TabIndex="5" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Competencies" ></asp:TextBox>
                         </div>
                     </div>
                     <asp:Button ID="btnAddDB" runat="server" Text="Add" CssClass="btn" OnClick="btnAddDB_Click" />

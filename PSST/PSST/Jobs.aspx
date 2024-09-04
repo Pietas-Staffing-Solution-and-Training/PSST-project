@@ -79,21 +79,21 @@
                             <asp:Label ID="lblID" runat="server" CssClass="add-label" Text="Job ID:"></asp:Label>
                             <asp:TextBox ID="txtJobID" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Job ID" ReadOnly="True"></asp:TextBox>
                             <asp:Label ID="lblDescription" runat="server" CssClass="add-label" Text="Description:"></asp:Label>
-                            <asp:TextBox ID="txtDescription" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Description"></asp:TextBox>
+                            <asp:TextBox ID="txtDescription" runat="server" TabIndex="3" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Description"></asp:TextBox>
                         </div>
                         <div class="add-row">
                             <asp:Label ID="lblResourceID" runat="server" CssClass="add-label" Text="Resource:"></asp:Label>
                             <!--<asp:TextBox ID="txtResourceID" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Resource ID"></asp:TextBox>-->
-                            <asp:DropDownList ID="ddlResource" runat="server" CssClass="custom-dropdown" 
+                            <asp:DropDownList ID="ddlResource" runat="server" TabIndex="1" CssClass="custom-dropdown" 
                                 DataTextField="FullName" DataValueField="Resource_ID" ToolTip="Select Resource (ID)">
                             </asp:DropDownList>
                             <asp:Label ID="lblBudget" runat="server" CssClass="add-label" Text="Budget:"></asp:Label>
-                            <asp:TextBox ID="txtBudget" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Budget"></asp:TextBox>
+                            <asp:TextBox ID="txtBudget" runat="server" TabIndex="4" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Budget"></asp:TextBox>
                         </div>
                         <div class="add-row">
                             <asp:Label ID="lblClientID" runat="server" CssClass="add-label" Text="Client:"></asp:Label>
                             <!--<asp:TextBox ID="txtClientID" runat="server" CssClass="custom-textbox" BorderColor="#A6B7CA" ForeColor="Gray" ToolTip="Client"></asp:TextBox>-->                          
-                            <asp:DropDownList ID="ddlClient" runat="server" CssClass="custom-dropdown" 
+                            <asp:DropDownList ID="ddlClient" runat="server" TabIndex="2" CssClass="custom-dropdown" 
                                 DataTextField="FullName" DataValueField="Client_ID" ToolTip="Select Client (ID)">
                             </asp:DropDownList>
                         </div>
