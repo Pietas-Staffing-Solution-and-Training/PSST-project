@@ -5,7 +5,6 @@ using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using MySql.Data.MySqlClient;
 using System.Configuration;
-using System.Web.UI.HtmlControls;
 
 namespace invoices_last_run
 {
@@ -32,7 +31,7 @@ namespace invoices_last_run
                 GeneratePDF("preview");
             }
         }
-        protected void ClearTempFolder()
+        protected void ClearTempFolder() // Clears the temporary invoices folder used for displaying invoices before download
         {
             string tempFolderPath = Server.MapPath("~/Resources/TempInvoicePDFs");
 
@@ -54,7 +53,7 @@ namespace invoices_last_run
             }
         }
 
-        private void GeneratePDF(string request)
+        private void GeneratePDF(string request) // Generates a PDF for display and potential download
         {
             //Initialise variables
             string jobId = Session["Job_ID"]?.ToString();
@@ -84,7 +83,7 @@ namespace invoices_last_run
             DateTime issueDate = DateTime.Now;
             DateTime dueDate = issueDate.AddDays(31);
 
-            try
+            try // Try fetching all neccessary information for creating an invoice
             {
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
@@ -138,13 +137,13 @@ namespace invoices_last_run
 
             decimal expectedPay = wage * hoursWorked;
 
-            if (expectedPay > jobBudget)
+            if (expectedPay > jobBudget) // Add comment onto invoice if the pay is above the jobs budget
                 invoiceComments += "NB: Expected pay exceeds job budget.";
 
             string fileName = $"invoice_{Guid.NewGuid()}.pdf";
             string filePath = Server.MapPath($"~/Resources/TempInvoicePDFs/{fileName}");
 
-            using (FileStream fs = new FileStream(filePath, FileMode.Create))
+            using (FileStream fs = new FileStream(filePath, FileMode.Create))  // Attempt to create the invoice PDF document with questPDF
             {
                 Document.Create(container =>
                 {
@@ -155,7 +154,7 @@ namespace invoices_last_run
                         page.PageColor(Colors.White);
                         page.DefaultTextStyle(x => x.FontSize(11));
 
-                        page.Header().Column(column =>
+                        page.Header().Column(column => // Set header content
                         {
                             column.Item().Text($"Invoice #{invoiceNumber}")
                                 .SemiBold().FontSize(24).FontColor(Colors.Black);
@@ -163,7 +162,7 @@ namespace invoices_last_run
                             column.Item().Text($"Due Date: {dueDate:MMMM dd, yyyy}");
                         });
 
-                        page.Content().PaddingVertical(20).Column(column =>
+                        page.Content().PaddingVertical(20).Column(column => // Set content for invoice
                         {
                             column.Item().Row(row =>
                             {
@@ -198,7 +197,7 @@ namespace invoices_last_run
                                     columns.RelativeColumn();
                                 });
 
-                                table.Header(header =>
+                                table.Header(header => 
                                 {
                                     header.Cell().Element(x => x.Padding(5).BorderBottom(1).BorderColor(Colors.Grey.Lighten2))
                                         .AlignCenter()
@@ -245,12 +244,12 @@ namespace invoices_last_run
                 .GeneratePdf(fs);
             }
 
-            if (request == "preview")
+            if (request == "preview") // Display the invoice PDF
             {
                 pdfPreview.Src = $"/Resources/TempInvoicePDFs/{fileName}";
                 pdfPreview.Attributes["style"] = "display:block;";
             }
-            else if (request == "download")
+            else if (request == "download") // Download the invoice PDF
             {
                 Response.ContentType = "application/pdf";
                 Response.AddHeader("Content-Disposition", $"attachment; filename=invoice.pdf");
