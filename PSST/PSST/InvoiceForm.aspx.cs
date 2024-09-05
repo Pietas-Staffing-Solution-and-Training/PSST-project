@@ -31,25 +31,27 @@ namespace invoices_last_run
                 GeneratePDF("preview");
             }
         }
-        protected void ClearTempFolder() // Clears the temporary invoices folder used for displaying invoices before download
+        protected void ClearTempFolder()
         {
             string tempFolderPath = Server.MapPath("~/Resources/TempInvoicePDFs");
 
-            if (Directory.Exists(tempFolderPath))
+            if (!Directory.Exists(tempFolderPath))
             {
-                try
-                {
-                    var files = Directory.GetFiles(tempFolderPath);
+                Directory.CreateDirectory(tempFolderPath);
+            }
 
-                    foreach (var file in files)
-                    {
-                        File.Delete(file);
-                    }
-                }
-                catch (Exception ex)
+            try
+            {
+                var files = Directory.GetFiles(tempFolderPath);
+
+                foreach (var file in files)
                 {
-                    Console.WriteLine($"Error clearing temp folder: {ex.Message}");
+                    File.Delete(file);
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error clearing temp folder: {ex.Message}");
             }
         }
 
@@ -141,7 +143,14 @@ namespace invoices_last_run
                 invoiceComments += "NB: Expected pay exceeds job budget.";
 
             string fileName = $"invoice_{Guid.NewGuid()}.pdf";
-            string filePath = Server.MapPath($"~/Resources/TempInvoicePDFs/{fileName}");
+            string filePath = Path.Combine(Server.MapPath("~/Resources/TempInvoicePDFs"), fileName);
+
+            // Ensure the directory exists
+            string directoryPath = Path.GetDirectoryName(filePath);
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
 
             using (FileStream fs = new FileStream(filePath, FileMode.Create))  // Attempt to create the invoice PDF document with questPDF
             {
