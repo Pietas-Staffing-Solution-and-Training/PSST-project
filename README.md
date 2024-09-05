@@ -8,9 +8,43 @@ This is a short guide to using the PSST system depending on what your user level
 
 Pieta’s Staffing Solutions and Training (PSST) is a human resources company in South Africa with the functions of recruitment, staffing, training, and other human resources functions. We provide only the best service for our clients, both jobseekers and employers. For queries and concerns, please contact [support@psst.com](mailto:support@psst.com).
 
-### Information for Users
+## Information for Users
 
-#### Logging in
+### System requirements
+
+To use PSST effectively, please ensure that your system meets the following requirements:
+
+- **Modern Web Browser:**
+  - Supported browsers: Chrome (latest version), Firefox (latest version), Microsoft Edge (latest version), Safari (latest version).
+  - Ensure JavaScript, cookies, and pop-ups are enabled.
+
+- **Internet Connection:**
+  - Minimum: 5 Mbps for standard performance.
+  - Recommended: 10 Mbps or higher low-latency connection for optimal performance.
+
+- **Operating System:**
+  - Windows 10 or later, macOS 10.14 or later, Linux distributions with a compatible browser.
+
+- **Display:**
+  - Minimum screen resolution: 1280x720 (HD).
+  - Recommended: 1920x1080 (Full HD) or higher for better user experience.
+
+- **Processor & Memory:**
+  - Minimum: Dual-core processor, 4 GB RAM.
+  - Recommended: Quad-core processor, 8 GB RAM or more for smoother multi-tasking.
+
+- **Storage for Saved PDF Files:**
+  - Users should have at least 500 MB of local disk space available for storage of downloaded PDFs.
+
+- **Plugins and Add-ons:**
+  - Latest version of Adobe Reader or another PDF viewer (for viewing downloaded PDF files).
+
+- **Security:**
+  - Up-to-date antivirus and firewall settings.
+  - TLS 1.2+ enabled for secure connections.
+
+
+### Logging in
 
 Logging in enables you to gain access to the system and all functions you need.
 
@@ -18,7 +52,7 @@ To log in, navigate to the login page and enter your details. Your username is y
 
 To logout, click on the Logout button in the top bar or simply close your browser.
 
-#### Navigation
+### Navigation
 
 If you're reading this, you've already successfully navigated to the PSST system in your web browser. That's a great first step!
 
@@ -30,13 +64,13 @@ Now that you're logged in, you have access to all the other navigation options. 
 
 The options you see in any of those places will all be open to you in some capacity.
 
-#### The Dashboard
+### The Dashboard
 
 This is the landing page where you'll receive a quick explanation of the PSST system's purpose and foundational functionality.
 
 Select one of the buttons to start your PSST journey.
 
-#### The Jobs Page
+### The Jobs Page
 
 This page shows the job you are currently assigned to, including ones previously completed. You can also add your time to the current active job on this page.
 
@@ -44,7 +78,7 @@ To **add the time you spent on a job**, click the "Edit Time" button at the top 
 
 You cannot edit anything else on this page. Please contact an admin if you notice any erroneous information.
 
-#### The Resources Page
+### The Resources Page
 
 You, as a Resource, are able to view your Resource information stored with PSST and change the password if required on this page.
 
@@ -52,9 +86,9 @@ To **change your password**, simply click the "Change Password" button at the to
 
 You cannot edit anything else on this page. Please contact an admin if you notice any erroneous information.
 
-### Information for Admins Only
+## Information for Admins Only
 
-#### The Clients Page
+### The Clients Page
 
 Only admins are able to access the Clients page. This page shows a list of all the clients and allows you to search, sort, and maintain client data.
 
@@ -68,7 +102,7 @@ To **add a new Client**, click the "Add Client" button at the top left of the ta
 
 To **sort the table**, click once on any of the column headers to sort by that column, and click again to sort in the opposite order (ascending or descending).
 
-#### The Jobs Page
+### The Jobs Page
 
 Admins have permissions to do much more on the Jobs page than users. You can view all the jobs at PSST, both active and complete, edit information, add new Jobs, and generate invoices.
 
@@ -80,7 +114,7 @@ To **mark a job as complete**, click the <img src="https://github.com/Pietas-Sta
 
 To **view and optionally download a job's invoice**, click the <img src="https://github.com/Pietas-Staffing-Solution-and-Training/PSST-project/blob/main/PSST/PSST/Resources/Icons/invoice%20-%20thoseicons.png" alt="invoice icon" width="20" /> button which will take you to that job's invoice page. There, you can preview the invoice, select the "Download PDF" button to download it, or "Go Back" to the jobs page.
 
-#### The Resources Page
+### The Resources Page
 
 Admins have permissions to do much more on the Resources page than users. You can view all the Resources at PSST, edit their information, delete Resources, and add new Resources.
 
