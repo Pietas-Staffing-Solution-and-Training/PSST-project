@@ -19,6 +19,55 @@
                 <p>Pieta’s Staffing Solutions and Training (PSST) is a human resources company in South Africa with the functions of recruitment, staffing, training, and other human resources functions. We provide only the best service for our clients, both jobseekers and employers. For queries and concerns, please contact support@psst.com.</p>
                 <asp:Panel ID="loggedUser" runat="server">
                     <h4>Information for Users</h4>
+                    <h5>System requirements</h5>
+                    <p>To use PSST effectively, please ensure that your system meets the following requirements:</p>
+                    <ul>
+                        <li><strong>Modern Web Browser:</strong>
+                            <ul>
+                                <li>Supported browsers: Chrome (latest version), Firefox (latest version), Microsoft Edge (latest version), Safari (latest version).</li>
+                                <li>Ensure JavaScript, cookies, and pop-ups are enabled.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Internet Connection:</strong>
+                            <ul>
+                                <li>Minimum: 5 Mbps for standard performance.</li>
+                                <li>Recommended: 10 Mbps or higher low-latency connection for optimal performance.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Operating System:</strong>
+                            <ul>
+                                <li>Windows 10 or later, macOS 10.14 or later, Linux distributions with a compatible browser.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Display:</strong>
+                            <ul>
+                                <li>Minimum screen resolution: 1280x720 (HD).</li>
+                                <li>Recommended: 1920x1080 (Full HD) or higher for better user experience.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Processor & Memory:</strong>
+                            <ul>
+                                <li>Minimum: Dual-core processor, 4 GB RAM.</li>
+                                <li>Recommended: Quad-core processor, 8 GB RAM or more for smoother multi-tasking.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Storage for Saved PDF Files:</strong>
+                            <ul>
+                                <li>Users should have at least 500 MB of local disk space available for storage of downloaded PDFs.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Plugins and Add-ons:</strong>
+                            <ul>
+                                <li>Latest version of Adobe Reader or another PDF viewer (for viewing downloaded PDF files).</li>
+                            </ul>
+                        </li>
+                        <li><strong>Security:</strong>
+                            <ul>
+                                <li>Up-to-date antivirus and firewall settings.</li>
+                                <li>TLS 1.2+ enabled for secure connections.</li>
+                            </ul>
+                        </li>
+                    </ul>
                     <h5>Logging in</h5>
                     <p>Logging in enables you to gain access to the system and all functions you need.</p>
                     <p>To log in, navigate to the <a href="/Login.aspx">login page</a> and enter your details. Your username is your full name (eg. "John Doe"). If you have not received a username or password, please contact your administrator.</p>
