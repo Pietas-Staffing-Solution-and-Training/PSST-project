@@ -75,6 +75,7 @@ namespace PSST
                 CommandField invoiceField = (CommandField)JobData.Columns[0];
                 CommandField editField = (CommandField)JobData.Columns[1];
                 ImageButton deleteButton = (ImageButton)e.Row.FindControl("DeleteButton");
+                
 
                 if (invoiceField != null)
                 {
@@ -298,7 +299,31 @@ namespace PSST
                 BindGridView();
 
                 GridViewRow row = JobData.Rows[e.NewEditIndex];
-                TextBox tbName = (TextBox)row.Cells[4].Controls[0];
+
+                //Make Certain Cells ReadOnly
+                Label lbl1 = new Label();
+                Label lbl2 = new Label();
+                Label lbl3 = new Label();
+                Label lbl4 = new Label();
+
+                lbl4.Text = (row.Cells[4].Controls[0] as TextBox).Text;
+                row.Cells[4].Controls.Clear();
+                row.Cells[4].Controls.Add(lbl4);
+
+                lbl1.Text = (row.Cells[6].Controls[0] as TextBox).Text;
+                row.Cells[6].Controls.Clear();
+                row.Cells[6].Controls.Add(lbl1);
+
+                lbl2.Text = (row.Cells[8].Controls[0] as TextBox).Text;
+                row.Cells[8].Controls.Clear();
+                row.Cells[8].Controls.Add(lbl2);
+
+                lbl3.Text = (row.Cells[11].Controls[0] as TextBox).Text;
+                row.Cells[11].Controls.Clear();
+                row.Cells[11].Controls.Add(lbl3);
+
+
+                TextBox tbName = (TextBox)row.Cells[5].Controls[0];
                 tbName.Focus();
 
             } else
@@ -584,7 +609,9 @@ namespace PSST
                     if (jobCount < 1)
                     {
                         query = @"INSERT INTO JOB (Description, Resource_ID, Client_ID,Budget) 
-                         VALUES (@Description, @ResourceID, @ClientID, @Budget)";
+                         VALUES (@Description, @ResourceID, @ClientID, @Budget);
+                         
+                         INSERT INTO INVOICE (Job_ID) VALUES (@JobID);";
 
                         using (MySqlCommand cmd = new MySqlCommand(query, con))
                         {
