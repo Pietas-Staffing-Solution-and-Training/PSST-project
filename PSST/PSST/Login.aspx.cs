@@ -1,4 +1,13 @@
-﻿using PSST.Resources.lib;
+﻿/*
+CMPG223 2024 Distance Project – Group 1
+Stefan Paetzold 45475288
+Ruan Koekemoer 33538107
+Jurie-Hannes Blom 48652865 
+Daniël De Jager 41669436
+Gaby Gloss 37562908
+ */
+
+using PSST.Resources.lib;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
