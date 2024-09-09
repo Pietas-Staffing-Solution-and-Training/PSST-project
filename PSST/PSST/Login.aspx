@@ -10,7 +10,7 @@
 <uc:head runat="server" ID="head" />
 <body>
 
-    <form id="login" runat="server">
+    <form id="login" runat="server" DefaultButton="btnLogin">
         <uc:navigation runat="server" ID="navigation" />
 
         <div class="loginBackground">
